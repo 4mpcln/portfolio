@@ -11,7 +11,7 @@ export default function HeroSection() {
   const designerInitialX = -1000; // Start from left
 
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden flex flex-col items-center justify-start pt-20">
+    <div className="relative w-full h-screen bg-transparent overflow-hidden flex flex-col items-center justify-start pt-20">
       {/* Text and Image Container */}
       <div className="relative w-full h-full flex flex-col items-center justify-start">
         {/* Text Overlay - "Web" and "Designer" */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
             width={400}
             height={500}
             priority
-            className="rounded-lg shadow-2xl object-cover"
+            className="object-cover"
           />
         </div>
       </div>

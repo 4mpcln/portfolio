@@ -5,6 +5,58 @@ import { motion } from 'framer-motion';
 
 const menuItems = ['Home', 'AboutMe', 'Stack&Tools', 'Experience'];
 
+const containerVariants = {
+  closed: { backgroundColor: 'rgba(51, 51, 51, 0.4)' },
+  open: { 
+    backgroundColor: 'rgba(51, 51, 51, 0.7)'
+  }
+};
+
+const menuTextVariants = {
+  open: { 
+    opacity: 0, 
+    width: 0,
+    marginRight: 0
+  },
+  closed: { 
+    opacity: 1, 
+    width: 'auto',
+    marginRight: 8
+  }
+};
+
+const itemVariants = {
+  open: (custom: number) => ({
+    opacity: 1,
+    width: 'auto',
+    paddingLeft: 12,
+    paddingRight: 12,
+    transition: {
+      duration: 0.4,
+      delay: custom * 0.05
+    }
+  }),
+  closed: (custom: number) => ({
+    opacity: 0,
+    width: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    transition: {
+      duration: 0.35,
+      delay: (menuItems.length - custom - 1) * 0.03
+    }
+  })
+};
+
+const itemHoverVariants = {
+  hover: {
+    color: '#a0a0a0'
+  },
+  normal: {
+    color: '#ffffff'
+  }
+};
+
 export default function HeroMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,51 +66,49 @@ export default function HeroMenu() {
       initial={false}
     >
       <motion.div
-        className="flex items-center gap-0 rounded-full px-6 py-4 cursor-pointer transition-colors"
-        style={{ backgroundColor: '#33333366' }}
+        className="flex items-center gap-0 rounded-full px-6 py-4 cursor-pointer"
+        variants={containerVariants}
+        animate={isOpen ? 'open' : 'closed'}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        layout
+        layout="position"
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         {/* Menu Text */}
         <motion.span
           className="text-white font-bold text-sm whitespace-nowrap overflow-hidden"
-          animate={{ 
-            opacity: isOpen ? 0 : 1,
-            width: isOpen ? 0 : 'auto',
-            marginRight: isOpen ? 0 : 8
-          }}
-          transition={{ duration: 0.2 }}
+          variants={menuTextVariants}
+          animate={isOpen ? 'open' : 'closed'}
         >
           menu
         </motion.span>
 
         {/* Menu Items */}
-        <motion.div className="flex items-center gap-0" layout>
-          {menuItems.map((item) => (
+        <motion.div className="flex items-center gap-0 overflow-hidden" layout="position">
+          {menuItems.map((item, index) => (
             <motion.a
               key={item}
               href={`#${item.toLowerCase()}`}
-              animate={isOpen ? { 
-                opacity: 1, 
-                width: 'auto', 
-                paddingLeft: 8, 
-                paddingRight: 8 
-              } : { 
-                opacity: 0, 
-                width: 0, 
-                paddingLeft: 0, 
-                paddingRight: 0 
-              }}
-              transition={{ duration: 0.2 }}
-              className="text-white font-bold text-sm whitespace-nowrap hover:text-gray-300 transition-colors"
+              custom={index}
+              variants={itemVariants}
+              animate={isOpen ? 'open' : 'closed'}
+              whileHover="hover"
+              initial="closed"
+              className="text-white font-bold text-sm whitespace-nowrap cursor-pointer inline-flex overflow-hidden"
               onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
-                const section = document.querySelector(`[data-section="${item.toLowerCase()}"]`);
-                section?.scrollIntoView({ behavior: 'smooth' });
+                if (item.toLowerCase() === 'home') {
+                  // Scroll to top for Home button
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                  const section = document.querySelector(`[data-section="${item.toLowerCase()}"]`);
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }
               }}
             >
-              {item}
+              <motion.span variants={itemHoverVariants} initial="normal">
+                {item}
+              </motion.span>
             </motion.a>
           ))}
         </motion.div>
