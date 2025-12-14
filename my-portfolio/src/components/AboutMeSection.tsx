@@ -5,12 +5,13 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 
 export default function AboutMeSection() {
-  const skills = useMemo(() => ['DEVELOP', 'CREATE', 'College of Computing Student'], []);
   const [displayText, setDisplayText] = useState('');
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+
+  const skills = useMemo(() => ['DEVELOP', 'CREATE', 'College of Computing Student'], []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -382,6 +383,19 @@ export default function AboutMeSection() {
         className="relative w-full bg-transparent flex items-center justify-center py-20 px-6"
       >
         <div className="max-w-7xl w-full">
+          {/* Skills Header */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mb-20"
+          >
+            <h1 className="text-6xl md:text-7xl font-black text-white">
+              Skills
+            </h1>
+          </motion.div>
+
           {/* DEVELOP Section */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -390,14 +404,14 @@ export default function AboutMeSection() {
             viewport={{ once: true, margin: '-100px' }}
             className="mb-20"
           >
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">DEVELOP</h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">DEVELOP</h2>
             
-            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl">
+            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl indent-8">
               Started creating Web Development using Next.js, React, and Tailwind <br />
               and eventually switched to Mobile Development using React Native
             </p>
             
-            <p className="text-cyan-400 font-semibold text-sm mb-6">Stack & Technologies</p>
+            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Stack & Technologies</p>
             
             <div className="flex flex-wrap gap-4">
               {[
@@ -432,14 +446,14 @@ export default function AboutMeSection() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
           >
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">CREATE</h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">CREATE</h2>
             
-            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl">
+            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl indent-8">
               Aspiring content creator and junior developer, passionate about telling <br />
               stories through both words and code. Currently learning and building as I go
             </p>
             
-            <p className="text-cyan-400 font-semibold text-sm mb-6">Tools & Platforms</p>
+            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Tools & Platforms</p>
             
             <div className="flex flex-wrap gap-4">
               {[
