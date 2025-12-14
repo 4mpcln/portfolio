@@ -102,13 +102,19 @@ export default function QuoteSection() {
           viewport={{ once: true, margin: '-100px' }}
           className="relative"
         >
-          {/* Quote Mark */}
-          <motion.div className="text-6xl text-cyan-500/30 mb-4">
+          {/* Quote Mark - Left */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-6xl text-cyan-500/30 mb-4"
+          >
             &ldquo;
           </motion.div>
 
           {/* Quote Text with Character-level Scroll Animation */}
-          <div className="text-3xl md:text-5xl font-bold leading-tight text-gray-400">
+          <div className="text-3xl md:text-5xl font-bold leading-tight text-gray-300">
             {chars.map((char, index) => (
               <motion.span
                 key={index}
@@ -122,8 +128,14 @@ export default function QuoteSection() {
             ))}
           </div>
 
-          {/* Quote Mark */}
-          <motion.div className="text-6xl text-cyan-500/30 mt-4 text-right">
+          {/* Quote Mark - Right */}
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-6xl text-cyan-500/30 mt-4 text-right"
+          >
             &rdquo;
           </motion.div>
 

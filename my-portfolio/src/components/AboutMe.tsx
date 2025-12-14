@@ -51,24 +51,6 @@ export default function AboutMe() {
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
-            {/* Online indicator */}
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white"
-            ></motion.div>
-          </motion.div>
-
-          {/* Title */}
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-black">
-              About <span className="text-cyan-500">Me</span>
-            </h1>
-            <p className="text-gray-400 text-lg mt-4 max-w-2xl mx-auto">
-              To be reborn, you must first accept the death of who you used to be
-            </p>
-          </div>
-        </motion.div>
 
         {/* Who I Am Section */}
         <motion.div

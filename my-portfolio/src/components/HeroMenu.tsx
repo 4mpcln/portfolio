@@ -21,7 +21,7 @@ const menuItems = [
     )
   },
   { 
-    label: 'Skill', 
+    label: 'Skills', 
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -108,7 +108,7 @@ export default function HeroMenu() {
               }}
               transition={{ duration: 0.2 }}
               className={`text-white font-bold text-sm whitespace-nowrap transition-colors px-0.5 py-1 w-fit relative flex items-center gap-1 ${
-                selectedItem === item.label ? 'after:content-[\'\'] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1/2 after:h-0.5 after:bg-white after:rounded-full' : 'hover:text-gray-300'
+                selectedItem === item.label ? 'hover:text-gray-300' : 'hover:text-gray-300'
               }`}
               onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
@@ -128,7 +128,11 @@ export default function HeroMenu() {
               >
                 {item.icon}
               </motion.div>
-              {item.label}
+              <span className={`relative ${
+                selectedItem === item.label ? 'after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-0.5 after:bg-white after:rounded-full' : ''
+              }`}>
+                {item.label}
+              </span>
             </motion.a>
           ))}
         </motion.div>
