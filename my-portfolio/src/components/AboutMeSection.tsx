@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect, useMemo, useRef } from 'react';
 
@@ -19,11 +18,12 @@ export default function AboutMeSection() {
 
   // Image scroll animation - enters from bottom-right, exits to top-left
   // Tilted at 15 degrees when at About Me section (scroll progress 0.5)
-  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [300, 0, -300]);
-  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [300, 0, -300]);
-  const imageRotate = useTransform(scrollYProgress, [0, 0.5, 1], [0, 15, 360]);
-  const imageRotateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 15, 0]);
-  const imageOpacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0, 1, 1, 1, 0]);
+  // Smooth exit with easing curve
+  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [300, 0, -150], { clamp: true });
+  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [300, 0, -150], { clamp: true });
+  const imageRotate = useTransform(scrollYProgress, [0, 0.5, 1], [0, 15, 45], { clamp: true });
+  const imageRotateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 15, 0], { clamp: true });
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.85, 1], [0, 1, 1, 1, 0.3], { clamp: true });
 
   const skills = useMemo(() => ['College of Computing Student','UX/UI designer', 'Web Developer', 'Front-end Developer'], []);
 
@@ -304,8 +304,9 @@ export default function AboutMeSection() {
           >
             {/* Interactive Image Container */}
             <motion.div
-              className="relative w-full max-w-sm z-0"
+              className="relative w-full z-0"
               style={{
+                maxWidth: '420px',
                 rotateX: isHovering ? rotateX : 0,
                 rotateY: isHovering ? rotateY : imageRotateY,
                 transformStyle: 'preserve-3d',
@@ -337,18 +338,23 @@ export default function AboutMeSection() {
               <motion.div>
                 {/* Image */}
                 <motion.div
-                  className="relative w-full overflow-hidden"
-                  whileHover={{ scale: 1.1 }}
+                  className="relative w-full overflow-hidden rounded-3xl"
+                  whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.6 }}
-                  style={{ aspectRatio: '3 / 5' }}
+                  style={{ aspectRatio: '2480 / 3508' }}
                 >
-                  <Image
+                  {/* Using native img for maximum quality - preserves original image clarity */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/meincamera.png"
                     alt="Krit Intarajinda"
-                    width={380}
-                    height={798}
-                    priority
+                    loading="eager"
                     className="w-full h-full object-cover object-top"
+                    style={{ 
+                      width: '100%',
+                      height: '100%',
+                      display: 'block'
+                    }}
                   />
                 </motion.div>
               </motion.div>
