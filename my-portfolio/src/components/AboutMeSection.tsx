@@ -466,11 +466,11 @@ export default function AboutMeSection() {
             
             <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Stack & Technologies</p>
             
-            <div className="flex flex-wrap gap-8 justify-center">
+            <div className="flex flex-wrap gap-8 justify-left">
               {[
                 { name: 'HTML', icon: 'html.png' },
                 { name: 'CSS', icon: 'css.png' },
-                { name: 'JavaScript', icon: 'jss.png' },
+                { name: 'JavaScript', icon: 'jss.png', scale: '0.6' },
                 { name: 'TypeScript', icon: 'ts.png' },
                 { name: 'React', icon: 'react.png' },
                 { name: 'Next.JS', icon: 'next.png' },
@@ -492,6 +492,7 @@ export default function AboutMeSection() {
                       width={86}
                       height={86}
                       className="w-24 h-24 object-contain"
+                      style={{ transform: tool.scale ? `scale(${tool.scale})` : 'scale(1)' }}
                     />
                   </motion.div>
                   <p className="text-sm font-light text-white text-center whitespace-nowrap">{tool.name}</p>
@@ -516,7 +517,7 @@ export default function AboutMeSection() {
             
             <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Tools & Platforms</p>
             
-            <div className="flex flex-wrap gap-8 justify-center">
+            <div className="flex flex-wrap gap-8 justify-left">
               {[
                 { name: 'Wix', icon: 'wixx.png' },
                 { name: 'Figma', icon: 'fm.png' },
