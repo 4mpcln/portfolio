@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect, useMemo, useRef } from 'react';
+import Lanyard from './Lanyard';
 
 export default function AboutMeSection() {
   const [displayText, setDisplayText] = useState('');
@@ -127,29 +128,35 @@ export default function AboutMeSection() {
         className="relative w-full min-h-screen bg-transparent flex items-center justify-center py-20 px-6"
       >
       <div className="max-w-7xl w-full">
-        {/* Header Section - Centered */}
+        {/* Header Section - Right Aligned */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="text-center mb-16"
+          className="text-right mb-16"
         >
-          {/* Title, Line, and Description - All in One Container */}
+          {/* Title with Underline */}
           <motion.div
             variants={itemVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
-            className="max-w-3xl mx-auto"
+            className="inline-block"
           >
-            {/* Title with Icon and Underline */}
-            <div className="inline-block w-full">
-              <div className="flex items-center justify-right gap-3 mb-2">
-                <h1 className="text-6xl md:text-9xl font-black text-white">
-                  About Me
-                </h1>
-              </div>
+            <div className="relative">
+              <h1 className="text-6xl md:text-9xl font-black text-white">
+                About Me
+              </h1>
+              {/* Blue underline with extend animation */}
+              <motion.div
+                initial={{ scaleX: 0, originX: 1 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: false, margin: '-100px' }}
+                className="h-1 bg-cyan-400 mt-3 rounded-full"
+                style={{ width: '50%', marginLeft: 'auto' }}
+              />
             </div>
           </motion.div>
         </motion.div>
@@ -439,11 +446,34 @@ export default function AboutMeSection() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-20"
+            className="text-right mb-20 relative overflow-visible"
           >
-            <h1 className="text-6xl md:text-9xl font-black text-white">
-              Skills
-            </h1>
+            <div className="relative inline-block">
+              <h1 className="text-6xl md:text-9xl font-black text-white">
+                Skills
+              </h1>
+              {/* Blue underline with extend animation */}
+              <motion.div
+                initial={{ scaleX: 0, originX: 1 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: false, margin: '-100px' }}
+                className="h-1 bg-cyan-400 mt-3 rounded-full"
+                style={{ width: '50%', marginLeft: 'auto' }}
+              />
+            </div>
+
+            {/* Lanyard Component - Hanging from blue line */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true, margin: '-100px' }}
+              className="absolute right-0 top-full mt-1 z-50 overflow-visible"
+              style={{ width: '600px' }}
+            >
+              <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+            </motion.div>
           </motion.div>
 
           {/* DEVELOP Section */}
