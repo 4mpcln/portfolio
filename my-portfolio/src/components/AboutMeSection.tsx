@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Lanyard from './Lanyard';
 
@@ -9,6 +9,9 @@ export default function AboutMeSection() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lanyardRef = useRef<HTMLDivElement>(null);
+  const isLanyardInView = useInView(lanyardRef, { amount: 0.4 });
+  const [dropKey, setDropKey] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: scrollRef,
@@ -25,6 +28,11 @@ export default function AboutMeSection() {
   const imageOpacity = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.85, 1], [0, 1, 1, 1, 0.3], { clamp: true });
 
   const skills = useMemo(() => ['College of Computing Student','UX/UI designer', 'Web Developer', 'Front-end Developer'], []);
+
+  // Trigger lanyard drop each time it enters the viewport
+  useEffect(() => {
+    if (isLanyardInView) setDropKey((k) => k + 1);
+  }, [isLanyardInView]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -446,7 +454,7 @@ export default function AboutMeSection() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-right mb-20 relative overflow-visible"
+            className="text-right mb-8 relative"
           >
             <div className="relative inline-block">
               <h1 className="text-6xl md:text-9xl font-black text-white">
@@ -465,14 +473,15 @@ export default function AboutMeSection() {
 
             {/* Lanyard Component - Hanging from blue line */}
             <motion.div
+              ref={lanyardRef}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="absolute right-0 top-full mt-1 z-50 overflow-visible"
-              style={{ width: '600px' }}
+              viewport={{ once: false, margin: '-100px' }}
+              className="absolute right-0 top-full mt-1 z-50"
+              style={{ width: '450px', overflow: 'visible' }}
             >
-              <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+              <Lanyard key={dropKey} position={[0, 0, 20]} gravity={[0, -40, 0]} resetSignal={dropKey} />
             </motion.div>
           </motion.div>
 
@@ -482,19 +491,19 @@ export default function AboutMeSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="mb-20"
+            className="mb-6"
           >
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">DEVELOP</h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-2">DEVELOP</h2>
             
-            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl indent-8">
+            <p className="text-gray-400 text-base leading-relaxed mb-2 max-w-3xl indent-8">
               Started creating Web Development using Next.js, React, and Tailwind <br />
               and eventually switched to Mobile Development using React Native
             </p>
             
-            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Stack & Technologies</p>
+            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-2 indent-8">Stack & Technologies</p>
             
             {/* First Row - 6 items */}
-            <div className="flex flex-wrap gap-6 mb-8" style={{ maxWidth: 'calc(6 * (128px + 32px))' }}>
+            <div className="flex flex-wrap gap-4 mb-2" style={{ maxWidth: 'calc(6 * (128px + 32px))' }}>
               {[
                 { name: 'HTML', icon: 'html.png' },
                 { name: 'CSS', icon: 'css.png' },
@@ -503,7 +512,7 @@ export default function AboutMeSection() {
                 { name: 'React', icon: 'rc.png' },
                 { name: 'Next.JS', icon: 'next.png' },
               ].map((tool, idx) => (
-                <div key={idx} className="flex flex-col items-center gap-3">
+                <div key={idx} className="flex flex-col items-center gap-1">
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -524,7 +533,7 @@ export default function AboutMeSection() {
             </div>
 
             {/* Second Row - 5 items */}
-            <div className="flex flex-wrap gap-6 justify-left">
+            <div className="flex flex-wrap gap-4 justify-left">
               {[
                 { name: 'Tailwind CSS', icon: 'tw.png' },
                 { name: 'Vite', icon: 'vt.png', scale: '1.7' },
@@ -532,7 +541,7 @@ export default function AboutMeSection() {
                 { name: 'Vercel', icon: 'vercel.png' },
                 { name: 'GitHub', icon: 'gh.png' }
               ].map((tool, idx) => (
-                <div key={idx} className="flex flex-col items-center gap-3">
+                <div key={idx} className="flex flex-col items-center gap-1">
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -559,23 +568,24 @@ export default function AboutMeSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
+            className="mt-2"
           >
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">CREATE</h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-2">CREATE</h2>
             
-            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-3xl indent-8">
+            <p className="text-gray-400 text-base leading-relaxed mb-2 max-w-3xl indent-8">
               Aspiring content creator and junior developer, passionate about telling <br />
               stories through both words and code. Currently learning and building as I go
             </p>
             
-            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-6 indent-8">Tools & Platforms</p>
+            <p className="text-xl md:text-2xl font-semibold text-cyan-400 mb-2 indent-8">Tools & Platforms</p>
             
-            <div className="flex flex-wrap gap-6 justify-left">
+            <div className="flex flex-wrap gap-4 justify-left">
               {[
                 { name: 'Wix', icon: 'wixx.png' },
                 { name: 'Figma', icon: 'fm.png' },
                 { name: 'Canva', icon: 'canva.png' }
               ].map((tool, idx) => (
-                <div key={idx} className="flex flex-col items-center gap-3">
+                <div key={idx} className="flex flex-col items-center gap-1">
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}

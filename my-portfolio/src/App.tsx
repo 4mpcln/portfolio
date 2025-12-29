@@ -19,9 +19,7 @@ export default function App() {
         <QuoteSection />
         <AboutMeSection />
         
-        <section data-section="experience" className="w-full h-screen bg-transparent flex items-center justify-center">
-          <div className="text-white text-4xl font-bold">Experience Section</div>
-        </section>
+
       </div>
     </div>
   );
