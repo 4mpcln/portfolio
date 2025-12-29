@@ -3,6 +3,16 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 export default function HeroSection() {
   const { scrollYProgress } = useScroll();
 
+  // Handle CV Download
+  const handleDownloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/CV.pdf'; // ไฟล์ CV.pdf ใน public folder
+    link.download = 'Krit_Intarajinda_Resume.pdf'; // ชื่อไฟล์ที่จะดาวน์โหลด
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Initial entry animations
   const webInitialX = 1000; // Start from right
   const designerInitialX = -1000; // Start from left
@@ -62,9 +72,9 @@ export default function HeroSection() {
             {/* Buttons - Bottom Left of Image, almost overlapping */}
             <div className="absolute bottom-1 -left-55 flex items-center gap-4">
               {/* Download CV Button - Left */}
-              <motion.a
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white font-medium text-sm hover:bg-white hover:text-black transition-all"
+              <motion.button
+                onClick={handleDownloadCV}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white font-medium text-sm hover:bg-white hover:text-black transition-all cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -79,7 +89,7 @@ export default function HeroSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </motion.svg>
                 Download CV
-              </motion.a>
+              </motion.button>
 
               {/* Contact Me Button - Right */}
               <motion.a
