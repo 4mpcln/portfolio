@@ -5,22 +5,128 @@ import Folder from './FolderComponent';
 export default function ExperienceSection() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'design'>('all');
   const folders = [
-    { id: 'featured-1', category: 'all', color: '#6a6774', size: 2 },
-    { id: 'featured-2', category: 'all', color: '#6a6774', size: 2 },
-    { id: 'featured-3', category: 'all', color: '#6a6774', size: 2 },
-    { id: 'design-1', category: 'design', color: '#6a6774', size: 2 },
-    { id: 'design-2', category: 'design', color: '#6a6774', size: 2 },
-    { id: 'design-3', category: 'design', color: '#6a6774', size: 2 },
+    // Featured Projects
+    {
+      id: 'featured-1',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'Doctora',
+      techStack: ['Next.js', 'Spring Boot', 'TypeScript', 'PostgresSQL'],
+      papers: []
+    },
+    {
+      id: 'featured-2',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'Doctora Mobile',
+      techStack: ['React Native', 'TypeScript', 'Expo', 'REST'],
+      papers: []
+    },
+    {
+      id: 'featured-3',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'Phamacy POS',
+      techStack: ['React', 'Tailwind', 'Prisma'],
+      papers: []
+    },
+        {
+      id: 'featured-4',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'EatAtHome',
+      techStack: ['Figma', 'Framer'],
+      papers: []
+    },
+    {
+      id: 'featured-5',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'FaceCheck',
+      techStack: ['Figma', 'Illustrator'],
+      papers: []
+    },
+    {
+      id: 'featured-6',
+      category: 'all',
+      color: '#6a6774',
+      size: 2,
+      title: 'Real Time Chat',
+      techStack: ['Photoshop', 'After Effects'],
+      papers: []
+    },
+    // Design Projects
+        {
+      id: 'design-1',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Doctora',
+      techStack: ['Figma'],
+      papers: []
+    },
+    {
+      id: 'design-2',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Doctora Mobile',
+      techStack: ['Figma'],
+      papers: []
+    },
+    {
+      id: 'design-3',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Eat At Home',
+      techStack: ['Figma','Canva'],
+      papers: []
+    },
+    {
+      id: 'design-4',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Elite Tutor',
+      techStack: ['Figma'],
+      papers: []
+    },
+    {
+      id: 'design-5',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Laundry Tracker',
+      techStack: ['Figma'],
+      papers: []
+    },
+        {
+      id: 'design-6',
+      category: 'design',
+      color: '#6a6774',
+      size: 2,
+      title: 'Real Time Chat',
+      techStack: ['Figma'],
+      papers: []
+    },
+    
+
   ];
 
-  const visibleFolders = activeFilter === 'all'
-    ? folders
-    : folders.filter((folder) => folder.category === 'design');
+  const visibleFolders = folders.filter((folder) =>
+    activeFilter === 'all' ? folder.category === 'all' : folder.category === 'design'
+  );
 
   return (
     <section
       data-section="experience"
-      className="relative w-full bg-transparent flex items-center justify-center pt-28 pb-20 px-6"
+  className="relative w-full bg-transparent flex items-center justify-center pt-28 pb-40 px-6 scroll-mt-40 md:scroll-mt-48"
     >
       <div className="max-w-7xl w-full">
         <motion.div
@@ -85,14 +191,17 @@ export default function ExperienceSection() {
             </div>
           </div>
         </motion.div>
-        <div style={{ height: '760px', position: 'relative' }} className="mt-8">
-          <div className="grid gap-x-[30em] gap-y-[30em] grid-cols-2 md:grid-cols-3 mx-auto py-[1em] overflow-visible translate-y-[40%] justify-items-start">
+        <div className="mt-8 pb-24">
+          <div className="grid gap-x-[25em] gap-y-[23em] grid-cols-2 md:grid-cols-3 mx-auto py-[1em] overflow-visible mt-[15rem] justify-items-start">
             {visibleFolders.map((folder) => (
               <Folder
                 key={folder.id}
                 className="custom-folder"
                 color={folder.color}
                 size={folder.size}
+                title={folder.title}
+                techStack={folder.techStack}
+                paperImages={folder.papers}
               />
             ))}
           </div>

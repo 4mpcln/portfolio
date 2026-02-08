@@ -46,7 +46,7 @@ export default function HeroMenu() {
     const section = document.querySelector(`[data-section="${sectionName}"]`) as HTMLElement | null;
     if (!section) return;
     const baseTop = section.getBoundingClientRect().top + window.scrollY;
-    const offset = sectionName === 'experience' ? 160 : 0;
+  const offset = sectionName === 'experience' ? 80 : 0;
     window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
   };
 

@@ -5,6 +5,9 @@ interface FolderProps {
   size?: number;
   items?: React.ReactNode[];
   className?: string;
+  title?: string;
+  techStack?: string[];
+  paperImages?: string[];
 }
 
 const darkenColor = (hex: string, percent: number): string => {
@@ -25,11 +28,24 @@ const darkenColor = (hex: string, percent: number): string => {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 };
 
-const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = [], className = '' }) => {
+const Folder: React.FC<FolderProps> = ({
+  color = '#5227FF',
+  size = 1,
+  items = [],
+  className = '',
+  title,
+  techStack = [],
+  paperImages = []
+}) => {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) {
     papers.push(null);
+  }
+
+  const paperSources = paperImages.slice(0, maxItems);
+  while (paperSources.length < maxItems) {
+    paperSources.push('');
   }
 
   const [open, setOpen] = useState(false);
@@ -37,8 +53,8 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 }))
   );
 
-  const glassGradient = 'linear-gradient(hsla(0, 0%, 21%, 0.22), hsla(0, 0%, 16%, 0.08))';
-  const glassBackGradient = 'linear-gradient(hsla(0, 0%, 22%, 0.18), hsla(0, 0%, 14%, 0.06))';
+  const glassGradient = 'linear-gradient(hsla(0, 0%, 21%, 0.8), hsla(0, 0%, 16%, 0.5))';
+  const glassBackGradient = 'linear-gradient(hsla(0, 0%, 22%, 0.64), hsla(0, 0%, 14%, 0.41))';
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor('#ffffff', 0.1);
   const paper2 = darkenColor('#ffffff', 0.05);
@@ -93,7 +109,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
   };
 
   return (
-    <div style={scaleStyle} className={className}>
+    <div style={scaleStyle} className={`flex flex-col items-center ${className}`}>
       <div
         className={`group relative transition-all duration-200 ease-in cursor-pointer ${
           !open ? 'hover:-translate-y-2' : ''
@@ -106,7 +122,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="relative w-[200px] h-[180px] rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
+          className="relative w-[170px] h-[150px] rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
           style={{ background: glassBackGradient }}
         >
           <span
@@ -123,6 +139,16 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
               ? `${getOpenTransform(i)} translate(${paperOffsets[i].x}px, ${paperOffsets[i].y}px)`
               : undefined;
 
+            const paperStyle: React.CSSProperties = paperSources[i]
+              ? {
+                  backgroundImage: `url(${paperSources[i]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }
+              : {
+                  backgroundColor: i === 0 ? paper1 : i === 1 ? paper2 : paper3
+                };
+
             return (
               <div
                 key={i}
@@ -133,7 +159,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
                 } ${sizeClasses}`}
                 style={{
                   ...(!open ? {} : { transform: transformStyle }),
-                  backgroundColor: i === 0 ? paper1 : i === 1 ? paper2 : paper3,
+                  ...paperStyle,
                   borderRadius: '10px'
                 }}
               >
@@ -141,6 +167,18 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
               </div>
             );
           })}
+          {techStack.length > 0 && (
+            <div className="absolute z-40 left-3 right-3 bottom-3 flex flex-wrap gap-1">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-[8px] px-2 py-1 rounded-full bg-black/40 text-white/80 backdrop-blur-sm"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
           <div
             className={`absolute z-30 w-full h-full origin-bottom transition-all duration-300 ease-in-out ${
               !open ? 'group-hover:[transform:skew(15deg)_scaleY(0.6)]' : ''
@@ -163,6 +201,11 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
           ></div>
         </div>
       </div>
+      {title && (
+        <div className="mt-0 text-sm font-semi text-white/80 text-center">
+          {title}
+        </div>
+      )}
     </div>
   );
 };
