@@ -120,8 +120,7 @@ export default function AboutMeSection() {
                 whileInView={{ scaleX: 1 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
                 viewport={{ once: false, margin: '-100px' }}
-                className="h-1 bg-cyan-400 mt-3 rounded-full"
-                style={{ width: '50%', marginLeft: 'auto' }}
+                className="h-1 bg-cyan-400 mt-3 rounded-full w-1/2 min-w-[6rem] ml-auto"
               />
 
               <motion.div

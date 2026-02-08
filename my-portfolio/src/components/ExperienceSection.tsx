@@ -1,8 +1,21 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Folder from './FolderComponent';
 
 export default function ExperienceSection() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'design'>('all');
+  const folders = [
+    { id: 'featured-1', category: 'all', color: '#6a6774', size: 2 },
+    { id: 'featured-2', category: 'all', color: '#6a6774', size: 2 },
+    { id: 'featured-3', category: 'all', color: '#6a6774', size: 2 },
+    { id: 'design-1', category: 'design', color: '#6a6774', size: 2 },
+    { id: 'design-2', category: 'design', color: '#6a6774', size: 2 },
+    { id: 'design-3', category: 'design', color: '#6a6774', size: 2 },
+  ];
+
+  const visibleFolders = activeFilter === 'all'
+    ? folders
+    : folders.filter((folder) => folder.category === 'design');
 
   return (
     <section
@@ -41,7 +54,7 @@ export default function ExperienceSection() {
                   whileInView={{ scaleX: 1 }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
                   viewport={{ once: false, margin: '-100px' }}
-                  className="h-1 bg-cyan-400 mt-3 rounded-full w-[60%] self-end"
+                  className="h-1 bg-cyan-400 mt-3 rounded-full w-1/2 min-w-[6rem] self-end"
                 />
               </div>
             </div>
@@ -72,6 +85,18 @@ export default function ExperienceSection() {
             </div>
           </div>
         </motion.div>
+        <div style={{ height: '760px', position: 'relative' }} className="mt-8">
+          <div className="grid gap-x-[30em] gap-y-[30em] grid-cols-2 md:grid-cols-3 mx-auto py-[1em] overflow-visible translate-y-[40%] justify-items-start">
+            {visibleFolders.map((folder) => (
+              <Folder
+                key={folder.id}
+                className="custom-folder"
+                color={folder.color}
+                size={folder.size}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
