@@ -6,7 +6,6 @@ import AboutMeSection from '@/components/AboutMeSection';
 import SkillsSection from '@/components/SkillsSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import AnimatedBackground from '@/components/AnimatedBackground';
-import ScrollToTop from '@/components/ScrollToTop';
 import CursorFollower from '@/components/CursorFollower';
 import Footer from '@/components/footer';
 import ProjectDetail from '@/pages/ProjectDetail';
@@ -16,7 +15,6 @@ function HomePage() {
   return (
     <div className="relative w-full min-h-screen bg-black flex flex-col">
       <CursorFollower />
-      <ScrollToTop />
       <AnimatedBackground />
       <div className="relative z-10 w-full flex flex-col flex-1">
         <HeroMenu />

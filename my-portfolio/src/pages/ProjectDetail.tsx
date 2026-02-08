@@ -1,10 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import CursorFollower from '@/components/CursorFollower';
 import Footer from '@/components/footer';
 import { projects } from '@/data/projects';
 
 export default function ProjectDetail() {
+  const navigate = useNavigate();
   const { projectId } = useParams();
   const project = projects.find((item) => item.id === projectId);
   const sampleImages = project?.sampleImages ?? [];
@@ -16,13 +17,13 @@ export default function ProjectDetail() {
       <AnimatedBackground />
       <div className="relative z-10 w-full flex-1">
         <div className="max-w-5xl mx-auto px-6 pt-28 pb-16">
-          <Link
-            to="/"
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
             className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
           >
-            <span className="text-cyan-400">←</span>
-            Back to home
-          </Link>
+            <span className="text-white">-</span> Back
+          </button>
 
           {!project ? (
             <div className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-8">
