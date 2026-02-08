@@ -24,30 +24,7 @@ export default function AboutMe() {
   return (
     <div className="relative w-full min-h-screen bg-transparent flex items-center justify-center py-20 px-6">
       <div className="max-w-6xl w-full">
-        {/* Header with Image and Title */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="flex flex-col items-center gap-8 mb-16"
-        >
-          {/* Profile Image with Glow */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-cyan-500/30 rounded-full blur-2xl w-32 h-32 mx-auto"></div>
-            <div className="relative w-32 h-32 rounded-full border-4 border-cyan-500 overflow-hidden bg-gradient-to-br from-cyan-500/20 to-transparent p-1">
-              <img
-                src="/profile1.png"
-                alt="Profile"
-                className="w-full h-full object-cover rounded-full"
-              />
-            </div>
-          </motion.div>
-        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
