@@ -188,7 +188,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
 
   return (
     <>
-      <group position={[2.5, 4, 0]}>
+  <group position={[2.125, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type={'fixed' as RigidBodyProps['type']} />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
           <BallCollider args={[0.1]} />

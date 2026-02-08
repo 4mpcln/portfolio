@@ -43,7 +43,7 @@ export default function QuoteSection() {
           </motion.div>
 
           {/* Quote Text with Character-level Scroll Animation */}
-          <div className="text-4xl md:text-6xl font-bold leading-relaxed text-gray-300">
+          <div className="text-4xl md:text-6xl font-black leading-relaxed text-gray-300">
             {/* First Line - Indented */}
             <div className="pl-8 md:pl-12">
               {chars1.map((char, index) => (

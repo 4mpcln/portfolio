@@ -65,6 +65,29 @@ export default function HeroMenu() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isTouch]);
 
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionName = entry.target.getAttribute('data-section');
+            if (sectionName) {
+              const label = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+              setSelectedItem(label === 'Home' ? 'Home' : label);
+            }
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px', threshold: 0.1 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <motion.div
       className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto"
@@ -141,6 +164,11 @@ export default function HeroMenu() {
                 } else {
                   const section = document.querySelector(`[data-section="${item.label.toLowerCase()}"]`);
                   section?.scrollIntoView({ behavior: 'smooth' });
+                  if (item.label.toLowerCase() === 'experience') {
+                    window.setTimeout(() => {
+                      window.scrollBy({ top: 160, behavior: 'smooth' });
+                    }, 350);
+                  }
                 }
               }}
             >

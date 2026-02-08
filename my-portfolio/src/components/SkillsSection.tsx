@@ -16,7 +16,22 @@ export default function SkillsSection() {
           className="text-right mb-3 relative"
         >
           <div className="relative inline-block">
-            <h1 className="text-6xl md:text-9xl font-black text-white">Skills</h1>
+            <h1 className="text-6xl md:text-9xl font-black text-white inline-flex items-center gap-4">
+              Skills
+              <svg
+                className="w-[1em] h-[1em] text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                />
+              </svg>
+            </h1>
             {/* Blue underline with extend animation */}
             <motion.div
               initial={{ scaleX: 0, originX: 1 }}
@@ -82,6 +97,7 @@ export default function SkillsSection() {
               { name: 'Tailwind CSS', icon: 'tw.png' },
               { name: 'Vite', icon: 'vt.png', scale: '1.7' },
               { name: 'Vercel', icon: 'vercel.png' },
+              { name: 'Express.JS', icon: 'express.png', scale: '1.5' },
             ].map((tool, idx) => (
               <div key={idx} className="flex flex-col items-center gap-1">
                 <motion.div

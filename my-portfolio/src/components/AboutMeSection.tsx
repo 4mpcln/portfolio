@@ -99,7 +99,22 @@ export default function AboutMeSection() {
             className="inline-block"
           >
             <div className="relative">
-              <h1 className="text-6xl md:text-9xl font-black text-white">About Me</h1>
+              <h1 className="text-6xl md:text-9xl font-black text-white inline-flex items-center gap-4">
+                About Me
+                <svg
+                  className="w-[1em] h-[1em] text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </h1>
               <motion.div
                 initial={{ scaleX: 0, originX: 1 }}
                 whileInView={{ scaleX: 1 }}
@@ -141,7 +156,7 @@ export default function AboutMeSection() {
             <motion.div variants={leftVariants}>
               <div className="space-y-2">
                 <p className="text-2xl md:text-3xl font-semibold text-gray-300">Hello, I&apos;m</p>
-                <h2 className="text-4xl md:text-7xl font-black text-white leading-tight">
+                <h2 className="text-4xl md:text-7xl font-black text-white leading-tight pl-6">
                   Krit<br />Intarajinda
                 </h2>
               </div>
@@ -158,8 +173,8 @@ export default function AboutMeSection() {
 
             <motion.div variants={leftVariants}>
               <div
-                className="text-white text-2xl md:text-3xl min-h-8"
-                style={{ fontFamily: 'var(--font-montserrat)', fontWeight: 300 }}
+                className="text-white text-2xl md:text-3xl min-h-8 font-extralight"
+                style={{ fontFamily: 'var(--font-montserrat)', fontWeight: 200 }}
               >
                 {displayText}
                 <motion.span
@@ -174,29 +189,22 @@ export default function AboutMeSection() {
 
             <motion.div variants={leftVariants} className="pt-0">
               <p className="text-gray-400 text-base md:text-lg leading-relaxed text-justify">
-                &nbsp;&nbsp;&nbsp;&nbsp;I’m interested in Frontend Development. Passionate about learning and experimenting with new tools to create modern, interactive websites that effectively meet real-world user needs.
+                &nbsp;&nbsp;&nbsp;&nbsp;I’m interested in{' '}
+                <span className="font-bold text-white">Frontend Developer</span>.
+                Passionate about
+                learning and experimenting with new tools to create modern, interactive websites that effectively
+                meet real-world user needs.
               </p>
             </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-0">
               <motion.div
                 variants={leftVariants}
-                whileHover={{
-                  y: -8,
-                  boxShadow: '0 20px 40px rgba(34, 197, 234, 0.2)',
-                }}
-                transition={{ duration: 0.3 }}
-                className="relative p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group cursor-pointer overflow-hidden"
+                className="relative p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm transition-all duration-300 overflow-hidden"
               >
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                  style={{
-                    background: 'radial-gradient(circle at center, rgba(34, 197, 234, 0.1) 0%, transparent 70%)',
-                  }}
-                />
 
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2 group-hover:text-cyan-400 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                     <motion.svg
                       className="w-5 h-5"
                       fill="none"
