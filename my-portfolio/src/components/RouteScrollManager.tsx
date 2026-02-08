@@ -1,66 +1,66 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
-
-const HOME_SCROLL_KEY = 'homeScrollPosition';
 
 export default function RouteScrollManager() {
   const location = useLocation();
   const navigationType = useNavigationType();
 
+  // เก็บ scroll แยกตาม pathname
+  const positionsRef = useRef<Record<string, number>>({});
+
+  // ปิด browser native restoration
   useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      const original = window.history.scrollRestoration;
-      window.history.scrollRestoration = 'manual';
-      return () => {
-        window.history.scrollRestoration = original;
-      };
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
     }
-    return undefined;
   }, []);
 
-  useLayoutEffect(() => {
-    const currentPath = location.pathname;
-    const isHome = currentPath === '/';
-    const isProject = currentPath.startsWith('/projects');
-
-    const restoreScroll = (y: number) => {
-      const safeY = Number.isFinite(y) ? y : 0;
-      window.scrollTo({ top: safeY, behavior: 'auto' });
-      requestAnimationFrame(() => window.scrollTo({ top: safeY, behavior: 'auto' }));
-      setTimeout(() => window.scrollTo({ top: safeY, behavior: 'auto' }), 80);
-      setTimeout(() => window.scrollTo({ top: safeY, behavior: 'auto' }), 220);
-    };
-
-    if (isHome) {
-      const storedPosition = sessionStorage.getItem(HOME_SCROLL_KEY);
-      const y = storedPosition ? Number(storedPosition) : 0;
-      if (navigationType === 'POP') {
-        restoreScroll(y);
-      } else {
-        restoreScroll(0);
-      }
-    } else if (isProject) {
-      restoreScroll(0);
-    }
-  }, [location.pathname, navigationType]);
-
+  // save scroll ของหน้าปัจจุบัน
   useEffect(() => {
-    if (location.pathname !== '/') return;
-    let ticking = false;
+    let raf = 0;
 
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        sessionStorage.setItem(HOME_SCROLL_KEY, String(window.scrollY));
-        ticking = false;
+    const save = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        positionsRef.current[location.pathname] = window.scrollY;
+        raf = 0;
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', save, { passive: true });
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      positionsRef.current[location.pathname] = window.scrollY;
+      window.removeEventListener('scroll', save);
+    };
   }, [location.pathname]);
+
+  // restore scroll ตอน back
+  useLayoutEffect(() => {
+    // หน้า detail → บังคับขึ้นบน
+    if (location.pathname.startsWith('/projects/')) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    // ไม่ใช่ back / forward
+    if (navigationType !== 'POP') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    const saved = positionsRef.current[location.pathname] ?? 0;
+
+    // restore แบบกัน layout shift
+    window.scrollTo({ top: saved, behavior: 'auto' });
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: saved, behavior: 'auto' })
+    );
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: saved, behavior: 'auto' })
+    );
+  }, [location.pathname, navigationType]);
 
   return null;
 }

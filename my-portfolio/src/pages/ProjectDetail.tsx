@@ -22,7 +22,10 @@ export default function ProjectDetail() {
             onClick={() => navigate(-1)}
             className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
           >
-            <span className="text-white">-</span> Back
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 42 42">
+    <path fill="currentColor" fill-rule="evenodd" d="M31 38.32L13.391 21L31 3.68L28.279 1L8 21.01L28.279 41z"/>
+</svg>
+            Back
           </button>
 
           {!project ? (
