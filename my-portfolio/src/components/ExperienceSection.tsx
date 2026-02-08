@@ -50,9 +50,9 @@ export default function ExperienceSection() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('all')}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${
                   activeFilter === 'all'
-                    ? 'bg-white/15 text-white'
+                    ? 'bg-white/20 text-white'
                     : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                 }`}
               >
@@ -61,13 +61,13 @@ export default function ExperienceSection() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('design')}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${
                   activeFilter === 'design'
-                    ? 'bg-white/15 text-white'
+                    ? 'bg-white/20 text-white'
                     : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                Design
+                My Design
               </button>
             </div>
           </div>

@@ -4,7 +4,7 @@ export default function SkillsSection() {
   return (
     <section
       data-section="skills"
-  className="relative w-full bg-transparent flex items-center justify-center pt-12 pb-16 px-6 scroll-mt-0"
+  className="relative w-full bg-transparent flex items-center justify-center pt-20 pb-16 px-6 scroll-mt-0"
     >
       <div className="max-w-7xl w-full">
         {/* Skills Header */}

@@ -42,6 +42,14 @@ export default function HeroMenu() {
   const [scrollY, setScrollY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
 
+  const scrollToSection = (sectionName: string) => {
+    const section = document.querySelector(`[data-section="${sectionName}"]`) as HTMLElement | null;
+    if (!section) return;
+    const baseTop = section.getBoundingClientRect().top + window.scrollY;
+    const offset = sectionName === 'experience' ? 160 : 0;
+    window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const prefersHover = window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches;
@@ -49,9 +57,26 @@ export default function HeroMenu() {
   }, []);
 
   useEffect(() => {
-    // Track scroll position
+    const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
+
+    const updateActiveSection = () => {
+      if (!sections.length) return;
+      const viewportMarker = window.scrollY + window.innerHeight * 0.45;
+      let currentSection = 'home';
+
+      sections.forEach((section) => {
+        if (section.offsetTop <= viewportMarker) {
+          currentSection = section.getAttribute('data-section') || currentSection;
+        }
+      });
+
+      const label = currentSection.charAt(0).toUpperCase() + currentSection.slice(1);
+      setSelectedItem(label === 'Home' ? 'Home' : label);
+    };
+
     const handleScroll = () => {
       setScrollY(window.scrollY);
+      updateActiveSection();
       if (!isTouch) {
         if (window.scrollY > 600) {
           setIsOpen(false);
@@ -61,32 +86,10 @@ export default function HeroMenu() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isTouch]);
-
-  useEffect(() => {
-    const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionName = entry.target.getAttribute('data-section');
-            if (sectionName) {
-              const label = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
-              setSelectedItem(label === 'Home' ? 'Home' : label);
-            }
-          }
-        });
-      },
-      { rootMargin: '-40% 0px -50% 0px', threshold: 0.1 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <motion.div
@@ -162,13 +165,7 @@ export default function HeroMenu() {
                 if (item.label.toLowerCase() === 'home') {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
-                  const section = document.querySelector(`[data-section="${item.label.toLowerCase()}"]`);
-                  section?.scrollIntoView({ behavior: 'smooth' });
-                  if (item.label.toLowerCase() === 'experience') {
-                    window.setTimeout(() => {
-                      window.scrollBy({ top: 160, behavior: 'smooth' });
-                    }, 350);
-                  }
+                  scrollToSection(item.label.toLowerCase());
                 }
               }}
             >
