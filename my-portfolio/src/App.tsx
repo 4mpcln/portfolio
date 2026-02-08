@@ -2,6 +2,7 @@ import HeroMenu from '@/components/HeroMenu';
 import HeroSection from '@/components/HeroSection';
 import QuoteSection from '@/components/QuoteSection';
 import AboutMeSection from '@/components/AboutMeSection';
+import SkillsSection from '@/components/SkillsSection';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import ScrollToTop from '@/components/ScrollToTop';
 import CursorFollower from '@/components/CursorFollower';
@@ -18,6 +19,7 @@ export default function App() {
         <HeroSection />
         <QuoteSection />
         <AboutMeSection />
+  <SkillsSection />
         
 
       </div>

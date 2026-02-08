@@ -6,8 +6,8 @@ export default function HeroSection() {
   // Handle CV Download
   const handleDownloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/CV.pdf'; // ไฟล์ CV.pdf ใน public folder
-    link.download = 'Krit_Intarajinda_Resume.pdf'; // ชื่อไฟล์ที่จะดาวน์โหลด
+    link.href = '/Resume (English version).pdf'; // ไฟล์ CV.pdf ใน public folder
+    link.download = 'Resume (English version).pdf'; // ชื่อไฟล์ที่จะดาวน์โหลด
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
