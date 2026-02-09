@@ -1,16 +1,28 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Folder from './FolderComponent';
 import { projects } from '@/data/projects';
 
+const FILTER_KEY = 'portfolio_experience_filter';
+
 export default function ExperienceSection() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'design'>('all');
+  // โหลดค่า filter ที่บันทึกไว้ หรือใช้ 'all' เป็นค่าเริ่มต้น
+  const [activeFilter, setActiveFilter] = useState<'all' | 'design'>(() => {
+    const saved = sessionStorage.getItem(FILTER_KEY);
+    return (saved === 'design' ? 'design' : 'all') as 'all' | 'design';
+  });
+
+  // บันทึกค่า filter ทุกครั้งที่มีการเปลี่ยน
+  useEffect(() => {
+    sessionStorage.setItem(FILTER_KEY, activeFilter);
+  }, [activeFilter]);
+
   const folders = projects.map((project) => ({
     ...project,
     color: '#6a6774',
     size: 2,
-    papers: [] as string[]
+    papers: project.paperImages || [] // ใช้รูปจาก project.paperImages
   }));
   const visibleFolders = folders.filter((folder) =>
     activeFilter === 'all' ? folder.category === 'all' : folder.category === 'design'
