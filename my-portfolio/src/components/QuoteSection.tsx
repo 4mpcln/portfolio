@@ -8,7 +8,7 @@ export default function QuoteSection() {
     offset: ['start end', 'end start']
   });
 
-  const line1 = "Don't stop when you're tired.";
+  const line1 = "Don't stop when you're tired,";
   const line2 = "Stop when you're done.";
   const chars1 = line1.split('');
   const chars2 = line2.split('');
@@ -43,7 +43,7 @@ export default function QuoteSection() {
           </motion.div>
 
           {/* Quote Text with Character-level Scroll Animation */}
-          <div className="text-4xl md:text-6xl font-black leading-relaxed text-gray-300">
+          <div className="text-4xl md:text-6xl font-black leading-relaxed text-gray-300 quote-inter-bold">
             {/* First Line - Indented */}
             <div className="pl-8 md:pl-12">
               {chars1.map((char, index) => (
@@ -51,7 +51,7 @@ export default function QuoteSection() {
                   key={index}
                   style={{
                     opacity: opacities1[index] || opacities1[opacities1.length - 1],
-                    display: 'inline-block',
+                    display: 'inline',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}
@@ -66,7 +66,7 @@ export default function QuoteSection() {
                   key={index}
                   style={{
                     opacity: opacities2[index] || opacities2[opacities2.length - 1],
-                    display: 'inline-block',
+                    display: 'inline',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}

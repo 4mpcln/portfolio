@@ -8,7 +8,7 @@ export interface Project {
   summary: string;
   sampleImages?: string[];
   paperImages?: string[]; // รูปภาพที่แสดงในกระดาษของ Folder (สูงสุด 3 ใบ)
-  projectUrl?: string; // ลิงก์ไปยัง GitHub (all) หรือ Figma (design)
+  projectUrl?: string | string[]; // ลิงก์ไปยัง GitHub (all) หรือ Figma (design) - รองรับหลาย URLs
 }
 
 export const projects: Project[] = [
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     techStack: ['React Native', 'TypeScript', 'Expo', 'REST'],
     summary: 'This project is a system-oriented mobile application for doctor appointment booking on smartphones. It allows patients to find and select doctors based on specialty and availability, view schedules in real time, manage appointments, and receive instant updates. The application is developed using React Native and Expo, with backend integration through the Doctora API for cross-platform support',
     paperImages: ['/featured-project/DoctoraMobile/2.png', '/featured-project/DoctoraMobile/1.png', '/featured-project/DoctoraMobile/3.png'],
-    projectUrl: 'https://github.com/annop07/FrontendDoctoraMobile.git',
+    projectUrl: 'https://github.com/annop07/doctora-mobile.git',
     sampleImages: [
       '/featured-project/DoctoraMobile/1.png',
       '/featured-project/DoctoraMobile/2.png',
@@ -65,24 +65,33 @@ export const projects: Project[] = [
     id: 'PharmacyPOS-featured',
     category: 'all',
     title: 'Phamacy POS',
-    techStack: ['React', 'Tailwind', 'Prisma'],
-    summary: 'Point-of-sale interface for pharmacies with inventory and sales reporting.',
-    paperImages: ['/rc.png', '/tw.png']
+    techStack: ['PHP', 'Laravel Framework', 'MySQL', 'JavaScript', 'CSS', 'Bootstrap'],
+    summary: 'This project is a web-based pharmacy management application developed using Laravel (PHP) and MySQL to simulate key operations in a pharmacy setting. It enables real-time management of inventory, sales, suppliers, and customer transactions through a user-friendly interface built with Blade templates, Bootstrap, and JavaScript. The system allows pharmacists and staff to efficiently track medicine stocks, process sales, and manage related data in a structured and organized environment.',
+    paperImages: ['/featured-project/PharmarcyPOS/2.png', '/featured-project/PharmarcyPOS/1.png'],
+    projectUrl: 'https://github.com/nicky-wrc/Pharmacy-Project.git',
+    sampleImages: [
+      '/featured-project/PharmarcyPOS/1.png',
+      '/featured-project/PharmarcyPOS/2.png',
+    ]
   },
   {
     id: 'EatAtHome-featured',
     category: 'all',
     title: 'Eat At Home',
     techStack: ['Flutter', 'Dart', 'Kotlin', 'Firebase'],
-    summary: 'Product design case study for a food delivery experience.',
-    paperImages: ['/fm.png', '/canva.png']
+    summary: 'This project is a mobile application that simulates an online food ordering system. It is developed using Android Studio with Kotlin, allowing customers to search for restaurants and food items, place orders, and track order status. Restaurant owners can create and manage their restaurants, add food menus, and receive incoming orders. The application demonstrates a real-world food ordering workflow with role-based user functionality.',
+    projectUrl: [
+  'https://github.com/nicky-wrc/UserEatAtHome.git',
+  'https://github.com/nicky-wrc/AdminEatAtHome.git'
+],
+  paperImages: ['','','','']
   },
   {
     id: 'FaceCheck-featured',
     category: 'all',
     title: 'FaceCheck',
     techStack: ['Python', 'OpenCV', 'SQLite'],
-    summary: 'Mobile companion app for on-the-go consultations and appointment tracking.',
+    summary: 'This project is a Python-based application that simulates a face recognition attendance system.It is developed using Python and OpenCV to enable real-time camera access and facial detection, allowing attendance to be recorded by recognizing individuals’ faces in a classroom environment.',
     paperImages: ['/featured-project/FaceCheck/2.jpg', '/featured-project/FaceCheck/1.jpg'],
     projectUrl: 'https://github.com/nicky-wrc/Face-Recognition-Attendance-project.git',
     sampleImages: [
@@ -95,7 +104,7 @@ export const projects: Project[] = [
     category: 'all',
     title: 'Real Time Chat',
   techStack: ['HTML','CSS','JavaScript','Node.js', 'Express.js','Socket.IO'],
-    summary: 'Motion-driven visual concept for a real-time chat brand.',
+    summary: 'This project is a real-time chat application developed as part of a course assignment to simulate real-time text communication over HTTP. It is built using Node.js and Express.js for the backend, with Socket.IO enabling live message exchange between users. The system demonstrates real-time communication concepts by managing client connections and broadcasting messages efficiently. The frontend is implemented using EJS templates along with HTML, CSS, and JavaScript to provide a simple and interactive chat interface.',
         paperImages: ['/featured-project/RealTimeChat/1.jpg'],
     projectUrl: 'https://github.com/4mpcln/RealTimeChat.git',
     sampleImages: [

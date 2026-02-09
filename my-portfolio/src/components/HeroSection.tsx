@@ -93,7 +93,9 @@ export default function HeroSection() {
 
               {/* Contact Me Button - Right */}
               <motion.a
-                href="#"
+                href="https://kritcontact.carrd.co/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white text-black font-medium text-sm hover:bg-[#57595B] hover:text-white transition-all"
                 whileHover={{ scale: 1.05 }}
 

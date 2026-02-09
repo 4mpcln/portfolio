@@ -189,7 +189,7 @@ export default function AboutMeSection() {
             <motion.div variants={leftVariants} className="pt-0">
               <p className="text-gray-400 text-base md:text-lg leading-relaxed text-justify">
                 &nbsp;&nbsp;&nbsp;&nbsp;I’m interested in{' '}
-                <span className="font-bold text-white">Frontend Developer</span>.
+                <span className="font-inter-bold text-white">Frontend Developer</span>.
                 Passionate about
                 learning and experimenting with new tools to create modern, interactive websites that effectively
                 meet real-world user needs.

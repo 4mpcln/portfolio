@@ -67,8 +67,9 @@ export default function SkillsSection() {
               { name: 'CSS', icon: 'css.png' },
               { name: 'JavaScript', icon: 'jss.png', scale: '0.6' },
               { name: 'TypeScript', icon: 'ts.png' },
-              { name: 'React', icon: 'rc.png' },
-              { name: 'Next.JS', icon: 'next.png' },
+              { name: 'PHP', icon: 'php.png' },
+              { name: 'Python', icon: 'python.png' },
+              
             ].map((tool, idx) => (
               <div key={idx} className="flex flex-col items-center gap-1">
                 <motion.div
@@ -93,11 +94,11 @@ export default function SkillsSection() {
           {/* Second Row - 5 items */}
           <div className="flex flex-wrap gap-3 justify-left">
             {[
-              { name: 'Python', icon: 'python.png' },
+              { name: 'React', icon: 'rc.png' },
+              { name: 'Next.JS', icon: 'next.png' },
               { name: 'Tailwind CSS', icon: 'tw.png' },
+              { name: 'Bootstrap', icon: 'bootstrap.png'},
               { name: 'Express.JS', icon: 'express.png', scale: '1.5' },
-              { name: 'Vite', icon: 'vt.png', scale: '1.7' },
-              { name: 'Vercel', icon: 'vercel.png' }
             ].map((tool, idx) => (
               <div key={idx} className="flex flex-col items-center gap-1">
                 <motion.div
@@ -145,6 +146,8 @@ export default function SkillsSection() {
               { name: 'Canva', icon: 'canva.png' },
               { name: 'VS Code', icon: 'vscode.png' },
               { name: 'GitHub', icon: 'gh.png' },
+              { name: 'Vite', icon: 'vt.png', scale: '1.7' },
+              { name: 'Vercel', icon: 'vercel.png' },
               
             ].map((tool, idx) => (
               <div key={idx} className="flex flex-col items-center gap-1">
