@@ -55,8 +55,8 @@ export default function HeroMenu() {
       if (quoteSection) {
         const quoteSectionTop = quoteSection.offsetTop;
         const quoteSectionHeight = quoteSection.offsetHeight;
-        // Stop at 70% through quote section (not all the way to bottom)
-        const quoteScrollTarget = quoteSectionTop + (quoteSectionHeight * 0.7);
+        // Stop when last character shadow completes (51 chars × 0.010 = 0.51 or 51%)
+        const quoteScrollTarget = quoteSectionTop + (quoteSectionHeight * 0.51);
         
         // Calculate scroll duration based on quote section height
         const scrollDistance = quoteScrollTarget - window.scrollY;
@@ -78,9 +78,9 @@ export default function HeroMenu() {
             // After reaching end of quote, quickly scroll to target section
             setTimeout(() => {
               const baseTop = section.getBoundingClientRect().top + window.scrollY;
-              const offset = sectionName === 'experience' ? 80 : 0;
+              const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
               window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
-            }, 10); // Small delay to appreciate quote finish
+            }, 5); // Minimal delay before jumping
           }
           
           window.scrollTo({ top: currentScroll, behavior: 'auto' });
@@ -97,7 +97,7 @@ export default function HeroMenu() {
     
     // Normal scroll behavior
     const baseTop = section.getBoundingClientRect().top + window.scrollY;
-    const offset = sectionName === 'experience' ? 80 : 0;
+    const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
     window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
   };
 

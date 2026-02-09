@@ -81,7 +81,7 @@ export default function AboutMeSection() {
   return (
     <section
       data-section="about"
-      className="relative w-full min-h-screen bg-transparent flex items-center justify-center pt-150 pb-20 px-6"
+      className="relative w-full min-h-screen bg-transparent flex items-center justify-center pt-200 pb-20 px-6"
     >
       <div className="max-w-7xl w-full">
         <motion.div

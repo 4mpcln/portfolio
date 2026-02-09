@@ -15,10 +15,10 @@ export default function QuoteSection() {
 
   // Create opacity transforms for each character - each one reveals in sequence
   const opacities1 = chars1.map((_, i) => 
-    useTransform(scrollYProgress, [i * 0.015, (i + 1) * 0.015], [0.2, 1])
+    useTransform(scrollYProgress, [i * 0.010, (i + 1) * 0.010], [0.2, 1])
   );
   const opacities2 = chars2.map((_, i) => 
-    useTransform(scrollYProgress, [(chars1.length + i) * 0.015, (chars1.length + i + 1) * 0.015], [0.2, 1])
+    useTransform(scrollYProgress, [(chars1.length + i) * 0.010, (chars1.length + i + 1) * 0.010], [0.2, 1])
   );
 
   return (
