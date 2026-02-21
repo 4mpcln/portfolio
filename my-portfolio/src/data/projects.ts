@@ -9,14 +9,34 @@ export interface Project {
   sampleImages?: string[];
   paperImages?: string[]; // รูปภาพที่แสดงในกระดาษของ Folder (สูงสุด 3 ใบ)
   projectUrl?: string | string[]; // ลิงก์ไปยัง GitHub (all) หรือ Figma (design) - รองรับหลาย URLs
+  isDemoLink?: boolean; // ระบุว่าเป็น demo link (แสดง Chrome icon) แทน GitHub
+  originalVersionUrl?: string; // ลิงก์ไปยัง original version ของโปรเจค (GitHub)
 }
 
 export const projects: Project[] = [
+    {
+    id: 'Ride-featured',
+    category: 'all',
+    title: 'Ride',
+    techStack: ['Nuxt.js', 'Vue.js','Tailwind CSS', 'Vite', 'JavaScript','TypeScript'],
+    summary: 'This project is part of the Software Engineering course, which focuses on hands-on experience in software development using the Agile methodology. The project is based on a senior project called PaiNumNae, which was selected for further development and modernization. during Sprint 1, our team selected key Product Backlog Items and decided to fully redesign the system to improve both structure and user experience, aiming to create a more modern and user-friendly platform. I was primarily responsible for redesigning the entire UX/UI and developing all Frontend components of the system.(Username : kiangnz25464@gmail.com , Password : Cp12345678)',
+    paperImages: ['/featured-project/Ride/2.jpg', '/featured-project/Ride/3.jpg', '/featured-project/Ride/1.jpg'],
+    projectUrl: 'https://csse4469.cpkku.com',
+    isDemoLink: true,
+    originalVersionUrl: 'https://github.com/4mpcln/PaiNamNaeWebApp.git',
+    sampleImages: [
+      '/featured-project/Ride/1.jpg',
+      '/featured-project/Ride/3.jpg',
+      '/featured-project/Ride/4.jpg',
+      '/featured-project/Ride/2.jpg',
+      '/featured-project/Ride/5.jpg',
+    ]
+  },
   {
     id: 'Doctora-featured',
     category: 'all',
     title: 'Doctora',
-    techStack: ['Next.js', 'TypeScript','Tailwind CSS', 'Spring Boot', 'PostgresSQL','Docker'],
+    techStack: ['Nxt.js', 'TypeScript','Tailwind CSS', 'Spring Boot', 'PostgresSQL','Docker'],
     summary: 'This project is a system-oriented full-stack web application for online doctor appointment booking. Patients can search for doctors by specialty, view real-time availability, and book appointments, while doctors manage schedules, approve bookings, and handle patient queues. Administrators oversee doctors, specialties, and system usage. The application is built with a 3-tier architecture using Next.js and TypeScript for the frontend, Spring Boot (Java) for the backend, and PostgreSQL as the database, with REST APIs secured by JWT authentication',
     paperImages: ['/featured-project/Doctora/2.png', '/featured-project/Doctora/3.png', '/featured-project/Doctora/1.png'],
     projectUrl: 'https://github.com/annop07/FrontendDoctora.git',
