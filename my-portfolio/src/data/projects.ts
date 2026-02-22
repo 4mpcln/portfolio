@@ -131,6 +131,28 @@ export const projects: Project[] = [
       '/featured-project/RealTimeChat/1.jpg'
     ]
   },
+    {
+    id: 'Ride-Design',
+    category: 'design',
+    title: 'Ride',
+    techStack: ['Figma'],
+    summary: 'This project is part of the Software Engineering course, which focuses on learning and gaining hands-on experience in real-world software development using the Agile methodology. The project is based on a senior project called PaiNumNae, which was selected for further development and modernization.In this project, I was responsible for creating rough UX/UI designs to help the team clearly visualize my ideas and direction for the system re-design before starting the actual frontend development. These initial designs allowed the team to better understand the proposed improvements and align on the overall design and user experience before moving forward with implementation.',
+    paperImages: ['/Design/Ride/5.jpg', '/Design/Ride/3.jpg', '/Design/Ride/1.jpg'],
+    projectUrl: 'https://www.figma.com/design/ZE1QWgHR9G4nodvSncrl9b/Ride--Re-design-from-PaiNumNae-?node-id=0-1&m=dev&t=A5Nom7UVgKZ1f0s7-1',
+    sampleImages: [
+      '/Design/Ride/1.jpg',
+      '/Design/Ride/2.jpg',
+      '/Design/Ride/3.jpg',
+      '/Design/Ride/4.jpg',
+      '/Design/Ride/5.jpg',
+      '/Design/Ride/6.jpg',
+      '/Design/Ride/7.jpg',
+      '/Design/Ride/8.jpg',
+      '/Design/Ride/9.jpg',
+      '/Design/Ride/10.jpg',
+      '/Design/Ride/11.jpg',
+    ]
+  },
   {
     id: 'EatAtHome-Design',
     category: 'design',
