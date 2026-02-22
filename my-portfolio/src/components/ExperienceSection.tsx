@@ -13,15 +13,31 @@ export default function ExperienceSection() {
     return (saved === 'design' ? 'design' : 'all') as 'all' | 'design';
   });
 
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    handleResize(); // เริ่มต้น
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // บันทึกค่า filter ทุกครั้งที่มีการเปลี่ยน
   useEffect(() => {
     sessionStorage.setItem(FILTER_KEY, activeFilter);
   }, [activeFilter]);
 
+  // ปรับขนาดโฟลเดอร์ให้พอดีกับหน้าจอ
+  const getFolderSize = () => {
+    if (windowWidth < 640) return 0.85; // มือถือจอเล็ก: ปรับขึ้นนิดนึงจาก 0.6 เป็น 0.85
+    if (windowWidth < 1024) return 1.3; // หน้าจอแบ่งครึ่ง (Split screen) หรือ iPad: ปรับขึ้นจาก 1.0 เป็น 1.3
+    return 1.8; // จอ Desktop ปกติ
+  };
+
   const folders = projects.map((project) => ({
     ...project,
     color: '#6a6774',
-    size: 2,
+    size: getFolderSize(),
     papers: project.paperImages || [] // ใช้รูปจาก project.paperImages
   }));
   const visibleFolders = folders.filter((folder) =>
@@ -30,8 +46,8 @@ export default function ExperienceSection() {
 
   return (
     <section
-    data-section="experience"
-    className="relative w-full bg-transparent flex items-center justify-center pt-28 pb-40 px-6 scroll-mt-40 md:scroll-mt-48"
+      data-section="experience"
+      className="relative w-full bg-transparent flex items-center justify-center pt-28 pb-40 px-6 scroll-mt-40 md:scroll-mt-48"
     >
       <div className="max-w-7xl w-full">
         <motion.div
@@ -74,22 +90,20 @@ export default function ExperienceSection() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('all')}
-                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${
-                  activeFilter === 'all'
-                    ? 'bg-white/20 text-white'
-                    : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
-                }`}
+                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${activeFilter === 'all'
+                  ? 'bg-white/20 text-white'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
               >
                 All Featured Project
               </button>
               <button
                 type="button"
                 onClick={() => setActiveFilter('design')}
-                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${
-                  activeFilter === 'design'
-                    ? 'bg-white/20 text-white'
-                    : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
-                }`}
+                className={`rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${activeFilter === 'design'
+                  ? 'bg-white/20 text-white'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
               >
                 My Design
               </button>
@@ -97,7 +111,7 @@ export default function ExperienceSection() {
           </div>
         </motion.div>
         <div className="mt-8 pb-24">
-          <div className="grid gap-x-[17em] gap-y-[23em] grid-cols-2 md:grid-cols-3 mx-auto py-[1em] overflow-visible mt-[15rem] justify-items-start">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-24 md:gap-x-12 md:gap-y-40 lg:gap-x-[12em] lg:gap-y-[20em] mx-auto py-[1em] overflow-visible mt-[5rem] lg:mt-[15rem] justify-items-center lg:justify-items-start w-full">
             {visibleFolders.map((folder) => (
               <Link
                 key={folder.id}
