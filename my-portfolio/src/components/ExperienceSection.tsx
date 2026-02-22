@@ -30,7 +30,7 @@ export default function ExperienceSection() {
   // ปรับขนาดโฟลเดอร์ให้พอดีกับหน้าจอ
   const getFolderSize = () => {
     if (windowWidth < 640) return 0.85; // มือถือจอเล็ก: ปรับขึ้นนิดนึงจาก 0.6 เป็น 0.85
-    if (windowWidth < 1024) return 1.3; // หน้าจอแบ่งครึ่ง (Split screen) หรือ iPad: ปรับขึ้นจาก 1.0 เป็น 1.3
+    if (windowWidth < 1280) return 1.3; // หน้าจอแบ่งครึ่ง (Split screen) หรือ iPad ทั้งแนวตั้งและแนวนอน
     return 1.8; // จอ Desktop ปกติ
   };
 
@@ -111,7 +111,17 @@ export default function ExperienceSection() {
           </div>
         </motion.div>
         <div className="mt-8 pb-24">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-24 md:gap-x-12 md:gap-y-40 lg:gap-x-[12em] lg:gap-y-[20em] mx-auto py-[1em] overflow-visible mt-[5rem] lg:mt-[15rem] justify-items-center lg:justify-items-start w-full">
+          <div className="
+  grid grid-cols-2 lg:grid-cols-3
+  gap-x-3.5 gap-y-[90px]
+  md:gap-x-11 md:gap-y-[150px]
+  lg:gap-x-[12em] lg:gap-y-[20em]
+  py-[1em] overflow-visible
+  mt-[5rem] lg:mt-[15rem]
+  justify-items-start
+  w-full
+  ml-2 md:ml-6 lg:ml-12
+">
             {visibleFolders.map((folder) => (
               <Link
                 key={folder.id}
