@@ -54,8 +54,8 @@ export default function SkillsSection() {
           <h2 className="text-3xl md:text-4xl font-black text-white mb-1">DEVELOP</h2>
 
           <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-2 max-w-3xl indent-8">
-            Started creating Web Development using Next.js, React, and Tailwind <br />
-            and eventually switched to Mobile Development using React Native
+            I started my journey in Web Development using Next.js, React, and Tailwind CSS, building responsive and user-friendly web applications.
+I am passionate about improving my frontend skills and creating scalable, high-quality digital products.
           </p>
 
           <p className="text-lg md:text-xl font-semibold text-cyan-400 mb-2 indent-8">Stack & Technologies</p>
