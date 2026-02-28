@@ -33,22 +33,22 @@ export default function AboutMeSection() {
       if (displayText.length < currentSkill.length) {
         timer = setTimeout(() => {
           setDisplayText(currentSkill.substring(0, displayText.length + 1));
-        }, 120);
+        }, 150); // Slowed down typing (120 -> 150)
       } else {
         timer = setTimeout(() => {
           setIsDeleting(true);
-        }, 2000);
+        }, 2500); // Increased pause at end (2000 -> 2500)
       }
     } else {
       if (displayText.length > 0) {
         timer = setTimeout(() => {
           setDisplayText(displayText.substring(0, displayText.length - 1));
-        }, 80);
+        }, 100); // Slowed down deleting (80 -> 100)
       } else {
         timer = setTimeout(() => {
           setCurrentSkillIndex((prev) => (prev + 1) % skills.length);
           setIsDeleting(false);
-        }, 300);
+        }, 350); // Increased pause before typing next word (300 -> 350)
       }
     }
 
