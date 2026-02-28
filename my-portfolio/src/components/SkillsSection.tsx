@@ -99,7 +99,7 @@ I am passionate about improving my frontend skills and creating scalable, high-q
               { name: 'Tailwind CSS', icon: 'tw.png' },
               { name: 'Bootstrap', icon: 'bootstrap.png'},
               { name: 'Vue.JS', icon: 'vue.png'},
-              { name: 'NuxtJS', icon: 'nuxt.png'},
+              { name: 'Nuxt.JS', icon: 'nuxt.png'},
               { name: 'Express.JS', icon: 'express.png', scale: '1.5' },
             ].map((tool, idx) => (
               <div key={idx} className="flex flex-col items-center gap-1">
