@@ -61,12 +61,13 @@ I am passionate about improving my frontend skills and creating scalable, high-q
           <p className="text-lg md:text-xl font-semibold text-cyan-400 mb-2 indent-8">Stack & Technologies</p>
 
           {/* First Row - 6 items */}
-          <div className="flex flex-wrap gap-3 mb-2" style={{ maxWidth: 'calc(6 * (112px + 24px))' }}>
+          <div className="flex flex-wrap gap-3 mb-2" style={{ maxWidth: 'calc(7 * (112px + 24px))' }}>
             {[
               { name: 'HTML', icon: 'html.png' },
               { name: 'CSS', icon: 'css.png' },
               { name: 'JavaScript', icon: 'jss.png', scale: '0.6' },
               { name: 'TypeScript', icon: 'ts.png' },
+              { name: 'Tailwind CSS', icon: 'tw.png' },
               { name: 'PHP', icon: 'php.png' },
               { name: 'Python', icon: 'python.png' },
               
@@ -96,7 +97,6 @@ I am passionate about improving my frontend skills and creating scalable, high-q
             {[
               { name: 'React', icon: 'rc.png' },
               { name: 'Next.JS', icon: 'next.png' },
-              { name: 'Tailwind CSS', icon: 'tw.png' },
               { name: 'Bootstrap', icon: 'bootstrap.png'},
               { name: 'Vue.JS', icon: 'vue.png'},
               { name: 'Nuxt.JS', icon: 'nuxt.png'},
