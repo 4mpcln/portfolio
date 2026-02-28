@@ -16,10 +16,14 @@ export default function HeroSection() {
   // Initial entry animations
   const webInitialX = 1000; // Start from right
   const designerInitialX = -1000; // Start from left
-  
+
   // Profile image scroll transform - moves down when scrolling
   const profileTranslateY = useTransform(scrollYProgress, [0, 0.2], [0, 300]);
   const profileOpacity = useTransform(scrollYProgress, [0.1, 0.2], [1, 0.2]);
+
+  // Text scroll transforms
+  const webTranslateX = useTransform(scrollYProgress, [0, 0.3], [0, -500]);
+  const designerTranslateX = useTransform(scrollYProgress, [0, 0.3], [0, 500]);
 
   return (
     <div className="relative w-full h-auto bg-transparent overflow-hidden flex flex-col items-center justify-start pt-16 pb-4">
@@ -32,10 +36,10 @@ export default function HeroSection() {
             initial={{ x: webInitialX }}
             animate={{ x: 0 }}
             transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={{ x: useTransform(scrollYProgress, [0, 0.3], [0, -500]) }}
+            style={{ x: webTranslateX }}
             className="absolute top-16"
           >
-            <h1 className="text-[160px] font-[900] text-white leading-none whitespace-nowrap drop-shadow-2xl">
+            <h1 className="text-[160px] font-[900] text-white leading-none whitespace-nowrap">
               Frontend
             </h1>
           </motion.div>
@@ -45,17 +49,17 @@ export default function HeroSection() {
             initial={{ x: designerInitialX }}
             animate={{ x: 0 }}
             transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={{ x: useTransform(scrollYProgress, [0, 0.3], [0, 500]) }}
+            style={{ x: designerTranslateX }}
             className="absolute top-52"
           >
-            <h1 className="text-[160px] font-[900] text-white leading-none whitespace-nowrap drop-shadow-2xl">
+            <h1 className="text-[160px] font-[900] text-white leading-none whitespace-nowrap">
               Developer
             </h1>
           </motion.div>
         </div>
 
         {/* Center Profile Image with Buttons */}
-        <motion.div 
+        <motion.div
           className="relative z-20 mt-1"
           style={{ y: profileTranslateY, opacity: profileOpacity }}
         >
@@ -78,10 +82,10 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <motion.svg 
-                  className="w-4 h-4" 
-                  fill="none" 
-                  stroke="currentColor" 
+                <motion.svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                   whileHover={{ y: 3 }}
                   transition={{ duration: 0.3 }}
@@ -101,17 +105,17 @@ export default function HeroSection() {
 
                 whileTap={{ scale: 0.95 }}
               >
-                <motion.svg 
-                  className="w-4 h-6" 
-                  fill="none" 
-                  stroke="currentColor" 
+                <motion.svg
+                  className="w-4 h-6"
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                   whileHover={{ y: -3 }}
                   transition={{ duration: 0.3 }}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </motion.svg>
-                Contact Me 
+                Contact Me
               </motion.a>
             </div>
           </div>

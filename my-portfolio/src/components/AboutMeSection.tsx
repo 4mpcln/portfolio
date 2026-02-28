@@ -7,8 +7,10 @@ export default function AboutMeSection() {
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const lanyardRef = useRef<HTMLDivElement>(null);
-  const isLanyardInView = useInView(lanyardRef, { amount: 0.4 });
+  const isLanyardInView = useInView(lanyardRef, { amount: 0.2, margin: '1000px 0px 0px 0px' });
+  const isLanyardVisible = useInView(lanyardRef, { amount: 0.4 });
   const [dropKey, setDropKey] = useState(0);
+  const [hasScrolledNearLanyard, setHasScrolledNearLanyard] = useState(false);
 
   const skills = useMemo(
     () => ['College of Computing Student', 'UX/UI designer', 'Web Developer', 'Front-end Developer'],
@@ -16,8 +18,12 @@ export default function AboutMeSection() {
   );
 
   useEffect(() => {
-    if (isLanyardInView) setDropKey((k) => k + 1);
+    if (isLanyardInView) setHasScrolledNearLanyard(true);
   }, [isLanyardInView]);
+
+  useEffect(() => {
+    if (isLanyardVisible) setDropKey((k) => k + 1);
+  }, [isLanyardVisible]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -132,7 +138,9 @@ export default function AboutMeSection() {
                 className="absolute right-0 top-full mt-1 z-50"
                 style={{ width: '450px', overflow: 'visible' }}
               >
-                <Lanyard key={dropKey} position={[0, 0, 20]} gravity={[0, -40, 0]} resetSignal={dropKey} />
+                {hasScrolledNearLanyard && (
+                  <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} resetSignal={dropKey} />
+                )}
               </motion.div>
             </div>
           </motion.div>

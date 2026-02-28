@@ -1,5 +1,14 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
+
+const QuoteChar = ({ char, index, scrollYProgress }: { char: string; index: number; scrollYProgress: MotionValue<number> }) => {
+  const opacity = useTransform(scrollYProgress, [index * 0.010, (index + 1) * 0.010], [0.2, 1]);
+  return (
+    <motion.span style={{ opacity, display: 'inline' }}>
+      {char === ' ' ? '\u00A0' : char}
+    </motion.span>
+  );
+};
 
 export default function QuoteSection() {
   const ref = useRef(null);
@@ -13,14 +22,6 @@ export default function QuoteSection() {
   const chars1 = line1.split('');
   const chars2 = line2.split('');
 
-  // Create opacity transforms for each character - each one reveals in sequence
-  const opacities1 = chars1.map((_, i) => 
-    useTransform(scrollYProgress, [i * 0.010, (i + 1) * 0.010], [0.2, 1])
-  );
-  const opacities2 = chars2.map((_, i) => 
-    useTransform(scrollYProgress, [(chars1.length + i) * 0.010, (chars1.length + i + 1) * 0.010], [0.2, 1])
-  );
-
   return (
     <section ref={ref} className="quote-section relative w-full py-32 px-6 bg-transparent flex items-center justify-center">
       <div className="max-w-4xl w-full">
@@ -32,7 +33,7 @@ export default function QuoteSection() {
           className="relative"
         >
           {/* Quote Mark - Left */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -47,36 +48,20 @@ export default function QuoteSection() {
             {/* First Line - Indented */}
             <div className="pl-8 md:pl-12">
               {chars1.map((char, index) => (
-                <motion.span
-                  key={index}
-                  style={{
-                    opacity: opacities1[index] || opacities1[opacities1.length - 1],
-                    display: 'inline',
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
+                <QuoteChar key={`line1-${index}`} char={char} index={index} scrollYProgress={scrollYProgress} />
               ))}
             </div>
-            
+
             {/* Second Line */}
             <div>
               {chars2.map((char, index) => (
-                <motion.span
-                  key={index}
-                  style={{
-                    opacity: opacities2[index] || opacities2[opacities2.length - 1],
-                    display: 'inline',
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
+                <QuoteChar key={`line2-${index}`} char={char} index={chars1.length + index} scrollYProgress={scrollYProgress} />
               ))}
             </div>
           </div>
 
           {/* Quote Mark - Right */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
