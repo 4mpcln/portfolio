@@ -42,6 +42,31 @@ export default function HeroMenu() {
   const [scrollY, setScrollY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
 
+  const animateScrollTo = (targetY: number, duration: number, onComplete?: () => void) => {
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const nextY = startY + distance * easeInOutCubic(progress);
+
+      window.scrollTo({ top: nextY, behavior: 'auto' });
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        onComplete?.();
+      }
+    };
+
+    requestAnimationFrame(step);
+  };
+
   const scrollToSection = (sectionName: string) => {
     const section = document.querySelector(`[data-section="${sectionName}"]`) as HTMLElement | null;
     if (!section) return;
@@ -49,48 +74,21 @@ export default function HeroMenu() {
     const isAtTop = window.scrollY < 100; // Check if user is at top
     
     if (isAtTop && sectionName !== 'home') {
-      // Slow scroll through entire Quote section
       const quoteSection = document.querySelector('.quote-section') as HTMLElement | null;
       
       if (quoteSection) {
         const quoteSectionTop = quoteSection.offsetTop;
         const quoteSectionHeight = quoteSection.offsetHeight;
-        // Stop when last character shadow completes (51 chars × 0.010 = 0.51 or 51%)
-        const quoteScrollTarget = quoteSectionTop + (quoteSectionHeight * 0.51);
-        
-        // Calculate scroll duration based on quote section height
-        const scrollDistance = quoteScrollTarget - window.scrollY;
-        const scrollDuration = 7200; // 7.2 seconds to scroll through quote (10% faster)
-        const scrollStep = scrollDistance / (scrollDuration / 16); // 60fps
-        
-        let currentScroll = window.scrollY;
-        let scrolling = true;
-        
-        const smoothScrollThroughQuote = () => {
-          if (!scrolling) return;
-          
-          currentScroll += scrollStep;
-          
-          if (currentScroll >= quoteScrollTarget) {
-            currentScroll = quoteScrollTarget;
-            scrolling = false;
-            
-            // After reaching end of quote, quickly scroll to target section
-            setTimeout(() => {
-              const baseTop = section.getBoundingClientRect().top + window.scrollY;
-              const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
-              window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
-            }, 5); // Minimal delay before jumping
-          }
-          
-          window.scrollTo({ top: currentScroll, behavior: 'auto' });
-          
-          if (scrolling) {
-            requestAnimationFrame(smoothScrollThroughQuote);
-          }
-        };
-        
-        requestAnimationFrame(smoothScrollThroughQuote);
+        const quoteReadStart = quoteSectionTop + (quoteSectionHeight * 0.16);
+        const quoteReadTarget = quoteSectionTop + (quoteSectionHeight * 0.70);
+
+        animateScrollTo(quoteReadStart, 420, () => {
+          animateScrollTo(quoteReadTarget, 2900, () => {
+            const baseTop = section.getBoundingClientRect().top + window.scrollY;
+            const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
+            window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
+          });
+        });
         return;
       }
     }

@@ -1,8 +1,8 @@
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 
-const READ_START = 0.04;
-const READ_END = 0.82;
+const READ_START = 0.16;
+const READ_END = 0.7;
 
 const QuoteChar = ({
   char,
@@ -38,11 +38,11 @@ export default function QuoteSection() {
   const chars1 = line1.split('');
   const chars2 = line2.split('');
   const totalChars = chars1.length + chars2.length;
-  const authorOpacity = useTransform(scrollYProgress, [0.84, 0.94], [0, 1]);
-  const authorY = useTransform(scrollYProgress, [0.84, 0.94], [10, 0]);
+  const authorOpacity = useTransform(scrollYProgress, [READ_START, READ_START + 0.08], [0, 1]);
+  const authorY = useTransform(scrollYProgress, [READ_START, READ_START + 0.08], [10, 0]);
 
   return (
-    <section ref={ref} className="quote-section relative w-full h-[240vh] -mt-24 md:-mt-36 bg-transparent">
+    <section ref={ref} className="quote-section relative w-full h-[220vh] -mt-24 md:-mt-36 bg-transparent">
       <div className="sticky top-0 h-screen w-full px-6 flex items-center justify-center">
         <div className="max-w-4xl w-full">
           <motion.div

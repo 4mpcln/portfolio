@@ -1,25 +1,137 @@
 import { motion } from 'framer-motion';
 
+type Skill = {
+  name: string;
+  icon?: string;
+  scale?: number;
+};
+
+type SkillCategory = {
+  title: string;
+  subtitle: string;
+  skills: Skill[];
+};
+
+const skillCategories: SkillCategory[] = [
+  {
+    title: 'Frontend',
+    subtitle: 'Core stack for building responsive, typed, and component-driven web apps.',
+    skills: [
+      { name: 'HTML5', icon: 'html.png' },
+      { name: 'CSS3', icon: 'css.png' },
+      { name: 'JavaScript', icon: 'jss.png', scale: 0.6 },
+      { name: 'TypeScript', icon: 'ts.png' },
+      { name: 'React', icon: 'rc.png' },
+      { name: 'Next.js', icon: 'next.png' },
+      { name: 'Tailwind CSS', icon: 'tw.png' },
+      { name: 'Vite', icon: 'vt.png', scale: 1.7 },
+      { name: 'TanStack Query' },
+      { name: 'Axios' },
+      { name: 'React Hook Form' },
+      { name: 'Zod' },
+    ],
+  },
+  {
+    title: 'Backend & API',
+    subtitle: 'Server-side foundations for APIs, documentation, and application logic.',
+    skills: [
+      { name: 'Node.js', icon: 'node' },
+      { name: 'Express.js', icon: 'express.png', scale: 1.5 },
+      { name: 'NestJS' },
+      { name: 'Swagger' },
+    ],
+  },
+  {
+    title: 'Database & Storage',
+    subtitle: 'Data, caching, and file-storage tools used in full-stack projects.',
+    skills: [
+      { name: 'PostgreSQL' },
+      { name: 'Redis' },
+      { name: 'MinIO' },
+    ],
+  },
+  {
+    title: 'Design & Tools',
+    subtitle: 'Design, version control, deployment, and workflow tools.',
+    skills: [
+      { name: 'Figma', icon: 'fm.png' },
+      { name: 'GitHub', icon: 'gh.png' },
+      { name: 'Docker' },
+      { name: 'Vercel', icon: 'vercel.png' },
+    ],
+  },
+  {
+    title: 'Also Worked With',
+    subtitle: 'Secondary tools and frameworks from coursework or smaller projects.',
+    skills: [
+      { name: 'Vue.js', icon: 'vue.png' },
+      { name: 'Nuxt.js', icon: 'nuxt.png' },
+      { name: 'Bootstrap', icon: 'bootstrap.png' },
+      { name: 'PHP', icon: 'php.png' },
+      { name: 'Python', icon: 'python.png' },
+      { name: 'Canva', icon: 'canva.png' },
+    ],
+  },
+];
+
+const getFallbackLabel = (name: string) =>
+  name
+    .split(/[\s.-]+/)
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+
+function SkillTile({ skill, index }: { skill: Skill; index: number }) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.035 }}
+        whileHover={{ y: -8 }}
+        className="relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br from-white via-gray-100 to-gray-300 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-14px_24px_rgba(0,0,0,0.08),0_14px_28px_rgba(0,0,0,0.32)] transition-all duration-300 before:absolute before:left-3 before:right-3 before:top-2 before:h-8 before:rounded-full before:bg-white/60 before:blur-md before:content-[''] after:absolute after:inset-px after:rounded-[15px] after:border after:border-white/55 after:content-[''] hover:border-cyan-200 hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-14px_24px_rgba(0,0,0,0.07),0_18px_36px_rgba(34,211,238,0.16)] md:h-28 md:w-28 md:p-5"
+      >
+        {skill.icon ? (
+          <img
+            src={`/${skill.icon}`}
+            alt={skill.name}
+            className="relative z-10 h-16 w-16 object-contain drop-shadow-sm md:h-20 md:w-20"
+            style={{ transform: skill.scale ? `scale(${skill.scale})` : 'scale(1)' }}
+          />
+        ) : (
+          <span className="relative z-10 text-center text-xl font-black leading-none text-gray-900 drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] md:text-2xl">
+            {getFallbackLabel(skill.name)}
+          </span>
+        )}
+      </motion.div>
+      <p className="mt-1 max-w-24 text-center text-xs font-medium text-gray-300 md:max-w-28 md:text-sm">
+        {skill.name}
+      </p>
+    </div>
+  );
+}
+
 export default function SkillsSection() {
   return (
     <section
       data-section="skills"
-  className="relative w-full bg-transparent flex items-center justify-center pt-20 pb-16 px-6 scroll-mt-0"
+      className="relative flex w-full items-center justify-center bg-transparent px-4 pb-16 pt-20 scroll-mt-0 sm:px-6"
     >
-      <div className="max-w-7xl w-full">
-        {/* Skills Header */}
+      <div className="w-full max-w-7xl">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="text-right mb-3 relative"
+          className="relative mb-8 text-right md:mb-10"
         >
           <div className="relative inline-block">
-            <h1 className="text-6xl md:text-9xl font-black text-white inline-flex items-center gap-4">
+            <h1 className="inline-flex items-center gap-3 text-6xl font-black text-white md:gap-4 md:text-9xl">
               Skills
               <svg
-                className="w-[1em] h-[1em] text-white"
+                className="h-[1em] w-[1em] text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -32,141 +144,46 @@ export default function SkillsSection() {
                 />
               </svg>
             </h1>
-            {/* Blue underline with extend animation */}
             <motion.div
               initial={{ scaleX: 0, originX: 1 }}
               whileInView={{ scaleX: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
               viewport={{ once: false, margin: '-100px' }}
-              className="h-1 bg-cyan-400 mt-3 rounded-full w-1/2 min-w-[6rem] ml-auto"
+              className="ml-auto mt-3 h-1 w-1/2 min-w-[6rem] rounded-full bg-cyan-400"
             />
           </div>
         </motion.div>
 
-        {/* DEVELOP Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="mb-2"
-        >
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-1">DEVELOP</h2>
+        <div className="space-y-8 md:space-y-10">
+          {skillCategories.map((category, categoryIndex) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: categoryIndex * 0.05 }}
+              viewport={{ once: true, margin: '-100px' }}
+            >
+              <div className="mb-4">
+                <h2 className="text-2xl font-black text-white md:text-4xl">
+                  {category.title}
+                </h2>
+                <p className="mt-2 max-w-3xl text-sm leading-relaxed text-gray-400 md:text-base">
+                  {category.subtitle}
+                </p>
+              </div>
 
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-2 max-w-3xl indent-8">
-            I started my journey in Web Development using Next.js, React, and Tailwind CSS, building responsive and user-friendly web applications.
-I am passionate about improving my frontend skills and creating scalable, high-quality digital products.
-          </p>
-
-          <p className="text-lg md:text-xl font-semibold text-cyan-400 mb-2 indent-8">Stack & Technologies</p>
-
-          {/* First Row - 6 items */}
-          <div className="flex flex-wrap gap-3 mb-2" style={{ maxWidth: 'calc(7 * (112px + 24px))' }}>
-            {[
-              { name: 'HTML', icon: 'html.png' },
-              { name: 'CSS', icon: 'css.png' },
-              { name: 'JavaScript', icon: 'jss.png', scale: '0.6' },
-              { name: 'TypeScript', icon: 'ts.png' },
-              { name: 'Tailwind CSS', icon: 'tw.png' },
-              { name: 'PHP', icon: 'php.png' },
-              { name: 'Python', icon: 'python.png' },
-              
-            ].map((tool, idx) => (
-              <div key={idx} className="flex flex-col items-center gap-1">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  whileHover={{ y: -8 }}
-                  className="relative p-5 rounded-2xl border border-gray-300 bg-gradient-to-br from-gray-100 to-gray-250 hover:border-gray-400 transition-all duration-300 cursor-pointer overflow-hidden w-28 h-28 flex items-center justify-center"
-                >
-                  <img
-                    src={`/${tool.icon}`}
-                    alt={tool.name}
-                    className="w-20 h-20 object-contain"
-                    style={{ transform: tool.scale ? `scale(${tool.scale})` : 'scale(1)' }}
+              <div className="flex flex-wrap gap-3 md:gap-4">
+                {category.skills.map((skill, skillIndex) => (
+                  <SkillTile
+                    key={skill.name}
+                    skill={skill}
+                    index={skillIndex + categoryIndex * 4}
                   />
-                </motion.div>
-                <p className="text-xs md:text-sm font-medium text-gray-300 text-center whitespace-nowrap mt-1">{tool.name}</p>
+                ))}
               </div>
-            ))}
-          </div>
-
-          {/* Second Row - 5 items */}
-          <div className="flex flex-wrap gap-3 justify-left">
-            {[
-              { name: 'React', icon: 'rc.png' },
-              { name: 'Next.JS', icon: 'next.png' },
-              { name: 'Bootstrap', icon: 'bootstrap.png'},
-              { name: 'Vue.JS', icon: 'vue.png'},
-              { name: 'Nuxt.JS', icon: 'nuxt.png'},
-              { name: 'Express.JS', icon: 'express.png', scale: '1.5' },
-            ].map((tool, idx) => (
-              <div key={idx} className="flex flex-col items-center gap-1">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: (idx + 6) * 0.05 }}
-                  whileHover={{ y: -8 }}
-                  className="relative p-5 rounded-2xl border border-gray-300 bg-gradient-to-br from-gray-100 to-gray-250 hover:border-gray-400 transition-all duration-300 cursor-pointer overflow-hidden w-28 h-28 flex items-center justify-center"
-                >
-                  <img
-                    src={`/${tool.icon}`}
-                    alt={tool.name}
-                    className="w-20 h-20 object-contain"
-                    style={{ transform: tool.scale ? `scale(${tool.scale})` : 'scale(1)' }}
-                  />
-                </motion.div>
-                <p className="text-xs md:text-sm font-medium text-gray-300 text-center whitespace-nowrap mt-1">{tool.name}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* CREATE Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="mt-0"
-        >
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-1">CREATE</h2>
-
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-2 max-w-3xl indent-8">
-            Aspiring content creator and junior developer, passionate about telling <br />
-            stories through both words and code. Currently learning and building as I go
-          </p>
-
-          <p className="text-lg md:text-xl font-semibold text-cyan-400 mb-2 indent-8">Tools & Platforms</p>
-
-          <div className="flex flex-wrap gap-3 justify-left">
-            {[
-              { name: 'Capcut', icon: 'capcut.png' },
-              { name: 'Wix', icon: 'wixx.png' },
-              { name: 'Figma', icon: 'fm.png' },
-              { name: 'Canva', icon: 'canva.png' },
-              { name: 'VS Code', icon: 'vscode.png' },
-              { name: 'GitHub', icon: 'gh.png' },
-              { name: 'Vite', icon: 'vt.png', scale: '1.7' },
-              { name: 'Vercel', icon: 'vercel.png' },
-              
-            ].map((tool, idx) => (
-              <div key={idx} className="flex flex-col items-center gap-1">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  whileHover={{ y: -8 }}
-                  className="relative p-5 rounded-2xl border border-gray-300 bg-gradient-to-br from-gray-100 to-gray-250 hover:border-gray-400 transition-all duration-300 cursor-pointer overflow-hidden w-28 h-28 flex items-center justify-center"
-                >
-                  <img src={`/${tool.icon}`} alt={tool.name} className="w-20 h-20 object-contain" />
-                </motion.div>
-                <p className="text-xs md:text-sm font-medium text-gray-300 text-center whitespace-nowrap mt-1">{tool.name}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
