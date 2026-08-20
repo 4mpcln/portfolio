@@ -40,33 +40,41 @@ export default function Lanyard({
   transparent = true,
   resetSignal
 }: LanyardProps) {
-  const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [viewportWidth, setViewportWidth] = useState<number>(() =>
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
+  const isMobile = viewportWidth < 768;
+  const isTablet = viewportWidth >= 768 && viewportWidth < 1024;
+  const isCompact = viewportWidth < 1024;
 
   useEffect(() => {
-    const handleResize = (): void => setIsMobile(window.innerWidth < 768);
+    const handleResize = (): void => setViewportWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const canvasSize = isMobile ? Math.min(820, Math.round(viewportWidth * 1.28)) : isTablet ? 820 : 1000;
+
   return (
-    <div className="relative z-0 w-full h-[450px] flex justify-end items-start pt-0" style={{ overflow: 'visible' }}>
+    <div className="relative z-0 w-full h-[450px] sm:h-[470px] md:h-[430px] lg:h-[450px] flex justify-end items-start pt-0" style={{ overflow: 'visible' }}>
       <Canvas
         camera={{ position, fov }}
-        dpr={[1, isMobile ? 1.5 : 2]}
+        dpr={[1, isCompact ? 1.5 : 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
         style={{
           position: 'absolute',
-          right: 0,
+          right: isMobile ? '50%' : 0,
           top: 0,
-          width: '1000px',
-          height: '1000px',
-          overflow: 'visible'
+          width: `${canvasSize}px`,
+          height: `${canvasSize}px`,
+          overflow: 'visible',
+          transform: isMobile ? 'translateX(50%)' : 'none'
         }}
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
-          <Band isMobile={isMobile} resetSignal={resetSignal} />
+        <Physics gravity={gravity} timeStep={isCompact ? 1 / 30 : 1 / 60}>
+          <Band isMobile={isMobile} isTablet={isTablet} resetSignal={resetSignal} />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
@@ -83,10 +91,12 @@ interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
   isMobile?: boolean;
+  isTablet?: boolean;
   resetSignal?: number;
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: BandProps) {
+function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, isTablet = false, resetSignal }: BandProps) {
+  const isCompact = isMobile || isTablet;
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -119,9 +129,15 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 0.8]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 0.8]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 0.8]);
+  const cardJointAnchor: [number, number, number] = [0, 1.45, 0];
+  const groupPosition: [number, number, number] = isMobile ? [0.45, 4.15, 0] : isTablet ? [1.55, 3.75, 0] : [2.125, 4, 0];
+  const bandPosition: [number, number, number] = isMobile ? [0, 0, 0] : [0, 0, 0];
+  const cardScale = isMobile ? 1.9 : isTablet ? 1.95 : 2.25;
+  const cardPosition: [number, number, number] = isMobile ? [0, -0.8, -0.05] : isTablet ? [0, -0.86, -0.05] : [0, -1.2, -0.05];
+
   useSphericalJoint(j3, card, [
     [0, 0, 0],
-    [0, 1.45, 0]
+    cardJointAnchor
   ]);
 
   useEffect(() => {
@@ -188,7 +204,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
 
   return (
     <>
-  <group position={[2.125, 4, 0]}>
+      <group position={groupPosition}>
         <RigidBody ref={fixed} {...segmentProps} type={'fixed' as RigidBodyProps['type']} />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
           <BallCollider args={[0.1]} />
@@ -207,8 +223,8 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
+            scale={cardScale}
+            position={cardPosition}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e: any) => {
@@ -224,7 +240,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
               <meshPhysicalMaterial
                 map={materials.base.map}
                 map-anisotropy={16}
-                clearcoat={isMobile ? 0 : 1}
+                clearcoat={isCompact ? 0 : 1}
                 clearcoatRoughness={0.15}
                 roughness={0.9}
                 metalness={0.8}
@@ -235,14 +251,14 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, resetSignal }: Ba
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} position={bandPosition}>
         {/* @ts-ignore */}
         <meshLineGeometry />
         {/* @ts-ignore */}
         <meshLineMaterial
           color="white"
           depthTest={false}
-          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+          resolution={isCompact ? [1000, 2000] : [1000, 1000]}
           useMap
           map={texture}
           repeat={[-4, 1]}

@@ -13,7 +13,7 @@ export default function AboutMeSection() {
   const [hasScrolledNearLanyard, setHasScrolledNearLanyard] = useState(false);
 
   const skills = useMemo(
-    () => ['College of Computing Student', 'UX/UI designer', 'Web Developer', 'Front-end Developer'],
+    () => ['College of Computing Student', 'Front-end Developer' , 'UX/UI designer', 'Backend Developer'],
     []
   );
 
@@ -87,7 +87,7 @@ export default function AboutMeSection() {
   return (
     <section
       data-section="about"
-      className="relative w-full min-h-screen bg-transparent flex items-center justify-center pt-200 pb-20 px-6"
+      className="relative w-full min-h-screen bg-transparent flex items-center justify-center pt-40 md:pt-200 pb-20 px-4 sm:px-6"
     >
       <div className="max-w-7xl w-full">
         <motion.div
@@ -95,7 +95,7 @@ export default function AboutMeSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="text-right mb-16"
+          className="text-right mb-10 md:mb-16"
         >
           <motion.div
             variants={itemVariants}
@@ -105,7 +105,7 @@ export default function AboutMeSection() {
             className="inline-block"
           >
             <div className="relative">
-              <h1 className="text-6xl md:text-9xl font-black text-white inline-flex items-center gap-4">
+              <h1 className="text-5xl sm:text-6xl md:text-9xl font-black text-white inline-flex items-center gap-3 md:gap-4">
                 About Me
                 <svg
                   className="w-[1em] h-[1em] text-white"
@@ -135,8 +135,8 @@ export default function AboutMeSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 viewport={{ once: false, margin: '-100px' }}
-                className="absolute right-0 top-full mt-1 z-50"
-                style={{ width: '450px', overflow: 'visible' }}
+                className="relative z-50 ml-auto mt-1 w-full max-w-[430px] sm:max-w-[460px] md:absolute md:right-0 md:top-full md:mt-1 md:w-[390px] md:max-w-none min-[900px]:w-[430px] lg:w-[450px]"
+                style={{ overflow: 'visible' }}
               >
                 {hasScrolledNearLanyard && (
                   <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} resetSignal={dropKey} />
@@ -151,19 +151,19 @@ export default function AboutMeSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: false, margin: '-100px' }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
+          className="grid grid-cols-1 -mt-12 sm:-mt-10 md:mt-0 md:grid-cols-[minmax(0,1fr)_360px] min-[900px]:grid-cols-[minmax(0,1fr)_420px] lg:grid-cols-2 gap-y-8 md:gap-x-8 items-start"
         >
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, margin: '-100px' }}
-            className="flex flex-col gap-3 pt-5"
+            className="flex flex-col gap-3 pt-0 md:pt-5"
           >
             <motion.div variants={leftVariants}>
               <div className="space-y-2">
-                <p className="text-2xl md:text-3xl font-semibold text-gray-300">Hello, I&apos;m</p>
-                <h2 className="text-4xl md:text-7xl font-black text-white leading-tight pl-6">
+                <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300">Hello, I&apos;m</p>
+                <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight pl-4 md:pl-6">
                   Krit<br />Intarajinda
                 </h2>
               </div>
@@ -180,7 +180,7 @@ export default function AboutMeSection() {
 
             <motion.div variants={leftVariants}>
               <div
-                className="text-white text-2xl md:text-3xl min-h-8 font-extralight"
+                className="text-white text-xl sm:text-2xl md:text-3xl min-h-8 font-extralight"
                 style={{ fontFamily: 'var(--font-montserrat)', fontWeight: 200 }}
               >
                 {displayText}
@@ -195,7 +195,7 @@ export default function AboutMeSection() {
             </motion.div>
 
             <motion.div variants={leftVariants} className="pt-0">
-              <p className="text-gray-400 text-base md:text-lg leading-relaxed text-justify">
+              <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed text-left sm:text-justify">
                 &nbsp;&nbsp;&nbsp;&nbsp;I’m interested in{' '}
                 <span className="font-inter-bold text-white">Frontend Developer</span>.
                 Passionate about
@@ -204,10 +204,10 @@ export default function AboutMeSection() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-1">
               <motion.div
                 variants={leftVariants}
-                className="relative p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm transition-all duration-300 overflow-hidden"
+                className="relative p-5 sm:p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm transition-all duration-300 overflow-hidden"
               >
 
                 <div className="relative z-10">
@@ -254,7 +254,7 @@ export default function AboutMeSection() {
                   boxShadow: '0 20px 40px rgba(34, 197, 234, 0.2)',
                 }}
                 transition={{ duration: 0.3 }}
-                className="relative p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group cursor-pointer overflow-hidden"
+                className="relative p-5 sm:p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group cursor-pointer overflow-hidden"
               >
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
@@ -312,7 +312,7 @@ export default function AboutMeSection() {
             </div>
           </motion.div>
 
-          <div className="hidden lg:block" />
+          <div className="hidden md:block" />
         </motion.div>
       </div>
     </section>
