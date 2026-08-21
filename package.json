@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-root",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix my-portfolio ci && npm --prefix my-portfolio run build",
+    "dev": "npm --prefix my-portfolio run dev",
+    "preview": "npm --prefix my-portfolio run preview"
+  }
+}
