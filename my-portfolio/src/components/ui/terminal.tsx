@@ -192,22 +192,22 @@ export function Terminal({
           })}
         </div>
 
-        <form onSubmit={handleSubmit} className="flex min-w-0 items-center gap-2">
-          <span className="shrink-0 text-cyan-300">{username}</span>
-          <span className="shrink-0 text-gray-500">:~$</span>
+        <form onSubmit={handleSubmit} className="flex min-w-0 items-baseline gap-2 leading-none">
+          <span className="shrink-0 leading-none text-cyan-300">{username}</span>
+          <span className="shrink-0 leading-none text-gray-500">:~$</span>
           <div
-            className="relative min-w-0 flex-1 cursor-text"
+            className="relative min-w-0 flex-1 cursor-text leading-none"
             onClick={() => inputRef.current?.focus()}
           >
             {input ? (
-              <>
-                <span className="break-all text-white">{input}</span>
-                <span className="terminal-cursor ml-1 inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
-              </>
+              <span className="inline-flex min-w-0 items-baseline leading-none">
+                <span className="break-all leading-none text-white">{input}</span>
+                <span className="terminal-cursor ml-1 inline-block h-[1.05em] w-[0.65em] bg-gray-300 align-[-0.12em]" />
+              </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-gray-600">
-                <span className="terminal-cursor inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
-                <span>{hintText}</span>
+              <span className="inline-flex min-w-0 items-baseline gap-1 leading-none text-gray-600">
+                <span className="terminal-cursor inline-block h-[1.05em] w-[0.65em] bg-gray-300 align-[-0.12em]" />
+                <span className="leading-none">{hintText}</span>
               </span>
             )}
             <input

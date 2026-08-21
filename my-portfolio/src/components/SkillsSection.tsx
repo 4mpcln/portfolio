@@ -215,13 +215,15 @@ export default function SkillsSection() {
     target: sectionRef,
     offset: ['start start', '55% start'],
   });
-  const extractedY = useTransform(scrollYProgress, [0.12, 0.26, 0.5, 0.72], [-610, -520, -190, 0]);
-  const extractedScale = useTransform(scrollYProgress, [0.12, 0.26, 0.5, 0.72], [0.36, 0.42, 0.68, 1]);
-  const extractedRotateX = useTransform(scrollYProgress, [0.12, 0.34, 0.56], [-24, -12, 0]);
-  const extractedOpacity = useTransform(scrollYProgress, [0.19, 0.28], [0, 1]);
-  const extractedShadowOpacity = useTransform(scrollYProgress, [0.2, 0.38, 0.72], [0, 0.85, 0]);
-  const screenPreviewOpacity = useTransform(scrollYProgress, [0.2, 0.32], [1, 0]);
-  const screenExitGlowOpacity = useTransform(scrollYProgress, [0.16, 0.28, 0.42], [0, 1, 0]);
+  const extractedY = useTransform(scrollYProgress, [0.12, 0.3, 0.54, 0.76], [-880, -610, -220, 0]);
+  const extractedScale = useTransform(scrollYProgress, [0.12, 0.3, 0.54, 0.76], [0.36, 0.42, 0.68, 1]);
+  const extractedRotateX = useTransform(scrollYProgress, [0.12, 0.36, 0.6], [-24, -12, 0]);
+  const extractedOpacity = useTransform(scrollYProgress, [0.24, 0.32], [0, 1]);
+  const extractedShadowOpacity = useTransform(scrollYProgress, [0.24, 0.42, 0.72], [0, 0.85, 0]);
+  const screenPreviewOpacity = useTransform(scrollYProgress, [0.13, 0.22], [1, 0]);
+  const screenPreviewY = useTransform(scrollYProgress, [0.12, 0.22], [0, 44]);
+  const screenPreviewScale = useTransform(scrollYProgress, [0.12, 0.22], [0.37, 0.4]);
+  const screenExitGlowOpacity = useTransform(scrollYProgress, [0.14, 0.28, 0.44], [0, 1, 0]);
 
   const revealGroup = (title: string) => {
     setRevealedGroups((current) => (current[title] ? current : { ...current, [title]: true }));
@@ -251,8 +253,10 @@ export default function SkillsSection() {
                 <motion.div
                   style={{
                     opacity: screenPreviewOpacity,
+                    y: screenPreviewY,
+                    scale: screenPreviewScale,
                   }}
-                  className="absolute left-1/2 top-3 z-20 w-[80rem] origin-top -translate-x-1/2 scale-[0.37] [perspective:1400px]"
+                  className="absolute left-1/2 top-3 z-20 w-[80rem] origin-top -translate-x-1/2 [perspective:1400px]"
                 >
                   <SkillsGrid
                     isRevealed={() => true}
@@ -263,6 +267,10 @@ export default function SkillsSection() {
                 <motion.div
                   style={{ opacity: screenExitGlowOpacity }}
                   className="pointer-events-none absolute inset-x-8 bottom-2 z-30 h-px rounded-full bg-cyan-200/70 shadow-[0_0_18px_rgba(103,232,249,0.75),0_0_42px_rgba(255,255,255,0.35)]"
+                />
+                <motion.div
+                  style={{ opacity: screenExitGlowOpacity }}
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-28 bg-gradient-to-t from-black via-black/80 to-transparent"
                 />
                 <motion.div
                   style={{ opacity: screenExitGlowOpacity }}
