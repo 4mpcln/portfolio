@@ -195,15 +195,16 @@ export default function AboutMeSection() {
               </div>
             </motion.div>
 
-            <motion.div variants={leftVariants} className="pt-0">
-              <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed text-left sm:text-justify">
-                &nbsp;&nbsp;&nbsp;&nbsp;I’m interested in{' '}
-                <span className="font-inter-bold text-white">Frontend Developer</span>.
-                Passionate about
-                learning and experimenting with new tools to create modern, interactive websites that effectively
-                meet real-world user needs.
-              </p>
-            </motion.div>
+<motion.div variants={leftVariants} className="pt-0">
+  <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed text-left sm:text-justify">
+    &nbsp;&nbsp;&nbsp;&nbsp;I’m a{' '}
+    <span className="font-inter-bold text-white">Frontend Developer</span>{' '}
+    passionate about creating modern, interactive, and user-centered web
+    experiences. With strong frontend experience and a focus on UX/UI, I’m
+    currently expanding my backend skills to build complete full-stack
+    applications.
+  </p>
+</motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-1">
               <motion.div

@@ -200,13 +200,13 @@ export function Terminal({
             onClick={() => inputRef.current?.focus()}
           >
             {input ? (
-              <span className="inline-flex min-w-0 items-baseline leading-none">
+              <span className="inline-flex min-w-0 items-center leading-none">
                 <span className="break-all leading-none text-white">{input}</span>
-                <span className="terminal-cursor ml-1 inline-block h-[1.05em] w-[0.65em] bg-gray-300 align-[-0.12em]" />
+                <span className="terminal-cursor ml-1 inline-block h-[1.32em] w-[0.65em] bg-gray-300" />
               </span>
             ) : (
-              <span className="inline-flex min-w-0 items-baseline gap-1 leading-none text-gray-600">
-                <span className="terminal-cursor inline-block h-[1.05em] w-[0.65em] bg-gray-300 align-[-0.12em]" />
+              <span className="inline-flex min-w-0 items-center gap-1 leading-none text-gray-600">
+                <span className="terminal-cursor inline-block h-[1.32em] w-[0.65em] bg-gray-300" />
                 <span className="leading-none">{hintText}</span>
               </span>
             )}

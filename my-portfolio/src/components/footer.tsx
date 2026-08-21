@@ -27,7 +27,7 @@ export default function Footer() {
             </svg>
           </a>
         </div>
-        <p className="text-[13px] text-white/60">© 2026 Krit — Small dick , Big heart</p>
+        <p className="text-[13px] text-white/60">© 2026 Krit — Small step , Big dream</p>
       </div>
     </footer>
   );
