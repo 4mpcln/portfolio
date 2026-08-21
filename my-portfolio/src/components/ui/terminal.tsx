@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface TerminalCommand {
@@ -32,7 +32,10 @@ export function Terminal({
   const [input, setInput] = useState('');
   const [internalCommand, setInternalCommand] = useState(defaultCommand);
   const [response, setResponse] = useState('');
+  const [statusMessage, setStatusMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const pendingTimerRef = useRef<number | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const commandMap = useMemo(() => {
     const map = new Map<string, TerminalCommand>();
@@ -49,8 +52,15 @@ export function Terminal({
 
   useEffect(() => {
     setResponse(resolvedActiveCommand?.description ?? `Type one of: ${availableCommands}`);
+    setStatusMessage('');
     setIsError(false);
   }, [availableCommands, resolvedActiveCommand]);
+
+  useEffect(() => {
+    return () => {
+      if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
+    };
+  }, []);
 
   const playCommandSound = () => {
     if (!enableSound) return;
@@ -65,7 +75,9 @@ export function Terminal({
     playCommandSound();
 
     if (nextCommand === 'clear') {
+      if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
       setInput('');
+      setStatusMessage('');
       setResponse(`Type one of: ${availableCommands}`);
       setIsError(false);
       return;
@@ -74,17 +86,32 @@ export function Terminal({
     const selectedCommand = commandMap.get(nextCommand);
 
     if (!selectedCommand) {
-      setResponse(`404 Not Found : Seem nothing like '${rawCommand}', Try one of : ${availableCommands}`);
-      setIsError(true);
+      if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
+      const seconds = Math.floor(Math.random() * 3) + 1;
+      setStatusMessage(`Searching for your data... ${seconds}s`);
+      setResponse('');
+      setIsError(false);
       setInput('');
+      pendingTimerRef.current = window.setTimeout(() => {
+        setStatusMessage('');
+        setResponse(`404 Not Found : Seem nothing like '${rawCommand}', Try one of : ${availableCommands}`);
+        setIsError(true);
+      }, 1000);
       return;
     }
 
-    setInternalCommand(selectedCommand.command);
-    setResponse(selectedCommand.description);
+    if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
+    const seconds = Math.floor(Math.random() * 3) + 1;
+    setStatusMessage(`Preflight checks running... ${seconds}s`);
+    setResponse('');
     setIsError(false);
-    onCommandChange?.(selectedCommand.command);
     setInput('');
+    pendingTimerRef.current = window.setTimeout(() => {
+      setInternalCommand(selectedCommand.command);
+      setStatusMessage('');
+      setResponse(selectedCommand.description);
+      onCommandChange?.(selectedCommand.command);
+    }, 1000);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -136,21 +163,35 @@ export function Terminal({
         <form onSubmit={handleSubmit} className="flex min-w-0 items-center gap-2">
           <span className="shrink-0 text-cyan-300">{username}</span>
           <span className="shrink-0 text-gray-500">:~$</span>
-          <input
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            className="min-w-0 flex-1 bg-transparent text-white outline-none placeholder:text-gray-600"
-            placeholder="internship | project | design"
-            spellCheck={false}
-          />
+          <div
+            className="relative min-w-0 flex-1 cursor-text"
+            onClick={() => inputRef.current?.focus()}
+          >
+            <span className={cn('break-all', input ? 'text-white' : 'text-gray-600')}>
+              {input || 'internship | project | design'}
+            </span>
+            <span className="terminal-cursor ml-1 inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              className="absolute inset-0 h-full w-full bg-transparent text-transparent caret-transparent outline-none"
+              spellCheck={false}
+              aria-label="Experience command"
+            />
+          </div>
         </form>
 
-        <p className={cn('leading-relaxed', isError ? 'text-red-300' : 'text-gray-300')}>
-          <span className={cn('mr-2', isError ? 'text-red-400' : 'text-cyan-300')}>
-            {isError ? 'x' : 'ok'}
-          </span>
-          {response}
-        </p>
+        {statusMessage && <p className="leading-relaxed text-gray-500">{statusMessage}</p>}
+
+        {response && (
+          <p className={cn('leading-relaxed', isError ? 'text-red-300' : 'text-gray-300')}>
+            <span className={cn('mr-2', isError ? 'text-red-400' : 'text-cyan-300')}>
+              {isError ? 'x' : 'ok'}
+            </span>
+            {response}
+          </p>
+        )}
       </div>
     </div>
   );

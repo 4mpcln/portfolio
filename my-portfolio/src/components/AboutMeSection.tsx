@@ -26,7 +26,7 @@ export default function AboutMeSection() {
   }, [isLanyardVisible]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     const currentSkill = skills[currentSkillIndex];
 
     if (!isDeleting) {

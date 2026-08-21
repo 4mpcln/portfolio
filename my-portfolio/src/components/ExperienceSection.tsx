@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import Folder from './FolderComponent';
 import { Terminal, type TerminalCommand } from '@/components/ui/terminal';
@@ -36,11 +37,115 @@ const internshipHighlights = [
   },
 ];
 
+const internshipImages = [
+  { src: '/intern1.jpg', label: 'Intern 1' },
+  { src: '/intern2.jpg', label: 'Intern 2' },
+  { src: '/intern3.jpg', label: 'Intern 3' },
+];
+
 type ExperienceView = 'internship' | 'project' | 'design';
+
+interface InternFullscreenModalProps {
+  currentImageIndex: number;
+  images: typeof internshipImages;
+  onClose: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+}
+
+function InternFullscreenModal({
+  currentImageIndex,
+  images,
+  onClose,
+  onNext,
+  onPrev,
+}: InternFullscreenModalProps) {
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] flex h-screen w-screen items-center justify-center bg-black/95 p-4 backdrop-blur-md"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onClose();
+        }}
+        className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+        aria-label="Close fullscreen"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <div className="relative flex h-full w-full items-center justify-center" onClick={(event) => event.stopPropagation()}>
+        <img
+          src={images[currentImageIndex].src}
+          alt={images[currentImageIndex].label}
+          className="mx-auto max-h-full max-w-full object-contain object-center"
+        />
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={onPrev}
+              className="absolute left-2 top-1/2 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              aria-label="Previous image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 42 42">
+                <path fill="currentColor" fillRule="evenodd" d="M31 38.32L13.391 21L31 3.68L28.279 1L8 21.01L28.279 41z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={onNext}
+              className="absolute right-2 top-1/2 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              aria-label="Next image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 42 42" className="rotate-180">
+                <path fill="currentColor" fillRule="evenodd" d="M31 38.32L13.391 21L31 3.68L28.279 1L8 21.01L28.279 41z" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-lg text-white backdrop-blur-sm">
+          {currentImageIndex + 1}/{images.length}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
 
 export default function ExperienceSection() {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const [activeView, setActiveView] = useState<ExperienceView>('internship');
+  const [currentInternImage, setCurrentInternImage] = useState(0);
+  const [isInternFullscreen, setIsInternFullscreen] = useState(false);
+  const [isInternDetailExpanded, setIsInternDetailExpanded] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -65,6 +170,14 @@ export default function ExperienceSection() {
   const projectFolders = folders.filter((folder) => folder.category === 'all');
   const designFolders = folders.filter((folder) => folder.category === 'design');
 
+  const handlePrevInternImage = () => {
+    setCurrentInternImage((prev) => (prev === 0 ? internshipImages.length - 1 : prev - 1));
+  };
+
+  const handleNextInternImage = () => {
+    setCurrentInternImage((prev) => (prev === internshipImages.length - 1 ? 0 : prev + 1));
+  };
+
   const renderFolderGrid = (items: typeof folders) => (
     <div className="mt-10 grid w-full grid-cols-2 justify-items-center gap-x-8 gap-y-28 overflow-visible pb-20 pt-8 md:gap-x-8 md:gap-y-36 lg:grid-cols-3 lg:gap-x-20 lg:gap-y-44 xl:grid-cols-4">
       {items.map((folder) => (
@@ -88,35 +201,132 @@ export default function ExperienceSection() {
   );
 
   const internshipContent = (
-    <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-white/10 via-white/[0.04] to-cyan-400/10 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-sm md:p-7">
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">INFRA Corporation</p>
-          <h3 className="mt-2 text-xl font-black leading-tight text-white md:text-3xl">
-            Environmental Protected Area Impact Assessment System
-          </h3>
-          <p className="mt-2 text-sm font-semibold text-gray-300 md:text-base">
-            Frontend (Applied) | Backend (Additional)
-          </p>
-        </div>
-        <p className="shrink-0 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-gray-200 md:text-sm">
-          May 2026 - June 2026
+    <div className="relative overflow-visible rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-sm md:p-7">
+      <div>
+        <p className="text-2xl font-black text-cyan-300 md:text-3xl">
+          iNFRA Corporation
+        </p>
+        <h3 className="mt-3 text-xl font-black leading-tight text-white md:text-3xl">
+          Environmental Protected Area Impact Assessment System
+        </h3>
+        <p className="mt-3 text-base font-semibold text-gray-300 md:text-l">
+          <span className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+            Contribution <span className="text-gray-600">|</span>
+          </span>{' '}
+          Frontend (Applied) and Backend (Additional)
         </p>
       </div>
 
-      <p className="mt-5 max-w-4xl text-sm leading-relaxed text-gray-400 md:text-base">
+      <p className="mt-5 max-w-4xl text-sm leading-relaxed text-gray-400 md:text-base" style={{ textIndent: '1.5rem' }}>
         Developed a web application for preliminary impact assessment of construction projects or structures
         that may affect environmentally protected areas under the Office of Natural Resources and
         Environmental Policy and Planning (ONEP).
       </p>
 
-      <div className="mt-6 space-y-4">
-        {internshipHighlights.map((item) => (
-          <div key={item.title} className="border-l-2 border-cyan-400/70 pl-4">
-            <h4 className="font-bold text-white">{item.title}</h4>
-            <p className="mt-1 text-sm leading-relaxed text-gray-400 md:text-base">{item.description}</p>
+      <div className="mt-6">
+        <div className="relative mx-auto max-w-4xl">
+          <div className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black p-4 md:p-5">
+            <div className="relative mx-auto flex aspect-video w-full max-w-[760px] items-center justify-center overflow-hidden rounded-xl bg-black">
+              <img
+                src={internshipImages[currentInternImage].src}
+                alt={internshipImages[currentInternImage].label}
+                className="h-full w-full object-cover object-center"
+                onError={(event) => {
+                  event.currentTarget.style.display = 'none';
+                  const fallback = event.currentTarget.nextElementSibling as HTMLElement | null;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div className="absolute inset-0 hidden items-center justify-center bg-white/[0.03] text-sm font-semibold text-gray-500">
+                {internshipImages[currentInternImage].label}
+              </div>
+            </div>
           </div>
-        ))}
+
+          {internshipImages.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={handlePrevInternImage}
+                className="absolute left-0 top-1/2 flex h-11 w-11 -translate-x-3 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80 md:-translate-x-14"
+                aria-label="Previous internship image"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 42 42">
+                  <path fill="currentColor" fillRule="evenodd" d="M31 38.32L13.391 21L31 3.68L28.279 1L8 21.01L28.279 41z" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={handleNextInternImage}
+                className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 translate-x-3 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80 md:translate-x-14"
+                aria-label="Next internship image"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 42 42" className="rotate-180">
+                  <path fill="currentColor" fillRule="evenodd" d="M31 38.32L13.391 21L31 3.68L28.279 1L8 21.01L28.279 41z" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          <div className="mt-4 flex items-center justify-center gap-4">
+            <div className="rounded-full border border-white/20 bg-black/60 px-4 py-2 text-sm text-white backdrop-blur-sm">
+              {currentInternImage + 1}/{internshipImages.length}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsInternFullscreen(true)}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+              aria-label="View fullscreen"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={() => setIsInternDetailExpanded((value) => !value)}
+          aria-expanded={isInternDetailExpanded}
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-[#57595B] hover:text-white"
+        >
+          <span>{isInternDetailExpanded ? 'Hide detail' : 'More detail'}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className={`transition-transform duration-300 ${isInternDetailExpanded ? 'rotate-180' : ''}`}
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+
+        {isInternDetailExpanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="mt-6 space-y-4 overflow-hidden"
+          >
+            {internshipHighlights.map((item) => (
+              <div key={item.title} className="border-l-2 border-cyan-400/70 pl-4">
+                <h4 className="font-bold text-white">{item.title}</h4>
+                <p className="mt-1 text-sm leading-relaxed text-gray-400 md:text-base" style={{ textIndent: '1.5rem' }}>
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </div>
   );
@@ -138,19 +348,19 @@ export default function ExperienceSection() {
     {
       command: 'internship',
       label: 'internship',
-      description: 'Show internship experience at INFRA Corporation.',
+      description: 'Show internship experience at iNFRA Corporation',
       aliases: ['intern', 'work'],
     },
     {
       command: 'project',
       label: 'project',
-      description: 'Show featured development projects.',
+      description: 'Show featured development projects',
       aliases: ['projects', 'featured'],
     },
     {
       command: 'design',
       label: 'design',
-      description: 'Show all your UI/UX design projects.',
+      description: 'Show all your UI/UX design projects',
       aliases: ['ui', 'ux', 'figma'],
     },
   ];
@@ -162,75 +372,87 @@ export default function ExperienceSection() {
   }[activeView];
 
   return (
-    <section
-      data-section="experience"
-      className="relative flex w-full items-center justify-center bg-transparent px-6 pb-40 pt-28 scroll-mt-40 md:scroll-mt-48"
-    >
-      <div className="w-full max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="relative mb-10"
-        >
-          <div className="flex flex-col gap-5">
-            <div className="relative inline-block text-right">
-              <div className="inline-flex flex-col items-end">
-                <h1 className="inline-flex items-center gap-4 text-6xl font-black leading-none text-white md:text-9xl">
-                  Experience
-                  <svg
-                    className="h-[1em] w-[1em] shrink-0 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </h1>
-                <motion.div
-                  initial={{ scaleX: 0, originX: 1 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                  viewport={{ once: false, margin: '-100px' }}
-                  className="mt-3 h-1 w-1/2 min-w-[6rem] self-end rounded-full bg-cyan-400"
-                />
+    <>
+      <section
+        data-section="experience"
+        className="relative flex w-full items-center justify-center bg-transparent px-6 pb-40 pt-28 scroll-mt-40 md:scroll-mt-48"
+      >
+        <div className="w-full max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="relative mb-10"
+          >
+            <div className="flex flex-col gap-5">
+              <div className="relative inline-block text-right">
+                <div className="inline-flex flex-col items-end">
+                  <h1 className="inline-flex items-center gap-4 text-6xl font-black leading-none text-white md:text-9xl">
+                    Experience
+                    <svg
+                      className="h-[1em] w-[1em] shrink-0 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </h1>
+                  <motion.div
+                    initial={{ scaleX: 0, originX: 1 }}
+                    whileInView={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    viewport={{ once: false, margin: '-100px' }}
+                    className="mt-3 h-1 w-1/2 min-w-[6rem] self-end rounded-full bg-cyan-400"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          <Terminal
-            commands={experienceCommands}
-            activeCommand={activeView}
-            defaultCommand="internship"
-            username="krit@experience"
-            enableSound={false}
-            onCommandChange={(command) => setActiveView(command as ExperienceView)}
-          />
+          </motion.div>
 
           <motion.div
-            key={activeView}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="mt-8 overflow-visible"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: '-100px' }}
           >
-            {activeContent}
+            <Terminal
+              commands={experienceCommands}
+              activeCommand={activeView}
+              defaultCommand="internship"
+              username="krit@experience"
+              enableSound={false}
+              onCommandChange={(command) => setActiveView(command as ExperienceView)}
+            />
+
+            <motion.div
+              key={activeView}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="mt-8 overflow-visible"
+            >
+              {activeContent}
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      {isInternFullscreen && (
+        <InternFullscreenModal
+          currentImageIndex={currentInternImage}
+          images={internshipImages}
+          onClose={() => setIsInternFullscreen(false)}
+          onNext={handleNextInternImage}
+          onPrev={handlePrevInternImage}
+        />
+      )}
+    </>
   );
 }
