@@ -242,7 +242,7 @@ export default function AboutMeSection() {
                   <div className="space-y-2">
                     <p className="font-semibold text-white text-sm">Computer Science</p>
                     <p className="text-gray-400 text-xs">Khon Kaen University</p>
-                    <p className="text-gray-500 text-xs mt-2">3rd Year</p>
+                    <p className="text-gray-500 text-xs mt-2">4th Year</p>
                   </div>
                 </div>
               </motion.div>
