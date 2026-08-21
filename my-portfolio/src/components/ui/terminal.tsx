@@ -19,6 +19,7 @@ export interface TerminalProps {
 }
 
 const normalizeCommand = (value: string) => value.trim().toLowerCase();
+const hintCommands = ['internship', 'project', 'design'];
 
 export function Terminal({
   commands,
@@ -34,6 +35,9 @@ export function Terminal({
   const [response, setResponse] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const [hintText, setHintText] = useState('');
+  const [hintIndex, setHintIndex] = useState(0);
+  const [isDeletingHint, setIsDeletingHint] = useState(false);
   const pendingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -61,6 +65,34 @@ export function Terminal({
       if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    const currentHint = hintCommands[hintIndex];
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (!isDeletingHint) {
+      if (hintText.length < currentHint.length) {
+        timer = window.setTimeout(() => {
+          setHintText(currentHint.substring(0, hintText.length + 1));
+        }, 120);
+      } else {
+        timer = window.setTimeout(() => {
+          setIsDeletingHint(true);
+        }, 1200);
+      }
+    } else if (hintText.length > 0) {
+      timer = window.setTimeout(() => {
+        setHintText(currentHint.substring(0, hintText.length - 1));
+      }, 70);
+    } else {
+      timer = window.setTimeout(() => {
+        setHintIndex((current) => (current + 1) % hintCommands.length);
+        setIsDeletingHint(false);
+      }, 260);
+    }
+
+    return () => window.clearTimeout(timer);
+  }, [hintIndex, hintText, isDeletingHint]);
 
   const playCommandSound = () => {
     if (!enableSound) return;
@@ -167,10 +199,17 @@ export function Terminal({
             className="relative min-w-0 flex-1 cursor-text"
             onClick={() => inputRef.current?.focus()}
           >
-            <span className={cn('break-all', input ? 'text-white' : 'text-gray-600')}>
-              {input || 'type internship | project | design'}
-            </span>
-            <span className="terminal-cursor ml-1 inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
+            {input ? (
+              <>
+                <span className="break-all text-white">{input}</span>
+                <span className="terminal-cursor ml-1 inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
+              </>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-gray-600">
+                <span className="terminal-cursor inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
+                <span>{hintText}</span>
+              </span>
+            )}
             <input
               ref={inputRef}
               value={input}
