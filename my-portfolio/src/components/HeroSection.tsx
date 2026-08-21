@@ -74,7 +74,7 @@ export default function HeroSection() {
             />
 
             {/* Buttons - Bottom Left of Image, almost overlapping */}
-            <div className="mt-5 flex w-[calc(100vw-2rem)] max-w-[330px] flex-row items-center justify-center gap-2 sm:max-w-none sm:w-auto sm:gap-3 md:absolute md:bottom-1 md:-left-44 lg:-left-55 md:mt-0">
+            <div className="mt-5 flex w-[calc(100vw-2rem)] max-w-[330px] flex-row items-center justify-center gap-2 sm:max-w-none sm:w-auto sm:gap-3 md:absolute md:bottom-1 md:-left-58 lg:-left-57 md:mt-0">
               {/* Download CV Button - Left */}
               <motion.button
                 onClick={handleDownloadCV}

@@ -8,11 +8,11 @@ const FILTER_KEY = 'portfolio_experience_filter';
 
 const projectSectionCopy = {
   all: {
-    title: 'Featured Projects',
+    title: 'Projects',
     description: 'Selected development projects that highlight frontend implementation, full-stack workflows, and practical problem solving.',
   },
   design: {
-    title: 'My Design',
+    title: 'Design',
     description: 'UI/UX and wireframe work focused on structure, usability, visual direction, and early product planning.',
   },
 };
@@ -204,7 +204,7 @@ export default function ExperienceSection() {
                 : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                 }`}
             >
-              Featured Projects
+              Projects
             </button>
             <button
               type="button"
@@ -214,7 +214,7 @@ export default function ExperienceSection() {
                 : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                 }`}
             >
-              My Design
+              Design
             </button>
           </div>
         </motion.div>
