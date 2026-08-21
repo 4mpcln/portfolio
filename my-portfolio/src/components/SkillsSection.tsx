@@ -215,10 +215,13 @@ export default function SkillsSection() {
     target: sectionRef,
     offset: ['start start', '55% start'],
   });
-  const extractedY = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [-735, -260, 0]);
-  const extractedScale = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [0.46, 0.62, 1]);
-  const extractedRotateX = useTransform(scrollYProgress, [0.08, 0.3, 0.5], [-18, -8, 0]);
-  const extractedOpacity = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
+  const extractedY = useTransform(scrollYProgress, [0.12, 0.26, 0.5, 0.72], [-610, -520, -190, 0]);
+  const extractedScale = useTransform(scrollYProgress, [0.12, 0.26, 0.5, 0.72], [0.36, 0.42, 0.68, 1]);
+  const extractedRotateX = useTransform(scrollYProgress, [0.12, 0.34, 0.56], [-24, -12, 0]);
+  const extractedOpacity = useTransform(scrollYProgress, [0.19, 0.28], [0, 1]);
+  const extractedShadowOpacity = useTransform(scrollYProgress, [0.2, 0.38, 0.72], [0, 0.85, 0]);
+  const screenPreviewOpacity = useTransform(scrollYProgress, [0.2, 0.32], [1, 0]);
+  const screenExitGlowOpacity = useTransform(scrollYProgress, [0.16, 0.28, 0.42], [0, 1, 0]);
 
   const revealGroup = (title: string) => {
     setRevealedGroups((current) => (current[title] ? current : { ...current, [title]: true }));
@@ -245,11 +248,25 @@ export default function SkillsSection() {
             className="-mb-24 md:-mb-28"
             screen={
               <div className="relative h-full w-full overflow-hidden bg-black">
-                <SkillsGrid
-                  className="absolute left-1/2 top-3 w-[80rem] origin-top -translate-x-1/2 scale-[0.37]"
-                  isRevealed={() => true}
-                  onReveal={() => undefined}
-                  animated={false}
+                <motion.div
+                  style={{
+                    opacity: screenPreviewOpacity,
+                  }}
+                  className="absolute left-1/2 top-3 z-20 w-[80rem] origin-top -translate-x-1/2 scale-[0.37] [perspective:1400px]"
+                >
+                  <SkillsGrid
+                    isRevealed={() => true}
+                    onReveal={() => undefined}
+                    animated={false}
+                  />
+                </motion.div>
+                <motion.div
+                  style={{ opacity: screenExitGlowOpacity }}
+                  className="pointer-events-none absolute inset-x-8 bottom-2 z-30 h-px rounded-full bg-cyan-200/70 shadow-[0_0_18px_rgba(103,232,249,0.75),0_0_42px_rgba(255,255,255,0.35)]"
+                />
+                <motion.div
+                  style={{ opacity: screenExitGlowOpacity }}
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-20 bg-gradient-to-t from-cyan-300/12 via-white/10 to-transparent blur-md"
                 />
               </div>
             }
@@ -299,8 +316,12 @@ export default function SkillsSection() {
             opacity: extractedOpacity,
             transformOrigin: 'top center',
           }}
-          className="absolute left-1/2 top-[60rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] lg:block"
+          className="absolute left-1/2 top-[60rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] [transform-style:preserve-3d] lg:block"
         >
+          <motion.div
+            style={{ opacity: extractedShadowOpacity }}
+            className="pointer-events-none absolute inset-x-12 -top-8 h-16 rounded-full bg-cyan-200/20 blur-3xl"
+          />
           <SkillsGrid
             isRevealed={() => true}
             onReveal={() => undefined}

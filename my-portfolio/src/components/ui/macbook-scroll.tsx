@@ -190,17 +190,8 @@ export const Lid = ({
       >
         <div className="absolute inset-0 rounded-lg bg-[#272729]" />
         {screen ? (
-          <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg bg-[#050505]">
-            <motion.div
-              style={{
-                opacity: imageOpacity,
-                y: imageY,
-                scale: imageScale,
-              }}
-              className="h-full w-full"
-            >
-              {screen}
-            </motion.div>
+          <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg bg-[#050505] [transform-style:preserve-3d]">
+            {screen}
           </div>
         ) : src ? (
           <motion.img
