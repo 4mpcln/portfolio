@@ -48,7 +48,6 @@ const skillGroups: SkillGroup[] = [
       { name: 'Node.js', icon: 'nodejs.svg' },
       { name: 'Express.js', icon: 'express.png', scale: 1.35 },
       { name: 'NestJS', icon: 'nestjs.svg' },
-      { name: 'REST API' },
       { name: 'Swagger', icon: 'swagger.svg' },
       { name: 'PHP', icon: 'php.png' },
       { name: 'Python', icon: 'python.png' },
