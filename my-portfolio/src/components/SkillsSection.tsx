@@ -218,6 +218,7 @@ export default function SkillsSection() {
   const extractedY = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [-735, -260, 0]);
   const extractedScale = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [0.46, 0.62, 1]);
   const extractedRotateX = useTransform(scrollYProgress, [0.08, 0.3, 0.5], [-18, -8, 0]);
+  const extractedOpacity = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
 
   const revealGroup = (title: string) => {
     setRevealedGroups((current) => (current[title] ? current : { ...current, [title]: true }));
@@ -242,6 +243,17 @@ export default function SkillsSection() {
             title={null}
             showGradient={false}
             className="-mb-24 md:-mb-28"
+            screen={
+              <div className="flex h-full w-full items-start justify-center overflow-hidden bg-black px-5 pt-4">
+                <SkillsGrid
+                  className="w-[58rem] origin-top scale-[0.36]"
+                  isRevealed={() => true}
+                  onReveal={() => undefined}
+                  animated={false}
+                  compact
+                />
+              </div>
+            }
           />
         </motion.div>
 
@@ -285,6 +297,7 @@ export default function SkillsSection() {
             y: extractedY,
             scale: extractedScale,
             rotateX: extractedRotateX,
+            opacity: extractedOpacity,
             transformOrigin: 'top center',
           }}
           className="absolute left-1/2 top-[60rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] lg:block"
