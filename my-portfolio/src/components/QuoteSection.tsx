@@ -42,9 +42,9 @@ export default function QuoteSection() {
   const authorY = useTransform(scrollYProgress, [READ_START, READ_START + 0.08], [10, 0]);
 
   return (
-    <section ref={ref} className="quote-section relative w-full h-[220vh] -mt-24 md:-mt-36 bg-transparent">
-      <div className="sticky top-0 h-screen w-full px-6 flex items-center justify-center">
-        <div className="max-w-4xl w-full">
+    <section ref={ref} className="quote-section relative w-full h-[210vh] -mt-20 bg-transparent sm:h-[220vh] md:-mt-36">
+      <div className="sticky top-0 flex h-screen w-full items-center justify-center px-4 sm:px-6">
+        <div className="w-full max-w-[22rem] sm:max-w-2xl md:max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -58,15 +58,14 @@ export default function QuoteSection() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-6xl text-cyan-500/30 mb-4"
+              className="mb-3 text-5xl text-cyan-500/30 sm:mb-4 sm:text-6xl"
             >
               &ldquo;
             </motion.div>
 
             {/* Quote Text with Character-level Scroll Animation */}
-            <div className="text-4xl md:text-6xl font-black leading-relaxed text-gray-300 quote-inter-bold">
-              {/* First Line - Indented */}
-              <div className="pl-8 md:pl-12">
+            <div className="text-2xl font-black leading-tight text-gray-300 quote-inter-bold min-[390px]:text-3xl sm:text-4xl sm:leading-snug md:text-5xl lg:text-6xl lg:leading-relaxed">
+              <div className="pl-5 sm:pl-8 md:pl-12">
                 {chars1.map((char, index) => (
                   <QuoteChar
                     key={`line1-${index}`}
@@ -78,7 +77,6 @@ export default function QuoteSection() {
                 ))}
               </div>
 
-              {/* Second Line */}
               <div>
                 {chars2.map((char, index) => (
                   <QuoteChar
@@ -98,7 +96,7 @@ export default function QuoteSection() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-6xl text-cyan-500/30 mt-4 text-right"
+              className="mt-3 text-right text-5xl text-cyan-500/30 sm:mt-4 sm:text-6xl"
             >
               &rdquo;
             </motion.div>
@@ -106,7 +104,7 @@ export default function QuoteSection() {
             {/* Author */}
             <motion.div
               style={{ opacity: authorOpacity, y: authorY }}
-              className="text-gray-400 text-sm md:text-base mt-6 text-right"
+              className="mt-5 text-right text-xs text-gray-400 sm:text-sm md:mt-6 md:text-base"
             >
               &mdash; David goggins
             </motion.div>

@@ -168,7 +168,7 @@ export function Terminal({
             onClick={() => inputRef.current?.focus()}
           >
             <span className={cn('break-all', input ? 'text-white' : 'text-gray-600')}>
-              {input || 'internship | project | design'}
+              {input || 'type internship | project | design'}
             </span>
             <span className="terminal-cursor ml-1 inline-block h-6 w-3 translate-y-1 bg-gray-300 align-baseline md:h-7 md:w-3.5" />
             <input

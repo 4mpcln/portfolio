@@ -42,7 +42,12 @@ export default function HeroMenu() {
   const [scrollY, setScrollY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
 
-  const animateScrollTo = (targetY: number, duration: number, onComplete?: () => void) => {
+  const animateScrollTo = (
+    targetY: number,
+    duration: number,
+    onComplete?: () => void,
+    easing: 'smooth' | 'linear' = 'smooth'
+  ) => {
     const startY = window.scrollY;
     const distance = targetY - startY;
     const startTime = performance.now();
@@ -53,7 +58,8 @@ export default function HeroMenu() {
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const nextY = startY + distance * easeInOutCubic(progress);
+      const easedProgress = easing === 'linear' ? progress : easeInOutCubic(progress);
+      const nextY = startY + distance * easedProgress;
 
       window.scrollTo({ top: nextY, behavior: 'auto' });
 
@@ -86,8 +92,8 @@ export default function HeroMenu() {
           animateScrollTo(quoteReadTarget, 2900, () => {
             const baseTop = section.getBoundingClientRect().top + window.scrollY;
             const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
-            window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
-          });
+            animateScrollTo(baseTop + offset, 700);
+          }, 'linear');
         });
         return;
       }

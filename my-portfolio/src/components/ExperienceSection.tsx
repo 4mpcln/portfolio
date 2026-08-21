@@ -288,26 +288,28 @@ export default function ExperienceSection() {
       </div>
 
       <div className="mt-6">
-        <button
+        <motion.button
           type="button"
           onClick={() => setIsInternDetailExpanded((value) => !value)}
           aria-expanded={isInternDetailExpanded}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-[#57595B] hover:text-white"
+          className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border-2 border-white px-4 py-2 text-xs font-medium text-white transition-all hover:bg-white hover:text-black sm:min-h-11 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm md:px-6 md:py-3"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <span>{isInternDetailExpanded ? 'Hide detail' : 'More detail'}</span>
-          <svg
+          <motion.svg
             xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className={`transition-transform duration-300 ${isInternDetailExpanded ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 transition-transform duration-300 sm:h-[18px] sm:w-[18px] ${isInternDetailExpanded ? 'rotate-180' : ''}`}
+            whileHover={{ y: isInternDetailExpanded ? -2 : 2 }}
+            transition={{ duration: 0.3 }}
           >
             <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+          </motion.svg>
+        </motion.button>
 
         {isInternDetailExpanded && (
           <motion.div
