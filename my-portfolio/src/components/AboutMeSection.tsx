@@ -206,7 +206,7 @@ export default function AboutMeSection() {
   </p>
 </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-1">
+            <div className="grid grid-cols-1 gap-3 sm:gap-4 mt-1">
               <motion.div
                 variants={leftVariants}
                 className="relative p-5 sm:p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm transition-all duration-300 overflow-hidden"
@@ -249,68 +249,6 @@ export default function AboutMeSection() {
                 </div>
               </motion.div>
 
-              <motion.div
-                variants={leftVariants}
-                whileHover={{
-                  y: -8,
-                  boxShadow: '0 20px 40px rgba(34, 197, 234, 0.2)',
-                }}
-                transition={{ duration: 0.3 }}
-                className="relative p-5 sm:p-6 rounded-2xl border border-white/20 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group cursor-pointer overflow-hidden"
-              >
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                  style={{
-                    background: 'radial-gradient(circle at center, rgba(34, 197, 234, 0.1) 0%, transparent 70%)',
-                  }}
-                />
-
-                <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2 group-hover:text-cyan-400 transition-colors duration-300">
-                    <motion.svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      animate={{
-                        filter: [
-                          'drop-shadow(0 0 0px rgba(34, 197, 234, 0))',
-                          'drop-shadow(0 0 8px rgba(34, 197, 234, 0.6))',
-                          'drop-shadow(0 0 0px rgba(34, 197, 234, 0))',
-                        ],
-                      }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                        delay: 0.5,
-                      }}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </motion.svg>
-                    Interests
-                  </h3>
-                  <div className="space-y-1">
-                    <p className="text-gray-400 text-xs flex items-center gap-2 group-hover:text-gray-300 transition-colors duration-300">
-                      <span className="text-cyan-400">•</span>
-                      Frontend Development
-                    </p>
-                    <p className="text-gray-400 text-xs flex items-center gap-2 group-hover:text-gray-300 transition-colors duration-300">
-                      <span className="text-cyan-400">•</span>
-                      UI/UX Design
-                    </p>
-                    <p className="text-gray-400 text-xs flex items-center gap-2 group-hover:text-gray-300 transition-colors duration-300">
-                      <span className="text-cyan-400">•</span>
-                      Web Innovation
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
 

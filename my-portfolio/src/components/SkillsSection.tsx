@@ -192,7 +192,7 @@ function SkillsGrid({
   compact?: boolean;
 }) {
   return (
-    <div className={cn('grid gap-5 lg:grid-cols-2', className)}>
+    <div className={cn('grid gap-5 md:grid-cols-2', className)}>
       {skillGroups.map((group, index) => (
         <SkillGroupCard
           key={group.title}
@@ -324,7 +324,7 @@ export default function SkillsSection() {
             opacity: extractedOpacity,
             transformOrigin: 'top center',
           }}
-          className="absolute left-1/2 top-[60rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] [transform-style:preserve-3d] lg:block"
+          className="absolute left-1/2 top-[64rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] [transform-style:preserve-3d] md:block lg:top-[60rem]"
         >
           <motion.div
             style={{ opacity: extractedShadowOpacity }}
@@ -337,7 +337,7 @@ export default function SkillsSection() {
           />
         </motion.div>
 
-        <div className="pointer-events-none relative z-10 hidden opacity-0 lg:block">
+        <div className="pointer-events-none relative z-10 hidden opacity-0 md:block">
           <SkillsGrid
             isRevealed={() => true}
             onReveal={() => undefined}
@@ -345,7 +345,7 @@ export default function SkillsSection() {
           />
         </div>
 
-        <div className="relative z-10 lg:hidden">
+        <div className="relative z-10 md:hidden">
           <SkillsGrid
             isRevealed={(title) => Boolean(revealedGroups[title])}
             onReveal={revealGroup}
