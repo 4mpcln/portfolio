@@ -244,13 +244,12 @@ export default function SkillsSection() {
             showGradient={false}
             className="-mb-24 md:-mb-28"
             screen={
-              <div className="flex h-full w-full items-start justify-center overflow-hidden bg-black px-5 pt-4">
+              <div className="relative h-full w-full overflow-hidden bg-black">
                 <SkillsGrid
-                  className="w-[58rem] origin-top scale-[0.36]"
+                  className="absolute left-1/2 top-3 w-[80rem] origin-top -translate-x-1/2 scale-[0.37]"
                   isRevealed={() => true}
                   onReveal={() => undefined}
                   animated={false}
-                  compact
                 />
               </div>
             }
