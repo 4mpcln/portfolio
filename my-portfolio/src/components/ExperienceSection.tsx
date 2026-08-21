@@ -385,6 +385,7 @@ export default function ExperienceSection() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
+            data-section-header="experience"
             className="relative mb-10"
           >
             <div className="flex flex-col gap-5">

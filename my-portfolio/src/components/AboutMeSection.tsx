@@ -95,6 +95,7 @@ export default function AboutMeSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
+          data-section-header="about"
           className="text-right mb-10 md:mb-16"
         >
           <motion.div

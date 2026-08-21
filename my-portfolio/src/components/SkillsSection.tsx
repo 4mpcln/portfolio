@@ -235,6 +235,7 @@ export default function SkillsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: '-100px' }}
+          data-skills-anchor="mac"
           className="mb-6"
         >
           <MacbookScroll
@@ -249,6 +250,7 @@ export default function SkillsSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
+          data-skills-anchor="title"
           className="relative mb-8 text-right md:mb-10"
         >
           <div className="relative inline-block">

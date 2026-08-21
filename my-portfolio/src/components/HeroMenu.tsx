@@ -36,6 +36,8 @@ const menuItems = [
   },
 ];
 
+const HEADER_EDGE_OFFSET = 5;
+
 export default function HeroMenu() {
   const [isOpen, setIsOpen] = useState(true); // Start open
   const [selectedItem, setSelectedItem] = useState('Home');
@@ -76,6 +78,28 @@ export default function HeroMenu() {
   const scrollToSection = (sectionName: string) => {
     const section = document.querySelector(`[data-section="${sectionName}"]`) as HTMLElement | null;
     if (!section) return;
+
+    const getTargetTop = (target: HTMLElement, offset = 0) =>
+      target.getBoundingClientRect().top + window.scrollY + offset;
+
+    const getHeaderTop = (name: string) => {
+      const header = document.querySelector(`[data-section-header="${name}"]`) as HTMLElement | null;
+      return getTargetTop(header ?? section, HEADER_EDGE_OFFSET);
+    };
+
+    const scrollToSkillsSequence = () => {
+      const macAnchor = document.querySelector('[data-skills-anchor="mac"]') as HTMLElement | null;
+      const titleAnchor = document.querySelector('[data-skills-anchor="title"]') as HTMLElement | null;
+
+      const macTop = getTargetTop(macAnchor ?? section, -70);
+      const titleTop = getTargetTop(titleAnchor ?? section, HEADER_EDGE_OFFSET);
+
+      animateScrollTo(macTop, 700, () => {
+        window.setTimeout(() => {
+          animateScrollTo(titleTop, 850);
+        }, 260);
+      });
+    };
     
     const isAtTop = window.scrollY < 100; // Check if user is at top
     
@@ -90,19 +114,25 @@ export default function HeroMenu() {
 
         animateScrollTo(quoteReadStart, 420, () => {
           animateScrollTo(quoteReadTarget, 2900, () => {
-            const baseTop = section.getBoundingClientRect().top + window.scrollY;
-            const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
-            animateScrollTo(baseTop + offset, 700);
+            if (sectionName === 'skills') {
+              scrollToSkillsSequence();
+              return;
+            }
+
+            animateScrollTo(getHeaderTop(sectionName), 700);
           }, 'linear');
         });
         return;
       }
     }
+
+    if (sectionName === 'skills') {
+      scrollToSkillsSequence();
+      return;
+    }
     
     // Normal scroll behavior
-    const baseTop = section.getBoundingClientRect().top + window.scrollY;
-    const offset = sectionName === 'experience' ? 80 : sectionName === 'about' ? 700 : 0;
-    window.scrollTo({ top: baseTop + offset, behavior: 'smooth' });
+    window.scrollTo({ top: getHeaderTop(sectionName), behavior: 'smooth' });
   };
 
   useEffect(() => {
