@@ -1,4 +1,8 @@
-import { motion } from 'framer-motion';
+import { useRef, useState, type ComponentType } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { IconCode, IconDatabase, IconServer, IconSettings } from '@tabler/icons-react';
+import { cn } from '@/lib/utils';
+import { MacbookScroll } from '@/components/ui/macbook-scroll';
 
 type Skill = {
   name: string;
@@ -9,7 +13,7 @@ type Skill = {
 type SkillGroup = {
   title: string;
   description: string;
-  iconPath: string;
+  Icon: ComponentType<{ className?: string; stroke?: number }>;
   skills: Skill[];
 };
 
@@ -17,7 +21,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Frontend',
     description: 'Core tools for building typed, responsive, component-driven interfaces.',
-    iconPath: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+    Icon: IconCode,
     skills: [
       { name: 'HTML5', icon: 'html.png' },
       { name: 'CSS3', icon: 'css.png' },
@@ -39,7 +43,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Backend & API',
     description: 'Server-side experience from internship work and project integration.',
-    iconPath: 'M4 7h16M4 12h16M4 17h16M7 4v16M17 4v16',
+    Icon: IconServer,
     skills: [
       { name: 'Node.js', icon: 'nodejs.svg' },
       { name: 'Express.js', icon: 'express.png', scale: 1.35 },
@@ -53,7 +57,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Database & Storage',
     description: 'Data, caching, storage, and geospatial tools used in system work.',
-    iconPath: 'M4 7c0-2 3.6-4 8-4s8 2 8 4-3.6 4-8 4-8-2-8-4Zm0 0v5c0 2 3.6 4 8 4s8-2 8-4V7M4 12v5c0 2 3.6 4 8 4s8-2 8-4v-5',
+    Icon: IconDatabase,
     skills: [
       { name: 'PostgreSQL', icon: 'postgresql.svg' },
       { name: 'PostGIS', icon: 'postgis-2.png' , scale: 1.5},
@@ -66,7 +70,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Design & Tools',
     description: 'Design workflow, version control, deployment, and supporting tools.',
-    iconPath: 'M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5ZM19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.05a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.05A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.05a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.05A1.7 1.7 0 0 0 19.4 15Z',
+    Icon: IconSettings,
     skills: [
       { name: 'Figma', icon: 'fm.png' },
       { name: 'GitHub', icon: 'gh.png' },
@@ -86,14 +90,17 @@ const getFallbackLabel = (name: string) =>
     .join('')
     .toUpperCase();
 
-function SkillLogoTile({ skill, index }: { skill: Skill; index: number }) {
+function SkillLogoTile({ skill, index, isActive }: { skill: Skill; index: number; isActive: boolean }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.025 }}
-      whileHover={{ y: -5 }}
-      className="group flex min-w-[70px] flex-col items-center gap-1.5"
+      initial={false}
+      animate={isActive ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 8, filter: 'blur(4px)' }}
+      transition={{ duration: 0.32, delay: index * 0.035 }}
+      whileHover={isActive ? { y: -5 } : undefined}
+      className={cn(
+        'group flex min-w-[70px] flex-col items-center gap-1.5',
+        !isActive && 'pointer-events-none'
+      )}
     >
       <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br from-white via-gray-100 to-gray-300 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-10px_18px_rgba(0,0,0,0.08),0_10px_22px_rgba(0,0,0,0.28)] transition-shadow duration-300 before:absolute before:left-2 before:right-2 before:top-1.5 before:h-6 before:rounded-full before:bg-white/65 before:blur-md before:content-[''] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-10px_18px_rgba(0,0,0,0.07),0_12px_26px_rgba(34,211,238,0.16)] md:h-[72px] md:w-[72px]">
         {skill.icon ? (
@@ -116,43 +123,127 @@ function SkillLogoTile({ skill, index }: { skill: Skill; index: number }) {
   );
 }
 
-function SkillGroupCard({ group, index }: { group: SkillGroup; index: number }) {
+function SkillGroupCard({
+  group,
+  index,
+  isRevealed,
+  onReveal,
+  animated = true,
+  compact = false,
+}: {
+  group: SkillGroup;
+  index: number;
+  isRevealed: boolean;
+  onReveal: () => void;
+  animated?: boolean;
+  compact?: boolean;
+}) {
+  const { Icon } = group;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 34 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.65, delay: index * 0.06 }}
+      initial={animated ? { opacity: 0, y: -88 } : false}
+      whileInView={animated ? { opacity: 1, y: 0 } : undefined}
+      animate={animated ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.72, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: '-100px' }}
-      className="rounded-2xl border border-white/15 bg-black/35 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_22px_55px_rgba(0,0,0,0.28)] backdrop-blur-sm md:p-6"
+      onAnimationComplete={animated ? onReveal : undefined}
+      className={cn(
+        'rounded-2xl border border-white/15 bg-black/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_22px_55px_rgba(0,0,0,0.28)] backdrop-blur-sm',
+        compact ? 'p-4' : 'p-5 md:p-6',
+      )}
     >
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-gray-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-          <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={group.iconPath} />
-          </svg>
+        <div className={cn(
+          'flex shrink-0 items-center justify-center rounded-2xl bg-white/10 text-gray-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+          compact ? 'h-12 w-12' : 'h-14 w-14',
+        )}>
+          <Icon className={compact ? 'h-6 w-6' : 'h-7 w-7'} stroke={2} />
         </div>
         <div>
-          <h2 className="text-xl font-black text-white md:text-2xl">{group.title}</h2>
-          <p className="mt-1 max-w-xl text-sm leading-relaxed text-gray-500">{group.description}</p>
+          <h2 className={cn('font-black text-white', compact ? 'text-xl' : 'text-xl md:text-2xl')}>{group.title}</h2>
+          <p className={cn('mt-1 max-w-xl leading-relaxed text-gray-500', compact ? 'text-xs' : 'text-sm')}>{group.description}</p>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(72px,72px))] justify-start gap-x-4 gap-y-4">
+      <div className={cn(
+        'grid justify-start',
+        compact ? 'mt-5 grid-cols-[repeat(auto-fill,minmax(68px,68px))] gap-x-3 gap-y-3' : 'mt-6 grid-cols-[repeat(auto-fill,minmax(72px,72px))] gap-x-4 gap-y-4',
+      )}>
         {group.skills.map((skill, skillIndex) => (
-          <SkillLogoTile key={skill.name} skill={skill} index={skillIndex} />
+          <SkillLogoTile key={skill.name} skill={skill} index={skillIndex} isActive={isRevealed} />
         ))}
       </div>
     </motion.div>
   );
 }
 
+function SkillsGrid({
+  className,
+  isRevealed,
+  onReveal,
+  animated = true,
+  compact = false,
+}: {
+  className?: string;
+  isRevealed: (title: string) => boolean;
+  onReveal: (title: string) => void;
+  animated?: boolean;
+  compact?: boolean;
+}) {
+  return (
+    <div className={cn('grid gap-5 lg:grid-cols-2', className)}>
+      {skillGroups.map((group, index) => (
+        <SkillGroupCard
+          key={group.title}
+          group={group}
+          index={index}
+          isRevealed={isRevealed(group.title)}
+          onReveal={() => onReveal(group.title)}
+          animated={animated}
+          compact={compact}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function SkillsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [revealedGroups, setRevealedGroups] = useState<Record<string, boolean>>({});
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', '55% start'],
+  });
+  const extractedY = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [-735, -260, 0]);
+  const extractedScale = useTransform(scrollYProgress, [0.08, 0.5, 0.68], [0.46, 0.62, 1]);
+  const extractedRotateX = useTransform(scrollYProgress, [0.08, 0.3, 0.5], [-18, -8, 0]);
+
+  const revealGroup = (title: string) => {
+    setRevealedGroups((current) => (current[title] ? current : { ...current, [title]: true }));
+  };
+
   return (
     <section
+      ref={sectionRef}
       data-section="skills"
-      className="relative flex w-full items-center justify-center bg-transparent px-4 pb-16 pt-20 scroll-mt-0 sm:px-6"
+      className="relative flex w-full items-center justify-center overflow-hidden bg-transparent px-4 pb-16 pt-20 scroll-mt-0 sm:px-6"
     >
       <div className="w-full max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: '-100px' }}
+          className="mb-6"
+        >
+          <MacbookScroll
+            title={null}
+            showGradient={false}
+            className="-mb-24 md:-mb-28"
+          />
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -187,10 +278,35 @@ export default function SkillsSection() {
           </div>
         </motion.div>
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          {skillGroups.map((group, index) => (
-            <SkillGroupCard key={group.title} group={group} index={index} />
-          ))}
+        <motion.div
+          style={{
+            y: extractedY,
+            scale: extractedScale,
+            rotateX: extractedRotateX,
+            transformOrigin: 'top center',
+          }}
+          className="absolute left-1/2 top-[60rem] z-20 hidden w-[min(92vw,80rem)] -translate-x-1/2 [perspective:1400px] lg:block"
+        >
+          <SkillsGrid
+            isRevealed={() => true}
+            onReveal={() => undefined}
+            animated={false}
+          />
+        </motion.div>
+
+        <div className="pointer-events-none relative z-10 hidden opacity-0 lg:block">
+          <SkillsGrid
+            isRevealed={() => true}
+            onReveal={() => undefined}
+            animated={false}
+          />
+        </div>
+
+        <div className="relative z-10 lg:hidden">
+          <SkillsGrid
+            isRevealed={(title) => Boolean(revealedGroups[title])}
+            onReveal={revealGroup}
+          />
         </div>
       </div>
     </section>

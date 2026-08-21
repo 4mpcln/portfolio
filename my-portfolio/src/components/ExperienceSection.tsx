@@ -132,7 +132,7 @@ export default function ExperienceSection() {
             </p>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="grid gap-6">
             <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-white/10 via-white/[0.04] to-cyan-400/10 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-sm md:p-7">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <div>
@@ -165,19 +165,6 @@ export default function ExperienceSection() {
               </div>
             </div>
 
-            <div className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/[0.04] p-6 text-center">
-              <div>
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-white">
-                  <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M5 7v12h14V7M8 11h8M8 15h5" />
-                  </svg>
-                </div>
-                <p className="mt-4 text-sm font-semibold text-white">Internship Image</p>
-                <p className="mt-1 text-xs leading-relaxed text-gray-500">
-                  Add a company, office, or project screenshot later.
-                </p>
-              </div>
-            </div>
           </div>
         </motion.div>
 
