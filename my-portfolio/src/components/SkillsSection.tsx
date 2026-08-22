@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { IconCode, IconDatabase, IconServer, IconSettings } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 import { MacbookScroll } from '@/components/ui/macbook-scroll';
+import SectionUnderline from './SectionUnderline';
 
 type Skill = {
   name: string;
@@ -97,16 +98,16 @@ function SkillLogoTile({ skill, index, isActive }: { skill: Skill; index: number
       transition={{ duration: 0.32, delay: index * 0.035 }}
       whileHover={isActive ? { y: -5 } : undefined}
       className={cn(
-        'group flex min-w-[70px] flex-col items-center gap-1.5',
+        'group flex w-14 min-w-0 flex-col items-center gap-1.5 md:w-auto md:min-w-[70px]',
         !isActive && 'pointer-events-none'
       )}
     >
-      <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br from-white via-gray-100 to-gray-300 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-10px_18px_rgba(0,0,0,0.08),0_10px_22px_rgba(0,0,0,0.28)] transition-shadow duration-300 before:absolute before:left-2 before:right-2 before:top-1.5 before:h-6 before:rounded-full before:bg-white/65 before:blur-md before:content-[''] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-10px_18px_rgba(0,0,0,0.07),0_12px_26px_rgba(34,211,238,0.16)] md:h-[72px] md:w-[72px]">
+      <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/80 bg-gradient-to-br from-white via-gray-100 to-gray-300 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-10px_18px_rgba(0,0,0,0.08),0_10px_22px_rgba(0,0,0,0.28)] transition-shadow duration-300 before:absolute before:left-2 before:right-2 before:top-1.5 before:h-6 before:rounded-full before:bg-white/65 before:blur-md before:content-[''] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-10px_18px_rgba(0,0,0,0.07),0_12px_26px_rgba(34,211,238,0.16)] md:h-[72px] md:w-[72px] md:rounded-2xl md:p-3">
         {skill.icon ? (
           <img
             src={`/${skill.icon}`}
             alt={skill.name}
-            className="relative z-10 h-10 w-10 object-contain drop-shadow-sm md:h-11 md:w-11"
+            className="relative z-10 h-8 w-8 object-contain drop-shadow-sm md:h-11 md:w-11"
             style={{ transform: skill.scale ? `scale(${skill.scale})` : 'scale(1)' }}
           />
         ) : (
@@ -115,7 +116,7 @@ function SkillLogoTile({ skill, index, isActive }: { skill: Skill; index: number
           </span>
         )}
       </div>
-      <p className="max-w-[86px] text-center text-[11px] font-medium leading-tight text-gray-300 md:text-xs">
+      <p className="w-16 max-w-[64px] text-center text-[10px] font-medium leading-tight text-gray-300 md:max-w-[86px] md:text-xs">
         {skill.name}
       </p>
     </motion.div>
@@ -149,7 +150,7 @@ function SkillGroupCard({
       onAnimationComplete={animated ? onReveal : undefined}
       className={cn(
         'rounded-2xl border border-white/15 bg-black/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_22px_55px_rgba(0,0,0,0.28)] backdrop-blur-sm',
-        compact ? 'p-4' : 'p-5 md:p-6',
+        compact ? 'p-4' : 'p-4 sm:p-5 md:p-6',
       )}
     >
       <div className="flex items-start gap-4">
@@ -167,7 +168,9 @@ function SkillGroupCard({
 
       <div className={cn(
         'grid justify-start',
-        compact ? 'mt-5 grid-cols-[repeat(auto-fill,minmax(68px,68px))] gap-x-3 gap-y-3' : 'mt-6 grid-cols-[repeat(auto-fill,minmax(72px,72px))] gap-x-4 gap-y-4',
+        compact
+          ? 'mt-5 grid-cols-[repeat(auto-fit,minmax(56px,56px))] gap-x-4 gap-y-5 min-[430px]:gap-x-5 md:grid-cols-[repeat(auto-fill,minmax(68px,68px))] md:gap-x-5 md:gap-y-4 lg:gap-x-6'
+          : 'mt-6 grid-cols-[repeat(auto-fit,minmax(56px,56px))] gap-x-4 gap-y-5 min-[430px]:gap-x-5 md:grid-cols-[repeat(auto-fill,minmax(72px,72px))] md:gap-x-6 md:gap-y-5 lg:gap-x-8',
       )}>
         {group.skills.map((skill, skillIndex) => (
           <SkillLogoTile key={skill.name} skill={skill} index={skillIndex} isActive={isRevealed} />
@@ -305,13 +308,7 @@ export default function SkillsSection() {
                 />
               </svg>
             </h1>
-            <motion.div
-              initial={{ scaleX: 0, originX: 1 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              viewport={{ once: false, margin: '-100px' }}
-              className="ml-auto mt-3 h-1 w-1/2 min-w-[6rem] rounded-full bg-cyan-400"
-            />
+            <SectionUnderline className="ml-auto" />
           </div>
         </motion.div>
 

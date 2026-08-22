@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Lanyard from './Lanyard';
+import SectionUnderline from './SectionUnderline';
 
 export default function AboutMeSection() {
   const [displayText, setDisplayText] = useState('');
@@ -122,13 +123,7 @@ export default function AboutMeSection() {
                   />
                 </svg>
               </h1>
-              <motion.div
-                initial={{ scaleX: 0, originX: 1 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                viewport={{ once: false, margin: '-100px' }}
-                className="h-1 bg-cyan-400 mt-3 rounded-full w-1/2 min-w-[6rem] ml-auto"
-              />
+              <SectionUnderline className="ml-auto" />
 
               <motion.div
                 ref={lanyardRef}

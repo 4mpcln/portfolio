@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import Folder from './FolderComponent';
+import SectionUnderline from './SectionUnderline';
 import { Terminal, type TerminalCommand } from '@/components/ui/terminal';
 import { projects } from '@/data/projects';
 
@@ -407,13 +408,7 @@ export default function ExperienceSection() {
                       />
                     </svg>
                   </h1>
-                  <motion.div
-                    initial={{ scaleX: 0, originX: 1 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    viewport={{ once: false, margin: '-100px' }}
-                    className="mt-3 h-1 w-1/2 min-w-[6rem] self-end rounded-full bg-cyan-400"
-                  />
+                  <SectionUnderline className="self-end" />
                 </div>
               </div>
             </div>
