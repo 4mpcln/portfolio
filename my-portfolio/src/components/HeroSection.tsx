@@ -40,7 +40,7 @@ export default function HeroSection() {
             className="absolute top-16 sm:top-14 md:top-16"
           >
             <h1 className="text-[92px] sm:text-[110px] md:text-[116px] lg:text-[140px] xl:text-[160px] font-[900] text-white leading-none whitespace-nowrap">
-              Frontend
+              Fullstack
             </h1>
           </motion.div>
 
