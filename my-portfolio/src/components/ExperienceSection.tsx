@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Folder from './FolderComponent';
 import SectionUnderline from './SectionUnderline';
 import { Terminal, type TerminalCommand } from '@/components/ui/terminal';
@@ -45,6 +45,18 @@ const internshipImages = [
 ];
 
 type ExperienceView = 'internship' | 'project' | 'design';
+
+const experiencePathMap: Record<ExperienceView, string> = {
+  internship: '/internship',
+  project: '/project',
+  design: '/design',
+};
+
+const getExperienceViewFromPath = (pathname: string): ExperienceView => {
+  if (pathname === '/project') return 'project';
+  if (pathname === '/design') return 'design';
+  return 'internship';
+};
 
 interface InternFullscreenModalProps {
   currentImageIndex: number;
@@ -142,11 +154,17 @@ function InternFullscreenModal({
 }
 
 export default function ExperienceSection() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  const [activeView, setActiveView] = useState<ExperienceView>('internship');
+  const [activeView, setActiveView] = useState<ExperienceView>(() => getExperienceViewFromPath(location.pathname));
   const [currentInternImage, setCurrentInternImage] = useState(0);
   const [isInternFullscreen, setIsInternFullscreen] = useState(false);
   const [isInternDetailExpanded, setIsInternDetailExpanded] = useState(false);
+
+  useEffect(() => {
+    setActiveView(getExperienceViewFromPath(location.pathname));
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -177,6 +195,12 @@ export default function ExperienceSection() {
 
   const handleNextInternImage = () => {
     setCurrentInternImage((prev) => (prev === internshipImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleExperienceViewChange = (command: string) => {
+    const nextView = command as ExperienceView;
+    setActiveView(nextView);
+    navigate(experiencePathMap[nextView]);
   };
 
   const renderFolderGrid = (items: typeof folders) => (
@@ -426,7 +450,7 @@ export default function ExperienceSection() {
               defaultCommand="internship"
               username="krit@experience"
               enableSound={false}
-              onCommandChange={(command) => setActiveView(command as ExperienceView)}
+              onCommandChange={handleExperienceViewChange}
             />
 
             <motion.div

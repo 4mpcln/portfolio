@@ -2,6 +2,15 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 
 const SCROLL_KEY = 'portfolio_home_scroll';
+const HOME_PATHS = ['/', '/internship', '/project', '/design'];
+const EXPERIENCE_PATHS = ['/internship', '/project', '/design'];
+
+const isElementInCurrentView = (element: Element) => {
+  const rect = element.getBoundingClientRect();
+  const focusLine = window.innerHeight * 0.45;
+
+  return rect.top <= focusLine && rect.bottom >= focusLine;
+};
 
 export default function RouteScrollManager() {
   const location = useLocation();
@@ -17,7 +26,7 @@ export default function RouteScrollManager() {
   // 💾 Step 2: บันทึกตำแหน่ง scroll เฉพาะหน้า Home เท่านั้น
   useEffect(() => {
     // ถ้าไม่ใช่หน้า Home ไม่ต้องทำอะไร
-    if (location.pathname !== '/') return;
+    if (!HOME_PATHS.includes(location.pathname)) return;
 
     let rafId = 0;
     let isActive = true; // ตัวแปรควบคุมว่า effect นี้ยังใช้งานอยู่หรือไม่
@@ -75,6 +84,26 @@ export default function RouteScrollManager() {
     }
 
     // 📌 กรณีที่ 2: อยู่ที่หน้า Home
+    if (EXPERIENCE_PATHS.includes(location.pathname)) {
+      const experienceSection = document.querySelector('[data-section="experience"]');
+      if (!experienceSection) return;
+
+      if (navigationType === 'POP') {
+        const savedScroll = sessionStorage.getItem(SCROLL_KEY);
+        if (savedScroll) {
+          const targetY = parseInt(savedScroll, 10);
+          window.scrollTo(0, targetY);
+          setTimeout(() => window.scrollTo(0, targetY), 50);
+          return;
+        }
+      }
+
+      if (!isElementInCurrentView(experienceSection)) {
+        experienceSection.scrollIntoView({ block: 'start' });
+      }
+      return;
+    }
+
     if (location.pathname === '/') {
       
       // 🔙 กรณี 2.1: กด Back กลับมาหน้า Home
