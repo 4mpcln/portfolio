@@ -35,9 +35,19 @@ export default function App() {
       <RouteScrollManager />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/about" element={<HomePage />} />
+        <Route path="/skill" element={<HomePage />} />
+        <Route path="/experience" element={<HomePage />} />
+        <Route path="/experience/internship" element={<HomePage />} />
+        <Route path="/experience/project" element={<HomePage />} />
+        <Route path="/experience/design" element={<HomePage />} />
+        <Route path="/skills" element={<HomePage />} />
         <Route path="/internship" element={<HomePage />} />
         <Route path="/project" element={<HomePage />} />
         <Route path="/design" element={<HomePage />} />
+        <Route path="/experience/project/:projectId" element={<ProjectDetail />} />
+        <Route path="/experience/design/:projectId" element={<ProjectDetail />} />
         <Route path="/projects/:projectId" element={<ProjectDetail />} />
       </Routes>
     </BrowserRouter>

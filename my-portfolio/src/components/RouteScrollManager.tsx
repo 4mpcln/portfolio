@@ -1,9 +1,54 @@
 import { useEffect, useLayoutEffect } from 'react';
-import { useLocation, useNavigationType } from 'react-router-dom';
+import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 
 const SCROLL_KEY = 'portfolio_home_scroll';
-const HOME_PATHS = ['/', '/internship', '/project', '/design'];
-const EXPERIENCE_PATHS = ['/internship', '/project', '/design'];
+const HOME_PATHS = [
+  '/',
+  '/home',
+  '/about',
+  '/skill',
+  '/experience',
+  '/experience/internship',
+  '/experience/project',
+  '/experience/design',
+  '/skills',
+  '/internship',
+  '/project',
+  '/design',
+];
+const SECTION_PATHS: Record<string, string> = {
+  '/about': 'about',
+  '/skill': 'skills',
+  '/experience': 'experience',
+  '/experience/internship': 'experience',
+  '/experience/project': 'experience',
+  '/experience/design': 'experience',
+  '/skills': 'skills',
+  '/internship': 'experience',
+  '/project': 'experience',
+  '/design': 'experience',
+};
+const SCROLL_SECTION_PATHS: Record<string, string> = {
+  home: '/home',
+  about: '/about',
+  skills: '/skill',
+};
+
+const isProjectDetailPath = (pathname: string) =>
+  pathname.startsWith('/projects/') ||
+  pathname.startsWith('/experience/project/') ||
+  pathname.startsWith('/experience/design/');
+
+const getExperiencePathForCurrentRoute = (pathname: string) => {
+  if (pathname === '/experience/project' || pathname === '/project') return '/experience/project';
+  if (pathname === '/experience/design' || pathname === '/design') return '/experience/design';
+  return '/experience/internship';
+};
+
+const getPathForScrollSection = (sectionName: string, currentPath: string) => {
+  if (sectionName === 'experience') return getExperiencePathForCurrentRoute(currentPath);
+  return SCROLL_SECTION_PATHS[sectionName] ?? '/home';
+};
 
 const isElementInCurrentView = (element: Element) => {
   const rect = element.getBoundingClientRect();
@@ -12,9 +57,24 @@ const isElementInCurrentView = (element: Element) => {
   return rect.top <= focusLine && rect.bottom >= focusLine;
 };
 
+const scrollToSectionHeader = (sectionName: string) => {
+  const header = document.querySelector(`[data-section-header="${sectionName}"]`);
+  const section = document.querySelector(`[data-section="${sectionName}"]`);
+  const target = header ?? section;
+
+  if (!target) return;
+  if (isElementInCurrentView(target)) return;
+
+  const offset = Math.min(160, window.innerHeight * 0.28);
+  const targetY = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo(0, targetY);
+};
+
 export default function RouteScrollManager() {
   const location = useLocation();
+  const navigate = useNavigate();
   const navigationType = useNavigationType();
+  const locationState = location.state as { skipRouteScroll?: boolean } | null;
 
   // 🔒 Step 1: ปิด native browser scroll restoration อย่างถาวร
   useLayoutEffect(() => {
@@ -76,35 +136,27 @@ export default function RouteScrollManager() {
       type: navigationType,
     });
 
+    if (locationState?.skipRouteScroll) {
+      return;
+    }
+
     // 📌 กรณีที่ 1: เข้าหน้า Project Detail → เริ่มที่บนสุดเสมอ
-    if (location.pathname.startsWith('/projects/')) {
+    if (isProjectDetailPath(location.pathname)) {
       console.log('📄 [PROJECT PAGE] Scrolling to top');
       window.scrollTo(0, 0);
       return;
     }
 
-    // 📌 กรณีที่ 2: อยู่ที่หน้า Home
-    if (EXPERIENCE_PATHS.includes(location.pathname)) {
-      const experienceSection = document.querySelector('[data-section="experience"]');
-      if (!experienceSection) return;
-
-      if (navigationType === 'POP') {
-        const savedScroll = sessionStorage.getItem(SCROLL_KEY);
-        if (savedScroll) {
-          const targetY = parseInt(savedScroll, 10);
-          window.scrollTo(0, targetY);
-          setTimeout(() => window.scrollTo(0, targetY), 50);
-          return;
-        }
-      }
-
-      if (!isElementInCurrentView(experienceSection)) {
-        experienceSection.scrollIntoView({ block: 'start' });
-      }
+    // 📌 กรณีที่ 2: อยู่ที่หน้า Home และเป็น route ของ section
+    const sectionName = SECTION_PATHS[location.pathname];
+    if (sectionName) {
+      scrollToSectionHeader(sectionName);
+      requestAnimationFrame(() => scrollToSectionHeader(sectionName));
+      window.setTimeout(() => scrollToSectionHeader(sectionName), 50);
       return;
     }
 
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '/home') {
       
       // 🔙 กรณี 2.1: กด Back กลับมาหน้า Home
       if (navigationType === 'POP') {
@@ -129,7 +181,45 @@ export default function RouteScrollManager() {
       window.scrollTo(0, 0);
       sessionStorage.removeItem(SCROLL_KEY); // ล้างค่าเก่าทิ้ง
     }
-  }, [location.pathname, navigationType]);
+  }, [location.pathname, locationState?.skipRouteScroll, navigationType]);
+
+  useEffect(() => {
+    if (!HOME_PATHS.includes(location.pathname)) return;
+
+    let rafId = 0;
+
+    const updatePathFromScroll = () => {
+      if (rafId) return;
+
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
+        const viewportMarker = window.scrollY + window.innerHeight * 0.45;
+        let currentSection = window.scrollY < 100 ? 'home' : 'home';
+
+        sections.forEach((section) => {
+          if (section.offsetTop <= viewportMarker) {
+            currentSection = section.getAttribute('data-section') || currentSection;
+          }
+        });
+
+        const nextPath = getPathForScrollSection(currentSection, location.pathname);
+        if (nextPath !== location.pathname) {
+          navigate(nextPath, { replace: true, state: { skipRouteScroll: true } });
+        }
+      });
+    };
+
+    updatePathFromScroll();
+    window.addEventListener('scroll', updatePathFromScroll, { passive: true });
+    window.addEventListener('resize', updatePathFromScroll);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', updatePathFromScroll);
+      window.removeEventListener('resize', updatePathFromScroll);
+    };
+  }, [location.pathname, navigate]);
 
   return null;
 }

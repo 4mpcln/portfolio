@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
   { 
@@ -37,8 +38,15 @@ const menuItems = [
 ];
 
 const HEADER_EDGE_OFFSET = 5;
+const menuPathMap: Record<string, string> = {
+  Home: '/home',
+  About: '/about',
+  Skills: '/skill',
+  Experience: '/experience/internship',
+};
 
 export default function HeroMenu() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true); // Start open
   const [selectedItem, setSelectedItem] = useState('Home');
   const [scrollY, setScrollY] = useState(0);
@@ -228,7 +236,7 @@ export default function HeroMenu() {
           {menuItems.map((item) => (
             <motion.a
               key={item.label}
-              href={`#${item.label.toLowerCase()}`}
+              href={menuPathMap[item.label]}
               animate={isOpen ? {
                 opacity: 1,
                 width: 'auto',
@@ -247,6 +255,7 @@ export default function HeroMenu() {
               onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
                 setSelectedItem(item.label);
+                navigate(menuPathMap[item.label], { state: { skipRouteScroll: true } });
                 if (item.label.toLowerCase() === 'home') {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {

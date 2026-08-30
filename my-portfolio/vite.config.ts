@@ -6,9 +6,13 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    dedupe: ['react', 'react-dom', '@react-three/fiber'],
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    include: ['@react-three/fiber', '@react-three/drei', '@react-three/rapier', 'three'],
   },
   server: {
     port: 3000,

@@ -289,6 +289,7 @@ export default function SkillsSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: '-100px' }}
           data-skills-anchor="title"
+          data-section-header="skills"
           className="relative mb-8 text-right md:mb-10"
         >
           <div className="relative inline-block">

@@ -47,16 +47,25 @@ const internshipImages = [
 type ExperienceView = 'internship' | 'project' | 'design';
 
 const experiencePathMap: Record<ExperienceView, string> = {
-  internship: '/internship',
-  project: '/project',
-  design: '/design',
+  internship: '/experience/internship',
+  project: '/experience/project',
+  design: '/experience/design',
 };
 
 const getExperienceViewFromPath = (pathname: string): ExperienceView => {
-  if (pathname === '/project') return 'project';
-  if (pathname === '/design') return 'design';
+  if (pathname === '/experience/project' || pathname === '/project') return 'project';
+  if (pathname === '/experience/design' || pathname === '/design') return 'design';
   return 'internship';
 };
+
+const isExperienceSectionPath = (pathname: string) =>
+  pathname === '/experience' ||
+  pathname === '/experience/internship' ||
+  pathname === '/experience/project' ||
+  pathname === '/experience/design' ||
+  pathname === '/internship' ||
+  pathname === '/project' ||
+  pathname === '/design';
 
 interface InternFullscreenModalProps {
   currentImageIndex: number;
@@ -163,7 +172,9 @@ export default function ExperienceSection() {
   const [isInternDetailExpanded, setIsInternDetailExpanded] = useState(false);
 
   useEffect(() => {
-    setActiveView(getExperienceViewFromPath(location.pathname));
+    if (isExperienceSectionPath(location.pathname)) {
+      setActiveView(getExperienceViewFromPath(location.pathname));
+    }
   }, [location.pathname]);
 
   useEffect(() => {
@@ -200,7 +211,7 @@ export default function ExperienceSection() {
   const handleExperienceViewChange = (command: string) => {
     const nextView = command as ExperienceView;
     setActiveView(nextView);
-    navigate(experiencePathMap[nextView]);
+    navigate(experiencePathMap[nextView], { state: { skipRouteScroll: true } });
   };
 
   const renderFolderGrid = (items: typeof folders) => (
@@ -208,7 +219,7 @@ export default function ExperienceSection() {
       {items.map((folder) => (
         <Link
           key={folder.id}
-          to={`/projects/${folder.id}`}
+          to={`/experience/${folder.category === 'design' ? 'design' : 'project'}/${folder.id}`}
           aria-label={`View details for ${folder.title}`}
           className="block"
         >
@@ -450,6 +461,7 @@ export default function ExperienceSection() {
               defaultCommand="internship"
               username="krit@experience"
               enableSound={false}
+              autoFocusOnView
               onCommandChange={handleExperienceViewChange}
             />
 

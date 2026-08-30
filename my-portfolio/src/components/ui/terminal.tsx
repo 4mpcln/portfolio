@@ -15,11 +15,18 @@ export interface TerminalProps {
   username?: string;
   className?: string;
   enableSound?: boolean;
+  autoFocusOnView?: boolean;
   onCommandChange?: (command: string) => void;
 }
 
 const normalizeCommand = (value: string) => value.trim().toLowerCase();
 const hintCommands = ['internship', 'project', 'design'];
+const isTextEntryElement = (element: Element | null) => {
+  if (!(element instanceof HTMLElement)) return false;
+  const tagName = element.tagName.toLowerCase();
+
+  return tagName === 'input' || tagName === 'textarea' || tagName === 'select' || element.isContentEditable;
+};
 
 export function Terminal({
   commands,
@@ -28,6 +35,7 @@ export function Terminal({
   username = 'krit@portfolio',
   className,
   enableSound = false,
+  autoFocusOnView = false,
   onCommandChange,
 }: TerminalProps) {
   const [input, setInput] = useState('');
@@ -39,6 +47,7 @@ export function Terminal({
   const [hintIndex, setHintIndex] = useState(0);
   const [isDeletingHint, setIsDeletingHint] = useState(false);
   const pendingTimerRef = useRef<number | null>(null);
+  const terminalRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const commandMap = useMemo(() => {
@@ -65,6 +74,30 @@ export function Terminal({
       if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (!autoFocusOnView) return;
+    const terminal = terminalRef.current;
+    if (!terminal) return;
+
+    const focusInput = () => inputRef.current?.focus({ preventScroll: true });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+
+        const activeElement = document.activeElement;
+        const canFocus = terminal.contains(activeElement) || !isTextEntryElement(activeElement);
+
+        if (canFocus) {
+          focusInput();
+        }
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(terminal);
+    return () => observer.disconnect();
+  }, [autoFocusOnView]);
 
   useEffect(() => {
     const currentHint = hintCommands[hintIndex];
@@ -153,6 +186,7 @@ export function Terminal({
 
   return (
     <div
+      ref={terminalRef}
       className={cn(
         'relative overflow-hidden rounded-2xl border border-white/15 bg-black/80 shadow-[0_28px_90px_rgba(0,0,0,0.45)] backdrop-blur-md',
         className,

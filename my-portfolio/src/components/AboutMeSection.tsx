@@ -1,26 +1,37 @@
 import { motion, useInView } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Component, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import Lanyard from './Lanyard';
 import SectionUnderline from './SectionUnderline';
+
+class LanyardMountBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error('Lanyard failed to render:', error);
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
 
 export default function AboutMeSection() {
   const [displayText, setDisplayText] = useState('');
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const lanyardRef = useRef<HTMLDivElement>(null);
-  const isLanyardInView = useInView(lanyardRef, { amount: 0.2, margin: '1000px 0px 0px 0px' });
   const isLanyardVisible = useInView(lanyardRef, { amount: 0.4 });
   const [dropKey, setDropKey] = useState(0);
-  const [hasScrolledNearLanyard, setHasScrolledNearLanyard] = useState(false);
 
   const skills = useMemo(
     () => ['College of Computing Student', 'Front-end Developer' , 'UX/UI designer', 'Backend Developer'],
     []
   );
-
-  useEffect(() => {
-    if (isLanyardInView) setHasScrolledNearLanyard(true);
-  }, [isLanyardInView]);
 
   useEffect(() => {
     if (isLanyardVisible) setDropKey((k) => k + 1);
@@ -134,9 +145,9 @@ export default function AboutMeSection() {
                 className="relative z-50 ml-auto mt-1 w-full max-w-[430px] sm:max-w-[460px] md:absolute md:right-0 md:top-full md:mt-1 md:w-[390px] md:max-w-none min-[900px]:w-[430px] lg:w-[450px]"
                 style={{ overflow: 'visible' }}
               >
-                {hasScrolledNearLanyard && (
+                <LanyardMountBoundary>
                   <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} resetSignal={dropKey} />
-                )}
+                </LanyardMountBoundary>
               </motion.div>
             </div>
           </motion.div>
