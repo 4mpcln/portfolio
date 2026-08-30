@@ -49,13 +49,7 @@ const getPathForScrollSection = (sectionName: string, currentPath: string) => {
   if (sectionName === 'experience') return getExperiencePathForCurrentRoute(currentPath);
   return SCROLL_SECTION_PATHS[sectionName] ?? '/home';
 };
-
-const isElementInCurrentView = (element: Element) => {
-  const rect = element.getBoundingClientRect();
-  const focusLine = window.innerHeight * 0.45;
-
-  return rect.top <= focusLine && rect.bottom >= focusLine;
-};
+const HEADER_EDGE_OFFSET = 5;
 
 const scrollToSectionHeader = (sectionName: string) => {
   const header = document.querySelector(`[data-section-header="${sectionName}"]`);
@@ -63,10 +57,8 @@ const scrollToSectionHeader = (sectionName: string) => {
   const target = header ?? section;
 
   if (!target) return;
-  if (isElementInCurrentView(target)) return;
 
-  const offset = Math.min(160, window.innerHeight * 0.28);
-  const targetY = target.getBoundingClientRect().top + window.scrollY - offset;
+  const targetY = target.getBoundingClientRect().top + window.scrollY + HEADER_EDGE_OFFSET;
   window.scrollTo(0, targetY);
 };
 
