@@ -135,10 +135,14 @@ export default function RouteScrollManager() {
 
     if (typeof locationState?.restoreScrollY === 'number' && HOME_PATHS.includes(location.pathname)) {
       const targetY = locationState.restoreScrollY;
-      skipPathSyncUntilRef.current = locationState.skipPathSyncUntil ?? Date.now() + 500;
+      skipPathSyncUntilRef.current = locationState.skipPathSyncUntil ?? Date.now() + 1200;
       window.scrollTo(0, targetY);
       requestAnimationFrame(() => window.scrollTo(0, targetY));
+      window.setTimeout(() => window.scrollTo(0, targetY), 0);
       window.setTimeout(() => window.scrollTo(0, targetY), 50);
+      window.setTimeout(() => window.scrollTo(0, targetY), 150);
+      window.setTimeout(() => window.scrollTo(0, targetY), 300);
+      window.setTimeout(() => window.scrollTo(0, targetY), 600);
       return;
     }
 
@@ -224,7 +228,6 @@ export default function RouteScrollManager() {
       });
     };
 
-    updatePathFromScroll();
     window.addEventListener('scroll', updatePathFromScroll, { passive: true });
     window.addEventListener('resize', updatePathFromScroll);
 

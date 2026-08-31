@@ -51,9 +51,10 @@ export default function ProjectDetail() {
     const returnScrollY = parsedReturn?.returnScrollY ?? routeState?.returnScrollY;
 
     navigate(returnTo, {
+      replace: true,
       state: {
         restoreScrollY: returnScrollY,
-        skipPathSyncUntil: Date.now() + 500,
+        skipPathSyncUntil: Date.now() + 1200,
       },
     });
   };
