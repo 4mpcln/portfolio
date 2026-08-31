@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 
 const SCROLL_KEY = 'portfolio_home_scroll';
@@ -66,7 +66,12 @@ export default function RouteScrollManager() {
   const location = useLocation();
   const navigate = useNavigate();
   const navigationType = useNavigationType();
-  const locationState = location.state as { skipRouteScroll?: boolean; restoreScrollY?: number } | null;
+  const locationState = location.state as {
+    skipRouteScroll?: boolean;
+    restoreScrollY?: number;
+    skipPathSyncUntil?: number;
+  } | null;
+  const skipPathSyncUntilRef = useRef(0);
 
   // 🔒 Step 1: ปิด native browser scroll restoration อย่างถาวร
   useLayoutEffect(() => {
@@ -130,6 +135,7 @@ export default function RouteScrollManager() {
 
     if (typeof locationState?.restoreScrollY === 'number' && HOME_PATHS.includes(location.pathname)) {
       const targetY = locationState.restoreScrollY;
+      skipPathSyncUntilRef.current = locationState.skipPathSyncUntil ?? Date.now() + 500;
       window.scrollTo(0, targetY);
       requestAnimationFrame(() => window.scrollTo(0, targetY));
       window.setTimeout(() => window.scrollTo(0, targetY), 50);
@@ -181,7 +187,13 @@ export default function RouteScrollManager() {
       window.scrollTo(0, 0);
       sessionStorage.removeItem(SCROLL_KEY); // ล้างค่าเก่าทิ้ง
     }
-  }, [location.pathname, locationState?.skipRouteScroll, navigationType]);
+  }, [
+    location.pathname,
+    locationState?.restoreScrollY,
+    locationState?.skipPathSyncUntil,
+    locationState?.skipRouteScroll,
+    navigationType,
+  ]);
 
   useEffect(() => {
     if (!HOME_PATHS.includes(location.pathname)) return;
@@ -193,6 +205,8 @@ export default function RouteScrollManager() {
 
       rafId = requestAnimationFrame(() => {
         rafId = 0;
+        if (Date.now() < skipPathSyncUntilRef.current) return;
+
         const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
         const viewportMarker = window.scrollY + window.innerHeight * 0.45;
         let currentSection = window.scrollY < 100 ? 'home' : 'home';

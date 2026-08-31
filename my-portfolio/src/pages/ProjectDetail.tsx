@@ -5,6 +5,20 @@ import CursorFollower from '@/components/CursorFollower';
 import Footer from '@/components/footer';
 import { projects } from '@/data/projects';
 
+const PROJECT_RETURN_KEY = 'portfolio_project_return';
+const getSavedProjectReturn = () => {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const savedReturn = sessionStorage.getItem(PROJECT_RETURN_KEY);
+    return savedReturn
+      ? (JSON.parse(savedReturn) as { returnTo?: string; returnScrollY?: number })
+      : null;
+  } catch {
+    return null;
+  }
+};
+
 export default function ProjectDetail() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,10 +46,14 @@ export default function ProjectDetail() {
 
   const handleBack = () => {
     const fallbackPath = project?.category === 'design' ? '/experience/design' : '/experience/project';
+    const parsedReturn = getSavedProjectReturn();
+    const returnTo = parsedReturn?.returnTo ?? routeState?.returnTo ?? fallbackPath;
+    const returnScrollY = parsedReturn?.returnScrollY ?? routeState?.returnScrollY;
 
-    navigate(routeState?.returnTo ?? fallbackPath, {
+    navigate(returnTo, {
       state: {
-        restoreScrollY: routeState?.returnScrollY,
+        restoreScrollY: returnScrollY,
+        skipPathSyncUntil: Date.now() + 500,
       },
     });
   };

@@ -45,6 +45,7 @@ const internshipImages = [
 ];
 
 type ExperienceView = 'internship' | 'project' | 'design';
+const PROJECT_RETURN_KEY = 'portfolio_project_return';
 
 const experiencePathMap: Record<ExperienceView, string> = {
   internship: '/experience/internship',
@@ -214,6 +215,13 @@ export default function ExperienceSection() {
     navigate(experiencePathMap[nextView], { state: { skipRouteScroll: true } });
   };
 
+  const saveProjectReturnPoint = () => {
+    const returnTo = experiencePathMap[activeView];
+    const returnScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+
+    sessionStorage.setItem(PROJECT_RETURN_KEY, JSON.stringify({ returnTo, returnScrollY }));
+  };
+
   const renderFolderGrid = (items: typeof folders) => (
     <div className="mt-10 grid w-full grid-cols-2 justify-items-center gap-x-8 gap-y-28 overflow-visible pb-20 pt-8 md:gap-x-8 md:gap-y-36 lg:grid-cols-3 lg:gap-x-20 lg:gap-y-44 xl:grid-cols-4">
       {items.map((folder) => (
@@ -221,9 +229,10 @@ export default function ExperienceSection() {
           key={folder.id}
           to={`/experience/${folder.category === 'design' ? 'design' : 'project'}/${folder.id}`}
           state={{
-            returnTo: location.pathname,
+            returnTo: experiencePathMap[activeView],
             returnScrollY: typeof window !== 'undefined' ? window.scrollY : 0,
           }}
+          onClick={saveProjectReturnPoint}
           aria-label={`View details for ${folder.title}`}
           className="block"
         >
