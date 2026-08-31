@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import CursorFollower from '@/components/CursorFollower';
@@ -7,9 +7,11 @@ import { projects } from '@/data/projects';
 
 export default function ProjectDetail() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { projectId } = useParams();
   const project = projects.find((item) => item.id === projectId);
   const sampleImages = project?.sampleImages ?? [];
+  const routeState = location.state as { returnTo?: string; returnScrollY?: number } | null;
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -28,6 +30,16 @@ export default function ProjectDetail() {
     if (e.key === 'Escape') setIsFullscreen(false);
   };
 
+  const handleBack = () => {
+    const fallbackPath = project?.category === 'design' ? '/experience/design' : '/experience/project';
+
+    navigate(routeState?.returnTo ?? fallbackPath, {
+      state: {
+        restoreScrollY: routeState?.returnScrollY,
+      },
+    });
+  };
+
   return (
     <div className="relative w-full min-h-screen bg-black flex flex-col">
       <CursorFollower />
@@ -36,7 +48,7 @@ export default function ProjectDetail() {
         <div className="max-w-5xl mx-auto px-6 pt-28 pb-16">
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
           >
 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 42 42">

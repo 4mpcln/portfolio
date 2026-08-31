@@ -220,6 +220,10 @@ export default function ExperienceSection() {
         <Link
           key={folder.id}
           to={`/experience/${folder.category === 'design' ? 'design' : 'project'}/${folder.id}`}
+          state={{
+            returnTo: location.pathname,
+            returnScrollY: typeof window !== 'undefined' ? window.scrollY : 0,
+          }}
           aria-label={`View details for ${folder.title}`}
           className="block"
         >

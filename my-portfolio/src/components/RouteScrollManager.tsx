@@ -66,7 +66,7 @@ export default function RouteScrollManager() {
   const location = useLocation();
   const navigate = useNavigate();
   const navigationType = useNavigationType();
-  const locationState = location.state as { skipRouteScroll?: boolean } | null;
+  const locationState = location.state as { skipRouteScroll?: boolean; restoreScrollY?: number } | null;
 
   // 🔒 Step 1: ปิด native browser scroll restoration อย่างถาวร
   useLayoutEffect(() => {
@@ -127,6 +127,14 @@ export default function RouteScrollManager() {
       path: location.pathname,
       type: navigationType,
     });
+
+    if (typeof locationState?.restoreScrollY === 'number' && HOME_PATHS.includes(location.pathname)) {
+      const targetY = locationState.restoreScrollY;
+      window.scrollTo(0, targetY);
+      requestAnimationFrame(() => window.scrollTo(0, targetY));
+      window.setTimeout(() => window.scrollTo(0, targetY), 50);
+      return;
+    }
 
     if (locationState?.skipRouteScroll) {
       return;
