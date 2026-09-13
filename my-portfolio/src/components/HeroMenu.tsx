@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import type { MotionValue } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
 const menuItems = [
   { 
@@ -45,12 +48,99 @@ const menuPathMap: Record<string, string> = {
   Experience: '/experience/internship',
 };
 
+type FloatingMenuItemProps = {
+  href: string;
+  icon: ReactNode;
+  isOpen: boolean;
+  isSelected: boolean;
+  label: string;
+  mouseX: MotionValue<number>;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
+};
+
+function FloatingMenuItem({
+  href,
+  icon,
+  isOpen,
+  isSelected,
+  label,
+  mouseX,
+  onClick,
+}: FloatingMenuItemProps) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const distance = useTransform(mouseX, (value) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return value - bounds.x - bounds.width / 2;
+  });
+
+  const yTransform = useTransform(distance, [-130, 0, 130], [0, -9, 0]);
+  const scaleTransform = useTransform(distance, [-130, 0, 130], [1, 1.14, 1]);
+  const iconSizeTransform = useTransform(distance, [-130, 0, 130], [16, 23, 16]);
+
+  const y = useSpring(yTransform, { mass: 0.12, stiffness: 180, damping: 14 });
+  const scale = useSpring(scaleTransform, { mass: 0.12, stiffness: 180, damping: 14 });
+  const iconSize = useSpring(iconSizeTransform, { mass: 0.12, stiffness: 180, damping: 14 });
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      aria-current={isSelected ? 'page' : undefined}
+      animate={
+        isOpen
+          ? {
+              opacity: 1,
+              width: 'auto',
+              paddingLeft: 8,
+              paddingRight: 8,
+            }
+          : {
+              opacity: 0,
+              width: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+            }
+      }
+      style={{ y, scale }}
+      transition={{ duration: 0.2 }}
+      className={cn(
+        'group relative flex w-fit items-center gap-1.5 overflow-visible whitespace-nowrap rounded-full py-1 text-sm font-bold text-white outline-none transition-colors',
+        isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+        'hover:bg-white/10 hover:text-gray-200 focus-visible:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50',
+      )}
+      onClick={onClick}
+    >
+      <motion.span
+        style={{ width: iconSize, height: iconSize }}
+        className="flex shrink-0 items-center justify-center"
+        whileHover={{
+          rotate: [0, -13, 12, -9, 8, -4, 0],
+          x: [0, -2, 2, -1.5, 1.5, -0.5, 0],
+        }}
+        transition={{ duration: 0.46, ease: 'easeInOut' }}
+      >
+        {icon}
+      </motion.span>
+      <span
+        className={cn(
+          'relative',
+          isSelected &&
+            "after:absolute after:bottom-0 after:left-1/3 after:h-0.5 after:w-1/3 after:rounded-full after:bg-white after:content-['']",
+        )}
+      >
+        {label}
+      </span>
+    </motion.a>
+  );
+}
+
 export default function HeroMenu() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true); // Start open
   const [selectedItem, setSelectedItem] = useState('Home');
   const [scrollY, setScrollY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
+  const mouseX = useMotionValue(Infinity);
 
   const animateScrollTo = (
     targetY: number,
@@ -190,15 +280,27 @@ export default function HeroMenu() {
       initial={false}
     >
       <motion.div
-        className="flex items-center gap-0 rounded-full px-6 py-4 cursor-pointer transition-colors"
+        className="flex cursor-pointer items-center gap-0 rounded-full border border-white/10 px-6 py-4 shadow-lg shadow-black/20 backdrop-blur-md transition-colors"
         style={{ backgroundColor: '#33333366' }}
+        animate={{
+          y: isOpen ? -2 : 0,
+          scale: isOpen ? 1.015 : 1,
+          boxShadow: isOpen
+            ? '0 18px 45px rgba(0, 0, 0, 0.32)'
+            : '0 10px 25px rgba(0, 0, 0, 0.2)',
+        }}
+        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         onMouseEnter={() => {
           setIsOpen(true);
         }}
         onMouseLeave={() => {
+          mouseX.set(Infinity);
           if (!isTouch && scrollY > 600) {
             setIsOpen(false);
           }
+        }}
+        onMouseMove={(event) => {
+          mouseX.set(event.clientX);
         }}
         onPointerEnter={(event) => {
           if (event.pointerType === 'mouse') {
@@ -232,27 +334,17 @@ export default function HeroMenu() {
         </motion.span>
 
         {/* Menu Items */}
-        <motion.div className="flex items-center gap-0" layout>
+        <motion.div className="flex items-end gap-0" layout>
           {menuItems.map((item) => (
-            <motion.a
+            <FloatingMenuItem
               key={item.label}
               href={menuPathMap[item.label]}
-              animate={isOpen ? {
-                opacity: 1,
-                width: 'auto',
-                paddingLeft: 8,
-                paddingRight: 8
-              } : {
-                opacity: 0,
-                width: 0,
-                paddingLeft: 0,
-                paddingRight: 0
-              }}
-              transition={{ duration: 0.2 }}
-              className={`text-white font-bold text-sm whitespace-nowrap transition-colors px-0.5 py-1 w-fit relative flex items-center gap-1 ${
-                selectedItem === item.label ? 'hover:text-gray-300' : 'hover:text-gray-300'
-              }`}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+              icon={item.icon}
+              isOpen={isOpen}
+              isSelected={selectedItem === item.label}
+              label={item.label}
+              mouseX={mouseX}
+              onClick={(e) => {
                 e.preventDefault();
                 setSelectedItem(item.label);
                 navigate(menuPathMap[item.label], { state: { skipRouteScroll: true } });
@@ -262,20 +354,7 @@ export default function HeroMenu() {
                   scrollToSection(item.label.toLowerCase());
                 }
               }}
-            >
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center justify-center"
-              >
-                {item.icon}
-              </motion.div>
-              <span className={`relative ${
-                selectedItem === item.label ? 'after:content-[\'\'] after:absolute after:bottom-0 after:left-1/3 after:w-1/3 after:h-0.5 after:bg-white after:rounded-full' : ''
-              }`}>
-                {item.label}
-              </span>
-            </motion.a>
+            />
           ))}
         </motion.div>
       </motion.div>
