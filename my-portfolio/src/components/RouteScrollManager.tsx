@@ -100,7 +100,6 @@ export default function RouteScrollManager() {
         // ✅ บันทึกเฉพาะเมื่อมีค่า scroll จริงๆ (ไม่ใช่ 0 ตอนเพิ่งเปิดหน้า)
         if (currentScroll > 0) {
           sessionStorage.setItem(SCROLL_KEY, String(currentScroll));
-          console.log('💾 [SAVE] Scroll position:', currentScroll);
         }
         rafId = 0;
       });
@@ -119,19 +118,15 @@ export default function RouteScrollManager() {
       const finalScroll = window.scrollY;
       if (finalScroll > 0) {
         sessionStorage.setItem(SCROLL_KEY, String(finalScroll));
-        console.log('💾 [SAVE ON LEAVE] Final scroll position:', finalScroll);
-      } else {
-        console.log('⚠️ [SKIP SAVE] Scroll is 0, not overwriting saved position');
       }
     };
   }, [location.pathname]);
 
   // 📍 Step 3: จัดการ scroll ตามสถานการณ์
   useLayoutEffect(() => {
-    console.log('🔄 [ROUTE CHANGE]', {
-      path: location.pathname,
-      type: navigationType,
-    });
+    if (locationState?.skipPathSyncUntil) {
+      skipPathSyncUntilRef.current = locationState.skipPathSyncUntil;
+    }
 
     if (typeof locationState?.restoreScrollY === 'number' && HOME_PATHS.includes(location.pathname)) {
       const targetY = locationState.restoreScrollY;
@@ -152,7 +147,6 @@ export default function RouteScrollManager() {
 
     // 📌 กรณีที่ 1: เข้าหน้า Project Detail → เริ่มที่บนสุดเสมอ
     if (isProjectDetailPath(location.pathname)) {
-      console.log('📄 [PROJECT PAGE] Scrolling to top');
       window.scrollTo(0, 0);
       return;
     }
@@ -173,8 +167,6 @@ export default function RouteScrollManager() {
         const savedScroll = sessionStorage.getItem(SCROLL_KEY);
         const targetY = savedScroll ? parseInt(savedScroll, 10) : 0;
         
-        console.log('🔙 [BACK TO HOME] Restoring scroll to:', targetY);
-        
         // Restore ทันที
         window.scrollTo(0, targetY);
         
@@ -187,7 +179,6 @@ export default function RouteScrollManager() {
       }
       
       // ➡️ กรณี 2.2: เข้าหน้า Home ใหม่ (กดโลโก้, refresh, เข้าครั้งแรก)
-      console.log('🏠 [NEW HOME VISIT] Scrolling to top');
       window.scrollTo(0, 0);
       sessionStorage.removeItem(SCROLL_KEY); // ล้างค่าเก่าทิ้ง
     }

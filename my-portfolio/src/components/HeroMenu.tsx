@@ -41,6 +41,7 @@ const menuItems = [
 ];
 
 const HEADER_EDGE_OFFSET = 5;
+const PROGRAMMATIC_SCROLL_GUARD_MS = 7000;
 const menuPathMap: Record<string, string> = {
   Home: '/home',
   About: '/about',
@@ -141,6 +142,11 @@ export default function HeroMenu() {
   const [scrollY, setScrollY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
   const mouseX = useMotionValue(Infinity);
+  const selectedItemRef = useRef(selectedItem);
+
+  useEffect(() => {
+    selectedItemRef.current = selectedItem;
+  }, [selectedItem]);
 
   const animateScrollTo = (
     targetY: number,
@@ -254,14 +260,19 @@ export default function HeroMenu() {
       });
 
       const label = currentSection.charAt(0).toUpperCase() + currentSection.slice(1);
-      setSelectedItem(label === 'Home' ? 'Home' : label);
+      const nextSelectedItem = label === 'Home' ? 'Home' : label;
+      if (selectedItemRef.current !== nextSelectedItem) {
+        selectedItemRef.current = nextSelectedItem;
+        setSelectedItem(nextSelectedItem);
+      }
     };
 
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const nextScrollY = window.scrollY;
+      setScrollY((current) => (Math.abs(current - nextScrollY) > 80 ? nextScrollY : current));
       updateActiveSection();
       if (!isTouch) {
-        if (window.scrollY > 600) {
+        if (nextScrollY > 600) {
           setIsOpen(false);
         } else {
           setIsOpen(true);
@@ -347,7 +358,12 @@ export default function HeroMenu() {
               onClick={(e) => {
                 e.preventDefault();
                 setSelectedItem(item.label);
-                navigate(menuPathMap[item.label], { state: { skipRouteScroll: true } });
+                navigate(menuPathMap[item.label], {
+                  state: {
+                    skipRouteScroll: true,
+                    skipPathSyncUntil: Date.now() + PROGRAMMATIC_SCROLL_GUARD_MS,
+                  },
+                });
                 if (item.label.toLowerCase() === 'home') {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
