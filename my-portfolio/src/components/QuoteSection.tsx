@@ -106,8 +106,8 @@ export default function QuoteSection() {
             </motion.div>
 
             {/* Quote Text with Character-level Scroll Animation */}
-            <div className="max-w-full text-center text-[clamp(1.05rem,5.1vw,1.42rem)] font-black leading-tight text-gray-300 quote-inter-bold sm:text-4xl sm:leading-snug md:text-5xl lg:text-left lg:text-6xl lg:leading-relaxed">
-              <div className="whitespace-nowrap lg:pl-12">
+            <div className="max-w-full text-center text-[clamp(1.05rem,5.1vw,1.42rem)] font-black leading-tight text-gray-300 quote-inter-bold sm:text-4xl sm:leading-snug md:text-5xl lg:text-6xl lg:leading-relaxed">
+              <div className="whitespace-nowrap">
                 {CHARS_1.map((char, index) => (
                   <QuoteChar
                     key={`line1-${index}`}
