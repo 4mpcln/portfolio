@@ -192,13 +192,13 @@ export function Terminal({
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.04] px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className="h-3 w-3 rounded-full bg-red-400" />
-          <span className="h-3 w-3 rounded-full bg-yellow-300" />
-          <span className="h-3 w-3 rounded-full bg-green-400" />
+      <div className="flex min-w-0 items-center justify-between gap-3 border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-4">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400 sm:h-3 sm:w-3" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-300 sm:h-3 sm:w-3" />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400 sm:h-3 sm:w-3" />
         </div>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+        <p className="min-w-0 truncate whitespace-nowrap text-right text-[10px] font-semibold uppercase tracking-[0.1em] text-gray-400 sm:text-xs sm:tracking-[0.2em]">
           searching experience terminal
         </p>
       </div>
