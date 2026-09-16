@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 
 const SCROLL_KEY = 'portfolio_home_scroll';
+const PROJECT_NAVIGATION_LOCK_KEY = 'portfolio_project_navigation_lock';
 const HOME_PATHS = [
   '/',
   '/home',
@@ -38,6 +39,16 @@ const isProjectDetailPath = (pathname: string) =>
   pathname.startsWith('/projects/') ||
   pathname.startsWith('/experience/project/') ||
   pathname.startsWith('/experience/design/');
+
+const hasActiveProjectNavigationLock = () => {
+  const lockedUntil = Number(sessionStorage.getItem(PROJECT_NAVIGATION_LOCK_KEY) ?? 0);
+
+  if (!lockedUntil) return false;
+  if (Date.now() <= lockedUntil) return true;
+
+  sessionStorage.removeItem(PROJECT_NAVIGATION_LOCK_KEY);
+  return false;
+};
 
 const getExperiencePathForCurrentRoute = (pathname: string) => {
   if (pathname === '/experience/project' || pathname === '/project') return '/experience/project';
@@ -200,7 +211,7 @@ export default function RouteScrollManager() {
 
       rafId = requestAnimationFrame(() => {
         rafId = 0;
-        if (Date.now() < skipPathSyncUntilRef.current) return;
+        if (Date.now() < skipPathSyncUntilRef.current || hasActiveProjectNavigationLock()) return;
 
         const sections = Array.from(document.querySelectorAll('[data-section]')) as HTMLElement[];
         const viewportMarker = window.scrollY + window.innerHeight * 0.45;

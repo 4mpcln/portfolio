@@ -46,6 +46,7 @@ const internshipImages = [
 
 type ExperienceView = 'internship' | 'project' | 'design';
 const PROJECT_RETURN_KEY = 'portfolio_project_return';
+const PROJECT_NAVIGATION_LOCK_KEY = 'portfolio_project_navigation_lock';
 
 const experiencePathMap: Record<ExperienceView, string> = {
   internship: '/experience/internship',
@@ -220,6 +221,7 @@ export default function ExperienceSection() {
     const returnScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
 
     sessionStorage.setItem(PROJECT_RETURN_KEY, JSON.stringify({ returnTo, returnScrollY }));
+    sessionStorage.setItem(PROJECT_NAVIGATION_LOCK_KEY, String(Date.now() + 1600));
   };
 
   const renderFolderGrid = (items: typeof folders) => (
