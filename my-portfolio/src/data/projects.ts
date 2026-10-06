@@ -10,6 +10,7 @@ export interface Project {
   paperImages?: string[]; // รูปภาพที่แสดงในกระดาษของ Folder (สูงสุด 3 ใบ)
   projectUrl?: string | string[]; // ลิงก์ไปยัง GitHub (all) หรือ Figma (design) - รองรับหลาย URLs
   isDemoLink?: boolean; // ระบุว่าเป็น demo link (แสดง Chrome icon) แทน GitHub
+  githubUrl?: string;
   originalVersionUrl?: string; // ลิงก์ไปยัง original version ของโปรเจค (GitHub)
 }
 
@@ -18,6 +19,9 @@ export const projects: Project[] = [
     id: 'Qlean-featured',
     category: 'all',
     title: 'Qlean',
+    projectUrl: 'https://www.qlean.click',
+    isDemoLink: true,
+    githubUrl: 'https://github.com/4mpcln/ShortURLproj.git',
     techStack: ['Logo Design', 'Frontend', 'Backend', 'Deployment', 'Domain Setup'],
     summary: 'Qlean is a URL shortener and QR code maker built from a project brief that challenged me to create features that feel more useful and distinctive than a typical shortening or QR generation tool. The key features I developed include scheduled link access, password-protected access, tags and folders for organizing links, controls to enable or disable link access temporarily or permanently, and link statistics. I handled the full product process, including logo design, frontend development, backend development, deployment, and domain connection, and I also configured it for my own real-world use.',
     paperImages: ['/featured-project/Qlean/qlean-1.jpg', '/featured-project/Qlean/qlean-2.jpg', '/featured-project/Qlean/qlean-3.jpg'],
