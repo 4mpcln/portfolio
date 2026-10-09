@@ -121,7 +121,7 @@ export const projects: Project[] = [
     id: 'Doctora-featured',
     category: 'all',
     title: 'Doctora',
-    techStack: ['Nxt.js', 'TypeScript','Tailwind CSS', 'Spring Boot', 'PostgresSQL','Docker'],
+    techStack: ['Next.js', 'TypeScript','Tailwind CSS', 'Spring Boot', 'PostgresSQL','Docker'],
     summary: 'This project is a system-oriented full-stack web application for online doctor appointment booking. Patients can search for doctors by specialty, view real-time availability, and book appointments, while doctors manage schedules, approve bookings, and handle patient queues. Administrators oversee doctors, specialties, and system usage. The application is built with a 3-tier architecture using Next.js and TypeScript for the frontend, Spring Boot (Java) for the backend, and PostgreSQL as the database, with REST APIs secured by JWT authentication',
     paperImages: ['/featured-project/Doctora/2.png', '/featured-project/Doctora/3.png', '/featured-project/Doctora/1.png'],
     projectUrl: 'https://github.com/annop07/FrontendDoctora.git',
