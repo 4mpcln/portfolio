@@ -18,6 +18,8 @@ type SkillGroup = {
   skills: Skill[];
 };
 
+const SKILL_ICON_PATH = '/skills';
+
 const skillGroups: SkillGroup[] = [
   {
     title: 'Frontend',
@@ -105,7 +107,7 @@ function SkillLogoTile({ skill, index, isActive }: { skill: Skill; index: number
       <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/80 bg-gradient-to-br from-white via-gray-100 to-gray-300 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-10px_18px_rgba(0,0,0,0.08),0_10px_22px_rgba(0,0,0,0.28)] transition-shadow duration-300 before:absolute before:left-2 before:right-2 before:top-1.5 before:h-6 before:rounded-full before:bg-white/65 before:blur-md before:content-[''] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-10px_18px_rgba(0,0,0,0.07),0_12px_26px_rgba(34,211,238,0.16)] md:h-[72px] md:w-[72px] md:rounded-2xl md:p-3">
         {skill.icon ? (
           <img
-            src={`/${skill.icon}`}
+            src={`${SKILL_ICON_PATH}/${skill.icon}`}
             alt={skill.name}
             className="relative z-10 h-8 w-8 object-contain drop-shadow-sm md:h-11 md:w-11"
             style={{ transform: skill.scale ? `scale(${skill.scale})` : 'scale(1)' }}

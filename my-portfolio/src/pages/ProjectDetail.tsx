@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import CursorFollower from '@/components/CursorFollower';
 import Footer from '@/components/footer';
@@ -22,20 +22,48 @@ const getSavedProjectReturn = () => {
 export default function ProjectDetail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId } = useParams();
+  const { projectId, imageNumber } = useParams();
   const project = projects.find((item) => item.id === projectId);
   const sampleImages = project?.sampleImages ?? [];
   const routeState = location.state as { returnTo?: string; returnScrollY?: number } | null;
   
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const requestedImageNumber = imageNumber === undefined ? 1 : Number(imageNumber);
+  const isValidImageNumber = imageNumber === undefined || (
+    /^[1-9]\d*$/.test(imageNumber) &&
+    Number.isSafeInteger(requestedImageNumber) &&
+    requestedImageNumber <= sampleImages.length
+  );
+  const currentImageIndex = isValidImageNumber ? requestedImageNumber - 1 : 0;
+  const pathname = location.pathname.replace(/\/$/, '');
+  const projectPath = imageNumber === undefined
+    ? pathname
+    : pathname.slice(0, pathname.lastIndexOf('/'));
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  useEffect(() => {
+    if (project && !isValidImageNumber) {
+      navigate(projectPath, {
+        replace: true,
+        state: { ...location.state, skipRouteScroll: true },
+      });
+    }
+  }, [project, isValidImageNumber, projectPath, location.state, navigate]);
+
+  const navigateToImage = (index: number) => {
+    if (sampleImages.length < 2) return;
+
+    navigate(`${projectPath}/${index + 1}`, {
+      replace: true,
+      state: { ...location.state, skipRouteScroll: true },
+    });
+  };
+
   const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? sampleImages.length - 1 : prev - 1));
+    navigateToImage(currentImageIndex === 0 ? sampleImages.length - 1 : currentImageIndex - 1);
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev === sampleImages.length - 1 ? 0 : prev + 1));
+    navigateToImage(currentImageIndex === sampleImages.length - 1 ? 0 : currentImageIndex + 1);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

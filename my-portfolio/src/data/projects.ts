@@ -58,7 +58,7 @@ export const projects: Project[] = [
     category: 'all',
     title: 'RevUp',
     techStack: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', ],
-    summary: 'This project simulates a complete vehicle repair shop management system with six user roles: shop manager, service advisor, chief mechanic, mechanic, inventory manager, and cashier. The system was designed to represent the full repair workflow from vehicle intake to service completion in a repair shop environment. I was responsible for creating the initial UI design so the team could follow a consistent design direction and color theme. After that, the frontend work was divided across the team, with each member responsible for two roles. I developed the frontend for the mechanic and inventory roles.',
+    summary: 'This project simulates a complete vehicle repair shop management system with 7 user roles: shop manager, service advisor, chief mechanic, mechanic, inventory manager, and cashier. The system was designed to represent the full repair workflow from vehicle intake to service completion in a repair shop environment. I was responsible for creating the initial UI design so the team could follow a consistent design direction and color theme. After that, the frontend work was divided across the team, with each member responsible for two roles. I developed the frontend for the mechanic and inventory roles.',
     paperImages: ['/project/Revup/car-1.png', '/project/Revup/car-22.png', '/project/Revup/car-cover.jpeg'],
     projectUrl: 'https://github.com/nicky-wrc/smart-moto-service-center.git',
     sampleImages: [

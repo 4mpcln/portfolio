@@ -46,9 +46,9 @@ export default function App() {
         <Route path="/internship" element={<HomePage />} />
         <Route path="/project" element={<HomePage />} />
         <Route path="/design" element={<HomePage />} />
-        <Route path="/experience/project/:projectId" element={<ProjectDetail />} />
-        <Route path="/experience/design/:projectId" element={<ProjectDetail />} />
-        <Route path="/projects/:projectId" element={<ProjectDetail />} />
+        <Route path="/experience/project/:projectId/:imageNumber?" element={<ProjectDetail />} />
+        <Route path="/experience/design/:projectId/:imageNumber?" element={<ProjectDetail />} />
+        <Route path="/projects/:projectId/:imageNumber?" element={<ProjectDetail />} />
       </Routes>
     </BrowserRouter>
   );
