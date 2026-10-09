@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Krit Intarajinda Resume - Draft 02</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6f6f6;
+      color: #111;
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.25;
+    }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background: #fff;
+      padding: 13mm 15mm 10mm;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    header {
+      text-align: center;
+      border-bottom: 1.2px solid #111;
+      padding-bottom: 6px;
+      margin-bottom: 9px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .contact {
+      font-size: 10.8px;
+      word-spacing: 2px;
+    }
+    h2 {
+      margin: 0 0 6px;
+      border-bottom: 1.2px solid #111;
+      padding-bottom: 4px;
+      font-size: 15.4px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    section { margin-bottom: 8px; }
+    p { margin: 0; }
+    .summary {
+      margin-top: 4px;
+      font-size: 9.9px;
+      text-align: justify;
+    }
+    .entry { margin-bottom: 6px; }
+    .entry:last-child { margin-bottom: 0; }
+    h3 {
+      margin: 0;
+      font-size: 11.2px;
+      text-transform: uppercase;
+    }
+    .line {
+      margin: 1px 0 3px;
+      font-size: 9.8px;
+    }
+    .date {
+      margin-bottom: 3px;
+      font-size: 9.8px;
+    }
+    ul {
+      margin: 0;
+      padding-left: 15px;
+      font-size: 9.6px;
+      text-align: justify;
+    }
+    li { margin-bottom: 1.5px; }
+    .education-list { font-size: 9.2px; }
+    .skills li { margin-bottom: 2px; }
+    .small-note {
+      margin-top: 10px;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      color: #176b72;
+    }
+    .small-note a { color: inherit; text-decoration: underline; }
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Krit Intarajinda</h1>
+      <p class="contact">088 572 5273 | krit.in@kkumail.com | github.com/4mpcln | www.krit.info</p>
+    </header>
+
+    <section>
+      <h2>Professional Summary</h2>
+      <p class="summary">Full Stack Developer and College of Computing student with practical experience in frontend development, UX/UI design, backend development, and full-stack project work. Skilled in creating responsive, user-centered web applications, translating design ideas into usable interfaces, and supporting system implementation through research, prototyping, API integration, and collaborative development.</p>
+    </section>
+
+    <section>
+      <h2>Internship Experience</h2>
+      <div class="entry">
+        <h3>iNFRA Corporation</h3>
+        <p class="line">Frontend (Applied) | Backend (Additional) - Environmental Protected Area Impact Assessment System</p>
+        <p class="date">May 2026 - June 2026</p>
+        <ul>
+          <li>Developed a web application for preliminary impact assessment of construction projects or structures that may affect environmentally protected areas under the Office of Natural Resources and Environmental Policy and Planning (ONEP).</li>
+          <li>Developed frontend features from the team's UI/UX designs and improved interface usability by suggesting adjustments when the original design could be inconvenient or less user-friendly.</li>
+          <li>Participated in backend development, gaining hands-on experience in system logic, API development, and frontend-backend integration using NestJS, Axios, Zod, Swagger, and TypeORM.</li>
+          <li>Worked with PostgreSQL, PostGIS, Redis, MinIO, Docker, MapLibre, and TanStack Query, expanding practical understanding of databases, geospatial data, infrastructure, and system integration.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Project Experience</h2>
+      <div class="entry">
+        <h3>Shorten URL and QR Code Maker - QLEAN</h3>
+        <p class="line">First independently developed full-stack project</p>
+        <ul>
+          <li>Independently developed QLEAN from concept to deployment, designing the logo, system workflows, and all functionality for URL shortening and QR code generation, including a personal link library, visit analytics, and optional access-code protection.</li>
+          <li>Designed and developed the UX/UI and frontend using React, TypeScript, and Vite, enabling users to organize links into folders and tags, customize QR codes, and export reports.</li>
+          <li>Built REST APIs using Node.js and Express with PostgreSQL and Redis, implemented JWT authentication and request validation, and configured Docker Compose for local development and Vercel for deployment.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <h3>Industrial PPE Detection System - DTech</h3>
+        <p class="line">AI-assisted safety monitoring web application</p>
+        <ul>
+          <li>Developed an industrial PPE detection system that integrates fine-tuned AI models with a custom-built web application to support real-time safety monitoring through on-site cameras.</li>
+          <li>Designed and developed the UX/UI and frontend using React, TypeScript, Vite, and Tailwind CSS, focusing on camera management, live preview, alerts, and workflows for industrial staff.</li>
+          <li>Improved pre-trained YOLO models with project-specific data, integrated trained models into the web application, and contributed to the FastAPI backend using Python, SQLAlchemy, Alembic, and Docker Compose.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <h3>Clinic Doctor Appointment System - Doctora</h3>
+        <p class="line">Doctor appointment booking system for web and mobile</p>
+        <ul>
+          <li>Developed a doctor appointment booking system for an after-hours clinic, supporting both web and mobile platforms.</li>
+          <li>Built the backend using Spring Boot as required by the course instructor, created the web frontend using Next.js, TypeScript, and Tailwind CSS, and supported the mobile application with React Native.</li>
+          <li>Served as Frontend Developer and UX/UI Designer, responsible for UX planning, user workflows, Figma prototypes, and complete web frontend implementation.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <h3>Carpooling & Ride-Sharing Web Application - Ride</h3>
+        <p class="line">Software Engineering course project</p>
+        <ul>
+          <li>Completed as part of an Agile Software Engineering course by building on a senior fourth-year project and redesigning key product backlog items during Sprint 1.</li>
+          <li>Led the complete UX/UI redesign process, creating user flows, wireframes, and high-fidelity Figma designs.</li>
+          <li>Developed frontend features using Nuxt.js, Vue.js, Tailwind CSS, Vite, JavaScript, and TypeScript with focus on responsive design and modern user experience.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <ul class="education-list">
+        <li><strong>Khon Kaen University - College of Computing</strong> | Fourth-year undergraduate student | GPA: 3.33</li>
+        <li>Relevant courses: Web Programming and Application, User Experience Design, Principles of Software Design and Development, System Analysis and Design, Database Management System and Database Design, Software Engineering, Programming for Mobile Application.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Technical Skill</h2>
+      <ul class="skills">
+        <li>Frontend: HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, Tailwind CSS, Vue.js, Nuxt.js, Bootstrap, Vite, TanStack Query, Axios, React Hook Form, Zod.</li>
+        <li>Backend & API: Node.js, NestJS, Express.js, TypeORM, FastAPI, Spring Boot.</li>
+        <li>Database & Storage: PostgreSQL, PostGIS, Redis, MinIO, Multer, Sharp.</li>
+        <li>UI/UX & Tools: Figma, Canva, Git, GitHub, VS Code, Docker, Vercel.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Communication</h2>
+      <ul>
+        <li>Thai: Native</li>
+        <li>English: Intermediate – Able to read technical documentation and communicate in English</li>
+      </ul>
+    </section>
+    <p class="small-note">Explore all my projects and full details at <a href="https://www.krit.info">www.krit.info</a></p>
+  </div>
+</body>
+</html>

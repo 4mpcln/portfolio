@@ -22,8 +22,8 @@ export const projects: Project[] = [
     projectUrl: 'https://www.qlean.click',
     isDemoLink: true,
     githubUrl: 'https://github.com/4mpcln/ShortURLproj.git',
-    techStack: ['Logo Design', 'Frontend', 'Backend', 'Deployment', 'Domain Setup'],
-    summary: 'Qlean is a URL shortener and QR code maker built from a project brief that challenged me to create features that feel more useful and distinctive than a typical shortening or QR generation tool. The key features I developed include scheduled link access, password-protected access, tags and folders for organizing links, controls to enable or disable link access temporarily or permanently, and link statistics. I handled the full product process, including logo design, frontend development, backend development, deployment, and domain connection, and I also configured it for my own real-world use.',
+    techStack: ['React', 'TypeScript', 'Vite', 'Node.js', 'Express', 'PostgreSQL', 'Redis', 'Docker', 'Vercel'],
+    summary: 'Qlean began when my partner frequently needed short links and QR codes for faculty T-shirt order forms, but could not find a tool with all the features she needed. I built a platform with password-protected links, temporary access controls, scheduled access, folders and tags, and visit analytics. As my first solo full-stack project, I designed the UI, logo, and every feature, built the frontend and backend, and handled deployment, domain purchase, and basic SEO to make it easy for her, club friends, and others to find and use.',
     paperImages: ['/featured-project/Qlean/qlean-1.jpg', '/featured-project/Qlean/qlean-2.jpg', '/featured-project/Qlean/qlean-3.jpg'],
     sampleImages: [
       '/featured-project/Qlean/qlean-1.jpg',
